@@ -584,7 +584,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-16:05</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-16:41</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -1280,13 +1280,6 @@ async function saveNote(){
     body_score:   scoreActive.body   ? parseFloat(document.getElementById('f-body').value)    : null,
     finish_score: scoreActive.finish ? parseFloat(document.getElementById('f-finish').value)  : null,
   };
-
-  if(editingId){
-    const i=db.notes.findIndex(n=>n.id===editingId);
-    if(i>=0) db.notes[i]=note;
-  } else {
-    db.notes.unshift(note);
-  }
 
   // Merge images
   note.images = existingImages.slice();
