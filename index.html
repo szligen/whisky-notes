@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-13:52 -->
+<!-- VERSION: 2026-06-10-14:18 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -196,15 +196,23 @@
   .btn-delete { background: transparent; border-color: var(--border); color: var(--text-muted); margin-left: auto; }
   .btn-delete:hover { background: #fef2f2; border-color: var(--red); color: var(--red); }
 
-  /* List view overrides */
-  #cards-grid.list-view .note-card { display: flex; gap: 20px; align-items: center; padding: 14px 20px; }
-  #cards-grid.list-view .card-left { min-width: 260px; flex: 2; }
-  #cards-grid.list-view .card-center { flex: 3; }
-  #cards-grid.list-view .card-right { min-width: 160px; flex: 1; }
-  #cards-grid.list-view .card-scores { flex-direction: column; padding: 8px 12px; gap: 4px; }
-  #cards-grid.list-view .score-item { text-align: left; display: flex; align-items: center; gap: 8px; }
-  #cards-grid.list-view .score-val { font-size: 14px; }
-  #cards-grid.list-view .card-actions { margin-top: 0; padding-top: 0; border-top: none; opacity: 1; }
+/* List view overrides */
+#cards-grid.list-view .note-card {
+  display: flex; flex-direction: column; gap: 6px; align-items: stretch;
+  padding: 12px 20px;
+}
+.list-line1 { display: flex; align-items: center; }
+#cards-grid.list-view .card-title { font-size: 15px; }
+.list-line2 {
+  display: flex; align-items: center; gap: 14px;
+}
+.list-meta {
+  font-size: 13px; color: var(--text-muted); white-space: nowrap;
+}
+#cards-grid.list-view .card-actions {
+  margin-top: 0; padding-top: 0; border-top: none; opacity: 1;
+  margin-left: auto; flex-shrink: 0;
+}
 
   /* ===== Empty State ===== */
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); grid-column: 1/-1; }
@@ -424,11 +432,10 @@
     .btn-delete::before { content: '🗑️ '; font-size: 12px; }
 
     /* List view mobile tweaks */
-    #cards-grid.list-view .note-card { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; }
-    #cards-grid.list-view .card-left { min-width: 0; }
-    #cards-grid.list-view .card-center { min-width: 0; }
-    #cards-grid.list-view .card-right { min-width: 0; }
-    #cards-grid.list-view .card-actions { border-top: 1px solid var(--border-light); }
+    #cards-grid.list-view .note-card { padding: 10px 16px; gap: 4px; }
+    .list-line2 { flex-wrap: wrap; gap: 8px; }
+    .list-meta { font-size: 12px; width: 100%; }
+    #cards-grid.list-view .card-actions { border-top: none; margin-left: 0; }
 
     /* --- Results info --- */
     .results-info { font-size: 12px; flex-wrap: wrap; gap: 4px; }
@@ -479,7 +486,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-13:52</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-14:18</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -531,7 +538,7 @@
         <button class="sort-btn active" data-sort="date-desc">最新优先</button>
         <button class="sort-btn" data-sort="score-desc">评分最高</button>
         <button class="sort-btn" data-sort="age-desc">年份最老</button>
-        <button class="sort-btn" data-sort="name-asc">名称 A-Z</button>
+        <button class="sort-btn" data-sort="distillery-asc">酒厂名称 A-Z</button>
       </div>
       <button id="btn-clear-filter">清除筛选</button>
     </div>
@@ -883,7 +890,7 @@ function applyFiltersAndSort() {
       case 'date-desc':  return (b.date||'').localeCompare(a.date||'');
       case 'score-desc': return avgScore(b)-avgScore(a);
       case 'age-desc':   return (b.vintage_age||0)-(a.vintage_age||0);
-      case 'name-asc':   return (a.whisky_name||'').localeCompare(b.whisky_name||'');
+      case 'distillery-asc': return distSortCmp(a.distillery||'', b.distillery||'');
       default: return 0;
     }
   });
@@ -892,6 +899,18 @@ function applyFiltersAndSort() {
 function avgScore(n){
   const v=[n.palate_score,n.body_score,n.finish_score].filter(x=>x!=null);
   return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
+}
+
+/** Sort comparator: numbers → English → Chinese */
+function distSortCmp(a, b) {
+  const typeOrder = (s) => {
+    if (/^\d/.test(s)) return 0;    // 数字开头
+    if /^[a-zA-Z]/.test(s)) return 1; // 英文字母开头
+    return 2;                          // 中文或其他
+  };
+  const ta = typeOrder(a), tb = typeOrder(b);
+  if (ta !== tb) return ta - tb;
+  return a.localeCompare(b, 'zh-CN');
 }
 
 // ============================================================
@@ -955,16 +974,19 @@ function cardHTML(n,isL){
   if(n.distillation_year) tags.push('<span class="tag tag-year">'+n.distillation_year+'</span>');
   if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
 
-  if(isL) return '<div class="note-card" data-id="'+n.id+'">'+
-    '<div class="card-left"><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
-    '<div class="card-distillery">'+esc(n.distillery||'')+'</div>'+
-    '<div class="card-meta" style="margin-top:6px">'+tags.join('')+'</div></div>'+
-    '<div class="card-center">'+
-    (n.nose?'<div class="card-nose"><strong>NOSE</strong>&emsp;'+esc(n.nose)+'</div>':'')+
-    (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5</strong>&emsp;'+esc(n.aftertaste)+'</div>':'')+
-    '</div><div class="card-right">'+sHTML+
-    '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
-    '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div></div>';
+  if(isL) {
+    // List view — compact 2-line layout
+    var parts = [];
+    if(n.distillation_year) parts.push(esc(n.distillation_year));
+    if(n.abv) parts.push(esc(n.abv)+'%');
+    if(n.wb_id) parts.push('WB#'+esc(n.wb_id));
+    var metaStr = parts.join(' \u00B7 ') || '\u2014';
+    return '<div class="note-card" data-id="'+n.id+'">'+
+      '<div class="list-line1"><span class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</span></div>'+
+      '<div class="list-line2"><span class="list-meta">'+metaStr+'</span>'+
+      '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
+      '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div></div>';
+  }
 
   return '<div class="note-card" data-id="'+n.id+'">'+
     '<div class="card-header"><div><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
