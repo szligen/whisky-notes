@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-15:25 -->
+<!-- VERSION: 2026-06-10-15:32 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -519,7 +519,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-15:25</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-15:32</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -918,8 +918,11 @@ let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintage
 function applyFiltersAndSort() {
   let notes = db.notes.slice();
   if (filters.q) {
-    const q = filters.q.toLowerCase();
-    notes = notes.filter(n => JSON.stringify(n).toLowerCase().includes(q));
+    const terms = filters.q.trim().toLowerCase().split(/\s+/).filter(t => t.length > 0);
+    notes = notes.filter(n => {
+      const hay = JSON.stringify(n).toLowerCase();
+      return terms.every(t => hay.includes(t));
+    });
   }
   if (filters.distillery) notes = notes.filter(n => n.distillery === filters.distillery);
   if (filters.bottler)    notes = notes.filter(n => n.bottler    === filters.bottler);
