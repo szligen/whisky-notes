@@ -8928,8 +8928,8 @@
     },
     {
       "id": "20250828-526",
-      "date": "2025-08-28T16:27:00",
-      "whisky_name": "Bowmore 波摩 Vault Edit1°N First Release",
+      "date": "2025-08-28T16:27",
+      "whisky_name": "Bowmore 波摩 Vault Edit1°N 一号窖藏 First Release",
       "distillery": "Bowmore",
       "bottler": "OB",
       "abv": 51.5,
@@ -8937,11 +8937,12 @@
       "distillation_year": null,
       "wb_id": 88163,
       "nose": "果味，杨桃，些许皂味",
+      "aftertaste": "",
+      "notes": "第二口好喝，尾巴有酒精味",
       "palate_score": 3.6,
       "body_score": 3.3,
       "finish_score": 3.2,
-      "aftertaste": "",
-      "notes": "第二口好喝，尾巴有酒精味"
+      "images": []
     },
     {
       "id": "20250828-527",
