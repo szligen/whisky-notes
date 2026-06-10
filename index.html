@@ -58,7 +58,6 @@
     cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.15s;
   }
   .btn-header:hover { border-color: var(--accent); color: var(--accent); }
-  .btn-header.primary { background: var(--green); border-color: var(--green); color: white; }
 
   /* ===== Main Layout ===== */
   .container { max-width: 1280px; margin: 0 auto; padding: 24px 20px; }
@@ -168,7 +167,6 @@
   .tag { padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
   .tag-age { background: var(--gold-light); color: var(--gold); }
   .tag-abv { background: var(--accent-bg); color: var(--accent); }
-  .tag-region { background: #eef2ff; color: #4f46e5; }
   .tag-wb { background: var(--surface2); color: var(--text-muted); }
   .tag-year { background: #f0fdf4; color: var(--green); }
 
@@ -177,9 +175,9 @@
   .score-val { font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1; }
   .score-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-  .card-nose { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+  .card-nose { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
   .card-nose strong { color: var(--text); font-size: 11px; letter-spacing: 0.5px; }
-  .card-aftertaste { font-size: 12px; color: var(--text-muted); }
+  .card-aftertaste { font-size: 12px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
   .card-aftertaste strong { color: var(--text); font-size: 11px; }
 
   .card-actions {
@@ -244,8 +242,6 @@
     color: var(--text-muted); margin-bottom: 12px;
   }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-  .form-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
   .form-group { display: flex; flex-direction: column; gap: 4px; }
   .form-group.full { grid-column: 1 / -1; }
   .form-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
@@ -262,6 +258,10 @@
   .score-inputs { display: flex; gap: 10px; align-items: center; }
   .score-inputs input[type="range"] { flex: 1; accent-color: var(--accent); }
   .score-display { min-width: 30px; text-align: center; font-weight: 700; color: var(--accent); }
+
+  /* Input length hint */
+  .input-hint { font-size: 10px; color: var(--text-light); text-align: right; margin-top: 2px; }
+  .input-hint.warn { color: var(--red); }
 
   .modal-footer {
     padding: 16px 24px; border-top: 1px solid var(--border);
@@ -335,7 +335,6 @@
   @media (max-width: 640px) {
     header { padding: 12px 16px; } .container { padding: 16px 12px; }
     .form-grid { grid-template-columns: 1fr; }
-    .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr 1fr; }
     #cards-grid { grid-template-columns: 1fr; } .stats-bar { gap: 10px; } .logo h1 { font-size: 16px; }
     .conn-banner { flex-direction: column; gap: 6px; text-align: center; }
   }
@@ -391,11 +390,10 @@
     </div>
     <div class="filter-row">
       <select id="filter-distillery"><option value="">所有酒厂</option></select>
-      <select id="filter-region"><option value="">所有产区</option></select>
       <select id="filter-bottler"><option value="">所有装瓶商</option></select>
       <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;">
       <input type="number" id="filter-year-to" placeholder="年份 ≤" min="1900" max="2100" style="max-width:90px;">
-      <input type="number" id="filter-age-min" placeholder="年龄 ≥" min="0" max="100" style="max-width:90px;">
+      <input type="number" id="filter-vintage-age-min" placeholder="酒龄 ≥" min="0" max="100" style="max-width:90px;">
       <div class="sort-btns">
         <button class="sort-btn active" data-sort="date-desc">最新优先</button>
         <button class="sort-btn" data-sort="score-desc">评分最高</button>
@@ -472,30 +470,24 @@
         <div class="form-grid">
           <div class="form-group full">
             <label>酒款名称 *</label>
-            <input type="text" id="f-name" placeholder="e.g. Longmorn 朗摩 31年 3R 三河" required>
+            <input type="text" id="f-name" maxlength="100" placeholder="e.g. Longmorn 朗摩 31年 3R 三河" required>
+            <span class="input-hint"><span id="hint-name-len">0</span>/100</span>
           </div>
           <div class="form-group">
             <label>酒厂名称 *</label>
-            <input type="text" id="f-distillery" placeholder="e.g. Longmorn" required list="dl-distilleries">
+            <input type="text" id="f-distillery" maxlength="80" placeholder="e.g. Longmorn" required list="dl-distilleries">
             <datalist id="dl-distilleries"></datalist>
+            <span class="input-hint"><span id="hint-distillery-len">0</span>/80</span>
           </div>
           <div class="form-group">
             <label>装瓶商</label>
-            <input type="text" id="f-bottler" placeholder="e.g. Three Rivers Tokyo (3R)" list="dl-bottlers">
+            <input type="text" id="f-bottler" maxlength="100" placeholder="e.g. Three Rivers Tokyo (3R)" list="dl-bottlers">
             <datalist id="dl-bottlers"></datalist>
+            <span class="input-hint"><span id="hint-bottler-len">0</span>/100</span>
           </div>
-          <div class="form-group">
-            <label>产区</label>
-            <input type="text" id="f-region" placeholder="e.g. Speyside" list="dl-regions">
-            <datalist id="dl-regions">
-              <option value="Speyside"><option value="Highland"><option value="Islay">
-              <option value="Lowland"><option value="Campbeltown"><option value="Islands">
-              <option value="Japan"><option value="Taiwan"><option value="Ireland"><option value="USA">
-            </datalist>
-          </div>
-          <div class="form-group">
-            <label>品鉴日期</label>
-            <input type="date" id="f-date">
+          <div class="form-group full">
+            <label>品鉴时间</label>
+            <input type="datetime-local" id="f-date">
           </div>
         </div>
       </div>
@@ -504,26 +496,30 @@
         <div class="form-section-title">🔬 酒款规格</div>
         <div class="form-grid cols-4">
           <div class="form-group"><label>酒精度% (ABV)</label><input type="number" id="f-abv" placeholder="54.1" step="0.1" min="0" max="100"></div>
-          <div class="form-group"><label>年份 (年龄)</label><input type="number" id="f-age" placeholder="31" min="0" max="100"></div>
+          <div class="form-group"><label>酒龄 (Vintage Age)</label><input type="number" id="f-vintage-age" placeholder="31" step="0.5" min="0" max="150"></div>
           <div class="form-group"><label>蒸馏年份</label><input type="number" id="f-distillation-year" placeholder="1975" min="1800" max="2100"></div>
-          <div class="form-group"><label>装瓶年份</label><input type="number" id="f-bottling-year" placeholder="2006" min="1800" max="2100"></div>
-          <div class="form-group"><label>桶型</label><input type="text" id="f-cask-type" placeholder="Sherry Butt" list="dl-casks">
-            <datalist id="dl-casks"><option value="Sherry Butt"><option value="Sherry Hogshead">
-              <option value="Bourbon Barrel"><option value="Bourbon Hogshead"><option value="Port Pipe">
-              <option value="Madeira Drum"><option value="Rum Cask"><option value="Wine Cask">
-              <option value="Refill Hogshead"><option value="First Fill"></datalist>
-          </div>
-          <div class="form-group"><label>桶号</label><input type="text" id="f-cask-number" placeholder="#1234"></div>
-          <div class="form-group"><label>WB号</label><input type="number" id="f-wb-id" placeholder="6348"></div>
+          <div class="form-group"><label>WB号</label><input type="number" id="f-wb-id" placeholder="6348" min="0"></div>
         </div>
       </div>
       <!-- 品鉴笔记 -->
       <div class="form-section">
         <div class="form-section-title">📝 品鉴笔记</div>
         <div class="form-grid">
-          <div class="form-group full"><label>闻香描述 (Nose)</label><textarea id="f-nose" placeholder="黄色水果，黄桃，黄色糖果汽水"></textarea></div>
-          <div class="form-group full"><label>余韵 (Aftertaste)</label><textarea id="f-aftertaste" placeholder="桃，奶油，脂粉"></textarea></div>
-          <div class="form-group full"><label>备注</label><textarea id="f-notes" placeholder="其他感受、场合、搭配..."></textarea></div>
+          <div class="form-group full">
+            <label>闻香描述 (Nose)</label>
+            <textarea id="f-nose" maxlength="500" placeholder="黄色水果，黄桃，黄色糖果汽水"></textarea>
+            <span class="input-hint"><span id="hint-nose-len">0</span>/500</span>
+          </div>
+          <div class="form-group full">
+            <label>余韵 (Aftertaste)</label>
+            <textarea id="f-aftertaste" maxlength="500" placeholder="桃，奶油，脂粉"></textarea>
+            <span class="input-hint"><span id="hint-aftertaste-len">0</span>/500</span>
+          </div>
+          <div class="form-group full">
+            <label>备注</label>
+            <textarea id="f-notes" maxlength="1000" placeholder="其他感受、场合、搭配..."></textarea>
+            <span class="input-hint"><span id="hint-notes-len">0</span>/1000</span>
+          </div>
         </div>
       </div>
       <!-- 评分 -->
@@ -536,14 +532,7 @@
             <div class="score-inputs"><input type="range" id="f-body" min="0" max="5" step="0.1" value="0" oninput="updateScore('body',this.value)"><span class="score-display" id="disp-body">—</span></div></div>
           <div class="form-group"><label>喉感 (Finish) /5</label>
             <div class="score-inputs"><input type="range" id="f-finish" min="0" max="5" step="0.1" value="0" oninput="updateScore('finish',this.value)"><span class="score-display" id="disp-finish">—</span></div></div>
-          <div class="form-group"><label>综合 (Overall) /100</label>
-            <div class="score-inputs"><input type="range" id="f-overall" min="0" max="100" step="1" value="0" oninput="updateScore('overall',this.value)"><span class="score-display" id="disp-overall">—</span></div></div>
         </div>
-      </div>
-      <!-- 标签 -->
-      <div class="form-section">
-        <div class="form-section-title">🏷 标签</div>
-        <div class="form-group"><label>标签 (逗号分隔)</label><input type="text" id="f-tags" placeholder="雪莉，高龄，送礼首选"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -603,7 +592,15 @@ let editingId = null;
 let deletingId = null;
 let viewMode = 'grid';
 let isSyncing = false;
-let scoreActive = { palate:false, body:false, finish:false, overall:false };
+let scoreActive = { palate:false, body:false, finish:false };
+
+/** Format datetime for display from ISO string */
+function fmtDate(isoStr) {
+  if (!isoStr) return '';
+  // "2026-06-04T20:30:00" → "2026-06-04 20:30"
+  const s = isoStr.replace('T',' ').slice(0,16);
+  return s;
+}
 
 // ============================================================
 // GitHub API — read & write
@@ -618,7 +615,6 @@ async function loadFromGitHub() {
 
   if (!res.ok) {
     if (res.status === 404) {
-      // File doesn't exist yet
       ghCfg.fileSha = null;
       db = { version: "1.0", notes: [] };
       setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo}（空仓库，开始添加记录吧）`);
@@ -647,7 +643,7 @@ async function loadFromGitHub() {
 /** Write current db to GitHub Contents API (auto-commit) */
 async function pushToGitHub(actionLabel) {
   if (!hasConfig()) return false;
-  if (isSyncing) return false; // prevent double-sync
+  if (isSyncing) return false;
 
   isSyncing = true;
   setStatus('syncing', `⏳ 正在同步${actionLabel}到 GitHub...`);
@@ -681,7 +677,6 @@ async function pushToGitHub(actionLabel) {
 
     const result = await res.json();
     ghCfg.fileSha = result.content.sha;
-    // Update config sha so next push uses latest
     localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
 
     setStatus('connected', `✓ 已同步到 GitHub · ${db.notes.length} 条记录`);
@@ -726,7 +721,7 @@ async function init() {
 // ============================================================
 // Search & Filter & Sort
 // ============================================================
-let filters = { q:'', distillery:'', region:'', bottler:'', yearFrom:'', yearTo:'', ageMin:'' };
+let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintageAgeMin:'' };
 
 function applyFiltersAndSort() {
   let notes = db.notes.slice();
@@ -738,24 +733,20 @@ function applyFiltersAndSort() {
       (n.bottler||'').toLowerCase().includes(q) ||
       (n.nose||'').toLowerCase().includes(q) ||
       (n.aftertaste||'').toLowerCase().includes(q) ||
-      (n.region||'').toLowerCase().includes(q) ||
-      (n.cask_type||'').toLowerCase().includes(q) ||
       (n.notes||'').toLowerCase().includes(q) ||
-      (n.tags||[]).some(t=>t.toLowerCase().includes(q)) ||
       String(n.wb_id||'').includes(q)
     );
   }
   if (filters.distillery) notes = notes.filter(n => n.distillery === filters.distillery);
-  if (filters.region)     notes = notes.filter(n => n.region     === filters.region);
   if (filters.bottler)    notes = notes.filter(n => n.bottler    === filters.bottler);
   if (filters.yearFrom)   notes = notes.filter(n => (n.distillation_year||0) >= +filters.yearFrom);
   if (filters.yearTo)     notes = notes.filter(n => (n.distillation_year||0) <= +filters.yearTo);
-  if (filters.ageMin)     notes = notes.filter(n => (n.age||0) >= +filters.ageMin);
+  if (filters.vintageAgeMin) notes = notes.filter(n => (n.vintage_age||0) >= +filters.vintageAgeMin);
   notes.sort((a,b)=>{
     switch(currentSort) {
       case 'date-desc':  return (b.date||'').localeCompare(a.date||'');
       case 'score-desc': return avgScore(b)-avgScore(a);
-      case 'age-desc':   return (b.age||0)-(a.age||0);
+      case 'age-desc':   return (b.vintage_age||0)-(a.vintage_age||0);
       case 'name-asc':   return (a.whisky_name||'').localeCompare(b.whisky_name||'');
       default: return 0;
     }
@@ -787,10 +778,8 @@ function renderStats(){
 
 function renderFilterOptions(){
   const dist=[...new Set(db.notes.map(n=>n.distillery).filter(Boolean))].sort();
-  const reg =[...new Set(db.notes.map(n=>n.region).filter(Boolean))].sort();
   const bot =[...new Set(db.notes.map(n=>n.bottler).filter(Boolean))].sort();
   fillSelect('filter-distillery',dist,'\u6240\u6709\u9152\u5382');
-  fillSelect('filter-region',reg,'\u6240\u6709\u4ea7\u533a');
   fillSelect('filter-bottler',bot,'\u6240\u6709\u88c5\u74f6\u5546');
   fillDatalist('dl-distilleries',dist);
   fillDatalist('dl-bottlers',bot);
@@ -825,12 +814,10 @@ function cardHTML(n,isL){
   const scores=[{lbl:'\u5165\u53e3',val:n.palate_score},{lbl:'\u6c14\u97f5',val:n.body_score},{lbl:'\u5589\u611f',val:n.finish_score}].filter(s=>s.val!=null);
   const sHTML=scores.length?'<div class="card-scores">'+scores.map(s=>'<div class="score-item"><div class="score-val">'+s.val+'</div><div class="score-lbl">'+s.lbl+'</div></div>').join('')+'</div>':'';
   const tags=[];
-  if(n.age) tags.push('<span class="tag tag-age">'+n.age+'\u5e74</span>');
+  if(n.vintage_age) tags.push('<span class="tag tag-age">'+n.vintage_age+'\u5e74</span>');
   if(n.abv) tags.push('<span class="tag tag-abv">'+n.abv+'%</span>');
-  if(n.region) tags.push('<span class="tag tag-region">'+esc(n.region)+'</span>');
   if(n.distillation_year) tags.push('<span class="tag tag-year">'+n.distillation_year+'</span>');
   if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
-  if(n.overall_score) tags.push('<span class="tag tag-age">\u2B50'+n.overall_score+'</span>');
 
   if(isL) return '<div class="note-card" data-id="'+n.id+'">'+
     '<div class="card-left"><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
@@ -846,12 +833,12 @@ function cardHTML(n,isL){
   return '<div class="note-card" data-id="'+n.id+'">'+
     '<div class="card-header"><div><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
     '<div class="card-distillery">'+esc(n.distillery||'')+'</div></div>'+
-    '<div class="card-date">'+(n.date||'')+'</div></div>'+
+    '<div class="card-date">'+fmtDate(n.date)+'</div></div>'+
     '<div class="card-meta">'+tags.join('')+'</div>'+sHTML+
     (n.nose?'<div class="card-nose"><strong>NOSE\t</strong>'+esc(n.nose)+'</div>':'')+
     (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5\t</strong>'+esc(n.aftertaste)+'</div>':'')+
     '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
-    '<button class="btn-delete" data-id="'+n.id+'\">\u5220\u9664</button></div></div>';
+    '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div>';
 }
 
 function renderPagination(){
@@ -860,7 +847,7 @@ function renderPagination(){
   let h='<button class="page-btn" onclick="goPage('+(currentPage-1)+')"'+(currentPage===1?' disabled':'')+'>\u2039</button>';
   const range=pageRange(currentPage,p); let prev=null;
   for(const x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';h+='<button class="page-btn '+(x===currentPage?'active':'')+'" onclick="goPage('+x+')">'+x+'</button>';prev=x;}
-  h+='<button class="page-btn" onclick="goPage('+(currentPage+1)+')"'+(currentPage===p?' disabled':'')+'>\u203A</button>';
+  h+='<button class="page-btn" onclick="goPage('+(currentPage+1)+')"'+(currentPage===p?' disabled:'')+'>\u203A</button>';
   el.innerHTML=h;
 }
 function pageRange(cur,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);return[...new Set([1,t,cur,cur-1,cur+1].filter(p=>p>=1&&p<=t))].sort((a,b)=>a-b);}
@@ -874,7 +861,11 @@ function openAdd(){
   editingId=null;
   document.getElementById('modal-title').textContent='\u6dfb\u52a0\u54c1\u9152\u8bb0\u5f55';
   resetForm();
-  document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
+  // Pre-fill with current local time in datetime-local format
+  const now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60000;
+  const localISO = new Date(now - offsetMs).toISOString().slice(0,16);
+  document.getElementById('f-date').value = localISO;
   openModal();
 }
 
@@ -891,23 +882,20 @@ function populateForm(n){
   document.getElementById('f-name').value=n.whisky_name||'';
   document.getElementById('f-distillery').value=n.distillery||'';
   document.getElementById('f-bottler').value=n.bottler||'';
-  document.getElementById('f-region').value=n.region||'';
-  document.getElementById('f-date').value=n.date||'';
+  // datetime-local format: "2026-06-04T20:30"
+  const dateVal = n.date ? n.date.slice(0,16) : '';
+  document.getElementById('f-date').value=dateVal;
   document.getElementById('f-abv').value=n.abv!=null?n.abv:'';
-  document.getElementById('f-age').value=n.age!=null?n.age:'';
+  document.getElementById('f-vintage-age').value=n.vintage_age!=null?n.vintage_age:'';
   document.getElementById('f-distillation-year').value=n.distillation_year||'';
-  document.getElementById('f-bottling-year').value=n.bottling_year||'';
-  document.getElementById('f-cask-type').value=n.cask_type||'';
-  document.getElementById('f-cask-number').value=n.cask_number||'';
   document.getElementById('f-wb-id').value=n.wb_id||'';
   document.getElementById('f-nose').value=n.nose||'';
   document.getElementById('f-aftertaste').value=n.aftertaste||'';
   document.getElementById('f-notes').value=n.notes||'';
-  document.getElementById('f-tags').value=(n.tags||[]).join('\uff0c');
   setSlider('palate',n.palate_score);
   setSlider('body',n.body_score);
   setSlider('finish',n.finish_score);
-  setSlider('overall',n.overall_score,100);
+  updateAllHints();
 }
 
 function setSlider(k,v,mx){
@@ -918,15 +906,36 @@ function setSlider(k,v,mx){
 }
 
 function resetForm(){
-  ['f-name','f-distillery','f-bottler','f-region','f-abv','f-age','f-distillation-year',
-   'f-bottling-year','f-cask-type','f-cask-number','f-wb-id','f-nose','f-aftertaste','f-notes','f-tags']
+  ['f-name','f-distillery','f-bottler',
+   'f-abv','f-vintage-age','f-distillation-year','f-wb-id',
+   'f-nose','f-aftertaste','f-notes']
    .forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-date').value='';
   setSlider('palate',null); setSlider('body',null);
-  setSlider('finish',null); setSlider('overall',null,100);
+  setSlider('finish',null);
+  updateAllHints();
 }
 
 function updateScore(k,v){ scoreActive[k]=true; document.getElementById('disp-'+k).textContent=v; }
+
+/** Update character count hints */
+function updateAllHints() {
+  updateHint('name', 100);
+  updateHint('distillery', 80);
+  updateHint('bottler', 100);
+  updateHint('nose', 500);
+  updateHint('aftertaste', 500);
+  updateHint('notes', 1000);
+}
+function updateHint(field, max) {
+  const el = document.getElementById('f-' + field);
+  const hint = document.getElementById('hint-' + field + '-len');
+  if (el && hint) {
+    const len = el.value.length;
+    hint.textContent = len;
+    hint.parentElement.className = len >= max ? 'input-hint warn' : 'input-hint';
+  }
+}
 
 /** Save (add or edit) → auto push to GitHub */
 async function saveNote(){
@@ -941,32 +950,25 @@ async function saveNote(){
   btn.classList.add('saving');
   btn.disabled = true;
 
-  const tags=(document.getElementById('f-tags').value||'').split(/[,\uff0c]/).map(t=>t.trim()).filter(Boolean);
-  const getN=id=>{const v=document.getElementById(id).value; return v===''?null:parseFloat(v);};
-  const getI=id=>{const v=document.getElementById(id).value; return v===''?null:parseInt(v);};
+  const getFloat=id=>{const v=document.getElementById(id).value; return v===''?null:parseFloat(v);};
+  const getInt=id=>{const v=document.getElementById(id).value; return v==''?null:parseInt(v);};
 
   const note={
     id: editingId || genId(),
-    date: document.getElementById('f-date').value || new Date().toISOString().slice(0,10),
+    date: document.getElementById('f-date').value || new Date().toISOString(),
     whisky_name: name,
     distillery: document.getElementById('f-distillery').value.trim(),
     bottler: document.getElementById('f-bottler').value.trim(),
-    region: document.getElementById('f-region').value.trim(),
-    abv: getN('f-abv'),
-    age: getI('f-age'),
-    distillation_year: getI('f-distillation-year'),
-    bottling_year: getI('f-bottling-year'),
-    cask_type: document.getElementById('f-cask-type').value.trim(),
-    cask_number: document.getElementById('f-cask-number').value.trim(),
-    wb_id: getI('f-wb-id'),
+    abv: getFloat('f-abv'),
+    vintage_age: getFloat('f-vintage-age'),       // float (step=0.5)
+    distillation_year: getInt('f-distillation-year'),  // int
+    wb_id: getInt('f-wb-id'),                         // int
     nose: document.getElementById('f-nose').value.trim(),
     aftertaste: document.getElementById('f-aftertaste').value.trim(),
     notes: document.getElementById('f-notes').value.trim(),
-    tags,
     palate_score: scoreActive.palate  ? parseFloat(document.getElementById('f-palate').value)  : null,
     body_score:   scoreActive.body   ? parseFloat(document.getElementById('f-body').value)    : null,
     finish_score: scoreActive.finish ? parseFloat(document.getElementById('f-finish').value)  : null,
-    overall_score: scoreActive.overall ? parseInt(document.getElementById('f-overall').value)   : null,
   };
 
   if(editingId){
@@ -1032,7 +1034,6 @@ async function saveSettingsAndTest() {
     toast('\u4ed3\u5e93\u683c\u5f0f\u5e94\u4e3a \u7528\u6237\u540d/\u4ed3\u5e93\u540d'); return;
   }
 
-  // Save config to localStorage (only token+repo info, never the data)
   ghCfg = { token, owner, repo: reponame, branch };
   localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
 
@@ -1082,14 +1083,22 @@ document.getElementById('confirm-delete').addEventListener('click', confirmDelet
 document.getElementById('btn-settings').addEventListener('click', openSettings);
 document.getElementById('btn-save-settings').addEventListener('click', saveSettingsAndTest);
 
+// Character count hints — bind on input
+['name','distillery','bottler','nose','aftertaste','notes'].forEach(field => {
+  const el = document.getElementById('f-' + field);
+  if (el) {
+    el.addEventListener('input', () => {
+      const limits = { name:100, distillery:80, bottler:100, nose:500, aftertaste:500, notes:1000 };
+      updateHint(field, limits[field]);
+    });
+  }
+});
+
 document.getElementById('search-input').addEventListener('input', function(){
   filters.q=this.value.trim(); currentPage=1; refresh();
 });
 document.getElementById('filter-distillery').addEventListener('change', function(){
   filters.distillery=this.value; currentPage=1; refresh();
-});
-document.getElementById('filter-region').addEventListener('change', function(){
-  filters.region=this.value; currentPage=1; refresh();
 });
 document.getElementById('filter-bottler').addEventListener('change', function(){
   filters.bottler=this.value; currentPage=1; refresh();
@@ -1100,13 +1109,13 @@ document.getElementById('filter-year-from').addEventListener('input', function()
 document.getElementById('filter-year-to').addEventListener('input', function(){
   filters.yearTo=this.value; currentPage=1; refresh();
 });
-document.getElementById('filter-age-min').addEventListener('input', function(){
-  filters.ageMin=this.value; currentPage=1; refresh();
+document.getElementById('filter-vintage-age-min').addEventListener('input', function(){
+  filters.vintageAgeMin=this.value; currentPage=1; refresh();
 });
 document.getElementById('btn-clear-filter').addEventListener('click', ()=>{
-  filters={q:'',distillery:'',region:'',bottler:'',yearFrom:'',yearTo:'',ageMin:''};
+  filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:''};
   document.getElementById('search-input').value='';
-  ['filter-distillery','filter-region','filter-bottler','filter-year-from','filter-year-to','filter-age-min'].forEach(i=>document.getElementById(i).value='');
+  ['filter-distillery','filter-bottler','filter-year-from','filter-year-to','filter-vintage-age-min'].forEach(i=>document.getElementById(i).value='');
   currentPage=1; refresh();
 });
 

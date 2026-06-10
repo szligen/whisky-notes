@@ -54,25 +54,39 @@ gh repo create whisky-notes --public
 ```json
 {
   "id": "unique_string",
-  "date": "YYYY-MM-DD",
+  "date": "2026-06-04T20:30:00",
   "whisky_name": "Longmorn 朗摩 31年 3R 三河",
   "distillery": "Longmorn",
   "bottler": "Three Rivers Tokyo (3R)",
-  "region": "Speyside",
   "abv": 54.1,
-  "age": 31,
+  "vintage_age": 31,
   "distillation_year": 1975,
-  "bottling_year": null,
-  "cask_type": "",
-  "cask_number": "",
   "wb_id": 6348,
   "nose": "黄色水果，黄桃，黄色糖果汽水",
   "palate_score": 3.9,
   "body_score": 4.0,
   "finish_score": 3.7,
-  "overall_score": null,
   "aftertaste": "桃，奶油，脂粉",
-  "tags": ["雪莉", "高龄"],
   "notes": ""
 }
 ```
+
+### 字段说明
+
+| 字段 | 类型 | 限制 | 说明 |
+|---|---|---|---|
+| `id` | string | 自动生成 | 唯一标识 |
+| `date` | datetime | — | 品鉴时间（含分钟），新增时预填当前时间 |
+| `whisky_name` | string | ≤100字 | 酒款名称（必填） |
+| `distillery` | string | ≤80字 | 酒厂名称 |
+| `bottler` | string | ≤100字 | 装瓶商 |
+| `abv` | float | 0~100 | 酒精度% |
+| `vintage_age` | float | 0~150, step=0.5 | 酒龄 |
+| `distillation_year` | int | 1800~2100 | 蒸馏年份 |
+| `wb_id` | int | ≥0 | Whiskybase 编号 |
+| `nose` | string | ≤500字 | 闻香描述 |
+| `aftertaste` | string | ≤500字 | 余韵 |
+| `notes` | string | ≤1000字 | 备注 |
+| `palate_score` | float | 0~5, step=0.1 | 入口评分 |
+| `body_score` | float | 0~5, step=0.1 | 气韵评分 |
+| `finish_score` | float | 0~5, step=0.1 | 喉感评分 |
