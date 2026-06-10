@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-13:08 -->
+<!-- VERSION: 2026-06-10-13:52 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -333,12 +333,142 @@
   }
   @keyframes spin { to{transform:rotate(360deg)} }
 
-  /* ===== Responsive ===== */
-  @media (max-width: 640px) {
-    header { padding: 12px 16px; } .container { padding: 16px 12px; }
-    .form-grid { grid-template-columns: 1fr; }
-    #cards-grid { grid-template-columns: 1fr; } .stats-bar { gap: 10px; } .logo h1 { font-size: 16px; }
-    .conn-banner { flex-direction: column; gap: 6px; text-align: center; }
+  /* ===== Responsive — Mobile (≤768px) ===== */
+  @media (max-width: 768px) {
+
+    /* --- Header --- */
+    header { padding: 10px 14px; gap: 6px; flex-wrap: wrap; }
+    .logo { gap: 6px; }
+    .logo h1 { font-size: 15px; }
+    .logo span { font-size: 11px; display: none; }          /* hide "697条记录" */
+    .version-badge { display: none; }                       /* hide version badge */
+
+    #btn-add {
+      padding: 8px 12px; font-size: 13px;
+    }
+    .btn-header {
+      padding: 7px 10px; font-size: 11px;
+    }
+    .btn-header span, #btn-add span { display: none; }      /* hide text labels */
+    .btn-header::after { content: '⚙'; font-size: 16px; }
+    #btn-add::before { content: '＋'; margin-right: 0; }
+
+    /* --- Container & Stats --- */
+    .container { padding: 14px 10px; }
+    .stats-bar { gap: 8px; margin-bottom: 14px; }
+    .stat-card { padding: 10px 12px; min-width: 0; }
+    .stat-num { font-size: 20px; }
+    .stat-label { font-size: 11px; }
+
+    /* --- Connection Banner --- */
+    .conn-banner { padding: 8px 12px; font-size: 12px; flex-direction: column; gap: 4px; text-align: center; }
+
+    /* --- Toolbar / Search --- */
+    .toolbar { padding: 12px 14px; margin-bottom: 14px; }
+    .search-row { flex-wrap: wrap; }
+    .search-wrap { min-width: 0; flex: 1; }
+    #search-input { padding: 8px 10px 8px 34px; font-size: 13px; }
+    #search-input::placeholder { font-size: 12px; }
+
+    /* --- Filter Row: collapse into toggle panel --- */
+    .filter-row {
+      display: none;
+      flex-direction: column; gap: 8px;
+      position: relative;
+    }
+    .filter-row.mobile-open { display: flex; }
+    .filter-row select,
+    .filter-row input[type="number"] {
+      width: 100% !important; max-width: none !important;
+      padding: 9px 10px; font-size: 14px;
+      -webkit-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a6f65'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+
+    /* Sort buttons wrap on mobile */
+    .sort-btns { width: 100%; margin-left: 0 !important; flex-wrap: wrap; justify-content: center; }
+    .sort-btn { font-size: 12px; padding: 6px 10px; flex: 1 1 auto; text-align: center; min-width: 0; }
+    #btn-clear-filter { width: 100%; text-align: center; margin-top: 4px; }
+
+    /* Mobile filter toggle button */
+    .mobile-filter-toggle {
+      display: flex !important;   /* show only on mobile */
+      align-items: center; justify-content: center; gap: 4px;
+      width: 100%; padding: 9px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: var(--bg);
+      color: var(--text-muted); font-size: 13px; cursor: pointer;
+      margin-top: 8px; transition: all 0.15s;
+    }
+    .mobile-filter-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .mobile-filter-toggle .arrow { transition: transform 0.2s; display:inline-block; }
+    .mobile-filter-toggle.open .arrow { transform: rotate(180deg); }
+
+    /* --- Cards Grid: force single column --- */
+    #cards-grid { grid-template-columns: 1fr !important; gap: 12px; }
+
+    /* Card typography smaller on mobile */
+    .note-card { padding: 14px 16px; }
+    .card-title { font-size: 14px; }
+    .card-distillery { font-size: 12px; }
+    .card-date { font-size: 10px; }
+    .tag { font-size: 10px; padding: 2px 6px; }
+    .score-val { font-size: 16px; }
+    .score-lbl { font-size: 10px; }
+    .card-nose, .card-aftertaste { font-size: 11px; }
+
+    /* Card actions: always visible + icon-only on mobile */
+    .card-actions { opacity: 1 !important; margin-top: 10px; padding-top: 10px; gap: 6px; }
+    .btn-edit, .btn-delete { padding: 6px 12px; font-size: 11px; }
+    .btn-edit::before { content: '✏️ '; font-size: 12px; }
+    .btn-delete::before { content: '🗑️ '; font-size: 12px; }
+
+    /* List view mobile tweaks */
+    #cards-grid.list-view .note-card { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 16px; }
+    #cards-grid.list-view .card-left { min-width: 0; }
+    #cards-grid.list-view .card-center { min-width: 0; }
+    #cards-grid.list-view .card-right { min-width: 0; }
+    #cards-grid.list-view .card-actions { border-top: 1px solid var(--border-light); }
+
+    /* --- Results info --- */
+    .results-info { font-size: 12px; flex-wrap: wrap; gap: 4px; }
+
+    /* --- Pagination: simplified --- */
+    .pagination { gap: 4px; margin-top: 18px; }
+    .page-btn { min-width: 36px; height: 36px; font-size: 13px; }
+    /* Hide individual page numbers on small screens, keep prev/next */
+    .page-btn:not(:first-child):not(:last-child) { display: none; }
+
+    /* --- Modal: near-full-screen on mobile --- */
+    .modal { max-height: 95vh; border-radius: 12px 12px 0 0; margin: 0 auto; width: 100%; max-width: none; }
+    .modal-overlay { padding: 0; align-items: flex-end; }
+    .modal-header { padding: 16px 20px 12px; }
+    .modal-body { padding: 16px 20px 20px; }
+    .modal-footer { padding: 12px 20px; }
+
+    /* Form grid single column on mobile */
+    .form-grid { grid-template-columns: 1fr !important; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select { font-size: 16px !important; }  /* prevent iOS zoom */
+
+    /* Score inputs bigger touch targets */
+    .score-inputs input[type="range"] { height: 32px; }
+
+    /* --- Confirm dialog --- */
+    .confirm-box { margin: 0 24px; padding: 20px 24px; }
+  }
+
+  /* Desktop: hide mobile filter toggle */
+  .mobile-filter-toggle { display: none; }
+
+  /* ===== Small phones (≤400px) extra tweaks ===== */
+  @media (max-width: 400px) {
+    .stat-card { padding: 8px 10px; }
+    .stat-num { font-size: 18px; }
+    .header-right { gap: 6px; }
+    #btn-add { padding: 7px 10px; font-size: 12px; }
+    .btn-header { padding: 6px 8px; }
   }
 </style>
 </head>
@@ -349,7 +479,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-13:08</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-13:52</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -391,7 +521,7 @@
         <button class="view-btn" id="view-list" title="列表视图">≡</button>
       </div>
     </div>
-    <div class="filter-row">
+    <div class="filter-row" id="filter-row">
       <select id="filter-distillery"><option value="">所有酒厂</option></select>
       <select id="filter-bottler"><option value="">所有装瓶商</option></select>
       <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;">
@@ -405,6 +535,9 @@
       </div>
       <button id="btn-clear-filter">清除筛选</button>
     </div>
+    <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()">
+      <span>🔍 筛选 / 排序</span><span class="arrow">▾</span>
+    </button>
   </div>
 
   <!-- Results Info -->
@@ -847,11 +980,27 @@ function cardHTML(n,isL){
 function renderPagination(){
   const t=filtered.length, p=Math.ceil(t/PAGE_SIZE), el=document.getElementById('pagination');
   if(p<=1){el.innerHTML='';return;}
-  let h=`<button class="page-btn" onclick="goPage(${currentPage-1})"${currentPage===1?' disabled':''}>\u2039</button>`;
-  const range=pageRange(currentPage,p); let prev=null;
-  for(const x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';h+=`<button class="page-btn ${x===currentPage?'active':''}" onclick="goPage(${x})">${x}</button>`;prev=x;}
-  h+=`<button class="page-btn" onclick="goPage(${currentPage+1})"${currentPage===p?' disabled':''}>\u203A</button>`;
-  el.innerHTML=h;
+
+  // Mobile: simplified prev / page-info / next
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    var disPrev = currentPage === 1 ? ' disabled' : '';
+    var disNext = currentPage === p  ? ' disabled' : '';
+    el.innerHTML =
+      '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')"' + disPrev + '>\u2039</button>' +
+      '<span class="page-btn" style="pointer-events:none;font-weight:600;color:var(--accent);min-width:auto;padding:0 14px">' + currentPage + ' / ' + p + '</span>' +
+      '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')"' + disNext + '>\u203A</button>';
+    return;
+  }
+
+    // Desktop: full page numbers with ellipsis
+  var d1 = currentPage === 1 ? ' disabled' : '';
+  var d2 = currentPage === p  ? ' disabled' : '';
+  var h = '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')"' + d1 + '>‹</button>';
+  var range=pageRange(currentPage,p); var prev=null;
+  for(var x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';var ac=x===currentPage?' active':'';h+='<button class="page-btn'+ac+'" onclick="goPage('+x+')">'+x+'</button>';prev=x;}
+  h += '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')"' + d2 + '>›</button>';
+  el.innerHTML = h;
 }
 function pageRange(cur,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);return[...new Set([1,t,cur,cur-1,cur+1].filter(p=>p>=1&&p<=t))].sort((a,b)=>a-b);}
 function goPage(p){const pages=Math.ceil(filtered.length/PAGE_SIZE);if(p<1||p>pages)return;currentPage=p;renderCards();renderPagination();window.scrollTo({top:0,behavior:'smooth'});}
@@ -1055,6 +1204,14 @@ async function saveSettingsAndTest() {
 // ============================================================
 function openModal(){ document.getElementById('modal-overlay').classList.remove('hidden'); }
 function closeModal(){ document.getElementById('modal-overlay').classList.add('hidden'); }
+
+/** Toggle mobile filter panel visibility */
+function toggleMobileFilter() {
+  const row = document.getElementById('filter-row');
+  const btn = document.getElementById('mobile-filter-toggle');
+  const isOpen = row.classList.toggle('mobile-open');
+  btn.classList.toggle('open', isOpen);
+}
 
 // ============================================================
 // Utilities
