@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-14:32 -->
+<!-- VERSION: 2026-06-10-15:25 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -311,7 +311,26 @@
     background: var(--red); color: white; font-size: 13px; font-weight: 600; cursor: pointer;
   }
 
-  /* ===== Toast ===== */
+  /* ===== Detail View ===== */
+  .detail-section {
+    background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px;
+  }
+  .detail-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+  .detail-field { display: flex; flex-direction: column; gap: 2px; }
+  .detail-field.full { grid-column: 1 / -1; }
+  .detail-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .detail-value { font-size: 13px; color: var(--text); word-break: break-word; }
+  .detail-value.empty { color: var(--text-light); font-style: italic; }
+  .detail-scores { display: flex; gap: 16px; }
+  .detail-score-item { text-align: center; flex: 1; background: var(--surface); border-radius: var(--radius-sm); padding: 10px 8px; }
+  .detail-score-val { font-size: 20px; font-weight: 700; color: var(--accent); }
+  .detail-score-lbl { font-size: 11px; color: var(--text-muted); }
+  .detail-avg { text-align: center; margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+  .detail-avg-val { font-size: 16px; font-weight: 700; color: var(--gold); }
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
     background: #1a1614; color: white; padding: 10px 20px; border-radius: 20px;
@@ -477,7 +496,21 @@
     #btn-add { padding: 7px 10px; font-size: 12px; }
     .btn-header { padding: 6px 8px; }
   }
-</style>
+
+  /* Detail View mobile tweaks */
+  @media (max-width: 768px) {
+    #detail-modal { max-height: 95vh; border-radius: 12px 12px 0 0; margin: 0 auto; width: 100%; max-width: none; }
+    #detail-overlay { padding: 0; align-items: flex-end; }
+    .detail-section { padding: 10px 12px; margin-bottom: 10px; }
+    .detail-grid { grid-template-columns: 1fr !important; gap: 6px 12px; }
+    .detail-score-item { padding: 8px 6px; }
+    .detail-score-val { font-size: 16px; }
+    .detail-score-lbl { font-size: 10px; }
+    #detail-body { padding: 12px 16px 16px; }
+    #detail-overlay .modal-footer { padding: 10px 16px; }
+    #detail-overlay .modal-header { padding: 12px 16px 10px; }
+  }
+  </style>
 </head>
 <body>
 
@@ -486,7 +519,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-14:32</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-15:25</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -698,6 +731,22 @@
   </div>
 </div>
 
+<!-- Detail View Modal -->
+<div class="modal-overlay hidden" id="detail-overlay">
+  <div class="modal" id="detail-modal">
+    <div class="modal-header">
+      <span class="modal-title" id="detail-title">🥃 品酒详情</span>
+      <button class="modal-close" id="detail-close">×</button>
+    </div>
+    <div class="modal-body" id="detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="btn-detail-close">关闭</button>
+      <button class="btn-save" id="btn-detail-edit" style="background:var(--accent);border-color:var(--accent);">✏️ 编辑</button>
+      <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);">🗑️ 删除</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div id="toast"></div>
 
@@ -870,15 +919,7 @@ function applyFiltersAndSort() {
   let notes = db.notes.slice();
   if (filters.q) {
     const q = filters.q.toLowerCase();
-    notes = notes.filter(n =>
-      (n.whisky_name||'').toLowerCase().includes(q) ||
-      (n.distillery||'').toLowerCase().includes(q) ||
-      (n.bottler||'').toLowerCase().includes(q) ||
-      (n.nose||'').toLowerCase().includes(q) ||
-      (n.aftertaste||'').toLowerCase().includes(q) ||
-      (n.notes||'').toLowerCase().includes(q) ||
-      String(n.wb_id||'').includes(q)
-    );
+    notes = notes.filter(n => JSON.stringify(n).toLowerCase().includes(q));
   }
   if (filters.distillery) notes = notes.filter(n => n.distillery === filters.distillery);
   if (filters.bottler)    notes = notes.filter(n => n.bottler    === filters.bottler);
@@ -959,7 +1000,7 @@ function renderCards(){
   g.innerHTML=p.map(n=>cardHTML(n,viewMode==='list')).join('');
   g.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.id);}));
   g.querySelectorAll('.btn-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDelete(b.dataset.id);}));
-  g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openEdit(c.dataset.id)));
+  g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openDetail(c.dataset.id)));
 }
 
 function cardHTML(n,isL){
@@ -1341,6 +1382,80 @@ document.addEventListener('keydown', e=>{
 document.getElementById('settings-overlay').addEventListener('click', e=>{
   if(e.target===document.getElementById('settings-overlay')) closeSettings();
 });
+
+// ============================================================
+// Detail View — click card → show detail, then edit/delete
+// Detail View event bindings
+document.getElementById('detail-close').addEventListener('click', closeDetail);
+document.getElementById('btn-detail-close').addEventListener('click', closeDetail);
+document.getElementById('btn-detail-edit').addEventListener('click', ()=>{
+  if(!detailId) return;
+  closeDetail();
+  setTimeout(()=> openEdit(detailId), 50);
+});
+document.getElementById('btn-detail-delete').addEventListener('click', ()=>{
+  if(!detailId) return;
+  const id = detailId;
+  closeDetail();
+  setTimeout(()=> openDelete(id), 50);
+});
+document.getElementById('detail-overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('detail-overlay')) closeDetail();
+});
+
+// ============================================================
+let detailId = null;
+
+function openDetail(id){
+  const n = db.notes.find(x=>x.id===id);
+  if(!n) return;
+  detailId = id;
+  document.getElementById('detail-title').textContent = '🥃 ' + esc(n.whisky_name||'(未命名)');
+  document.getElementById('detail-body').innerHTML = renderDetailContent(n);
+  document.getElementById('detail-overlay').classList.remove('hidden');
+}
+
+function renderDetailContent(n){
+  const avg = avgScore(n);
+  const hasScore = (n.palate_score!=null || n.body_score!=null || n.finish_score!=null);
+  let h = '';
+  h += '<div class="detail-section"><div class="detail-section-title">📋 基本信息</div>';
+  h += '<div class="detail-grid">';
+  h += '<div class="detail-field"><span class="detail-label">酒款名称</span><span class="detail-value">'+(esc(n.whisky_name)||'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">酒厂</span><span class="detail-value">'+(esc(n.distillery)||'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">装瓶商</span><span class="detail-value">'+(esc(n.bottler)||'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">品鉴时间</span><span class="detail-value">'+(fmtDate(n.date)||'<span class="empty">未填</span>')+'</span></div>';
+  h += '</div></div>';
+  h += '<div class="detail-section"><div class="detail-section-title">🔬 酒款规格</div>';
+  h += '<div class="detail-grid">';
+  h += '<div class="detail-field"><span class="detail-label">酒精度 (ABV)</span><span class="detail-value">'+(n.abv!=null?n.abv+'%':'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">酒龄 (Vintage Age)</span><span class="detail-value">'+(n.vintage_age!=null?n.vintage_age+'年':'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">蒸馏年份</span><span class="detail-value">'+(n.distillation_year||'<span class="empty">未填</span>')+'</span></div>';
+  h += '<div class="detail-field"><span class="detail-label">WB号</span><span class="detail-value">'+(n.wb_id?'WB#'+n.wb_id:'<span class="empty">未填</span>')+'</span></div>';
+  h += '</div></div>';
+  let tags = [];
+  if(n.vintage_age) tags.push('<span class="tag tag-age">'+n.vintage_age+'年</span>');
+  if(n.abv) tags.push('<span class="tag tag-abv">'+n.abv+'%</span>');
+  if(n.distillation_year) tags.push('<span class="tag tag-year">'+n.distillation_year+'</span>');
+  if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
+  if(tags.length) h += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">'+tags.join('')+'</div>';
+  if(hasScore){
+    h += '<div class="detail-section"><div class="detail-section-title">⭐ 评分</div>';
+    h += '<div class="detail-scores">';
+    if(n.palate_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.palate_score).toFixed(1)+'</div><div class="detail-score-lbl">入口</div></div>';
+    if(n.body_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.body_score).toFixed(1)+'</div><div class="detail-score-lbl">气韵</div></div>';
+    if(n.finish_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.finish_score).toFixed(1)+'</div><div class="detail-score-lbl">喉感</div></div>';
+    h += '</div>';
+    if(avg>0) h += '<div class="detail-avg">平均分: <span class="detail-avg-val">'+avg.toFixed(2)+'</span></div>';
+    h += '</div>';
+  }
+  if(n.nose) h += '<div class="detail-section"><div class="detail-section-title">👃 闻香 (Nose)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.nose))+'</span></div></div>';
+  if(n.aftertaste) h += '<div class="detail-section"><div class="detail-section-title">👄 余韵 (Aftertaste)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.aftertaste))+'</span></div></div>';
+  if(n.notes) h += '<div class="detail-section"><div class="detail-section-title">📝 备注</div><div class="detail-field full"><span class="detail-value">'+(esc(n.notes))+'</span></div></div>';
+  return h;
+}
+
+function closeDetail(){ document.getElementById('detail-overlay').classList.add('hidden'); detailId = null; }
 
 // ============================================================
 // GO
