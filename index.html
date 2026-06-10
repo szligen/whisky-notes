@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whisky Notes</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf8f5;
+    --surface: #ffffff;
+    --surface2: #f5f2ed;
+    --border: #e8e2d9;
+    --border-light: #f0ece5;
+    --text: #1a1614;
+    --text-muted: #7a6f65;
+    --text-light: #b0a89e;
+    --accent: #8b4513;
+    --accent-light: #c06030;
+    --accent-bg: #fdf0e8;
+    --gold: #c9952a;
+    --gold-light: #fef7e6;
+    --green: #2d7a4f;
+    --red: #c0392b;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+    --radius: 8px;
+    --radius-sm: 5px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+  }
+
+  /* ===== Header ===== */
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { font-size: 26px; }
+  .logo h1 { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
+  .logo span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .header-right { display:flex; gap:10px; align-items:center; }
+
+  #btn-add {
+    background: var(--accent); color: white; border: none;
+    padding: 9px 18px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s;
+  }
+  #btn-add:hover { background: var(--accent-light); }
+
+  .btn-header {
+    padding: 7px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 12px; background: var(--surface); color: var(--text-muted);
+    cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.15s;
+  }
+  .btn-header:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-header.primary { background: var(--green); border-color: var(--green); color: white; }
+
+  /* ===== Main Layout ===== */
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px 20px; }
+
+  /* ===== Connection Status Banner ===== */
+  .conn-banner {
+    border: 1px solid; border-radius: var(--radius);
+    padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px;
+  }
+  .conn-banner.connected {
+    background: linear-gradient(135deg,#f0fdf4,#f0fdf4); border-color: #bbf7d0; color: #166534;
+  }
+  .conn-banner.disconnected {
+    background: linear-gradient(135deg,#fffbeb,#fffbeb); border-color: #fde68a; color: #92400e;
+  }
+  .conn-banner.error {
+    background: #fef2f2; border-color: #fecaca; color: var(--red);
+  }
+  .conn-banner.syncing {
+    background: linear-gradient(135deg,#eff6ff,#eff6ff); border-color: #bfdbfe; color: #1e40af;
+  }
+  .conn-dot {
+    width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px;
+    animation: pulse 2s infinite;
+  }
+  .conn-dot.connected { background: var(--green); animation:none; }
+  .conn-dot.disconnected { background: #f59e0b; }
+  .conn-dot.error { background: var(--red); }
+  .conn-dot.syncing { background: #3b82f6; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ===== Stats Bar ===== */
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 20px; min-width: 120px; flex: 1; text-align: center; box-shadow: var(--shadow);
+  }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ===== Toolbar ===== */
+  .toolbar {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; margin-bottom: 20px; box-shadow: var(--shadow);
+  }
+  .search-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .search-wrap { position: relative; flex: 1; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+  #search-input {
+    width: 100%; padding: 9px 12px 9px 38px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); font-size: 14px; background: var(--bg);
+    color: var(--text); outline: none; transition: border-color 0.15s;
+  }
+  #search-input:focus { border-color: var(--accent); }
+  .filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .filter-row select, .filter-row input[type="number"] {
+    padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; background: var(--bg); color: var(--text); outline: none; cursor: pointer; min-width: 110px;
+  }
+  .filter-row select:focus, .filter-row input:focus { border-color: var(--accent); }
+  .sort-btns { display: flex; gap: 6px; margin-left: auto; }
+  .sort-btn {
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; background: var(--bg); color: var(--text-muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .sort-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  #btn-clear-filter {
+    padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; background: transparent; color: var(--text-muted); cursor: pointer;
+  }
+  #btn-clear-filter:hover { color: var(--red); border-color: var(--red); }
+
+  /* ===== View Toggle ===== */
+  .view-toggle { display: flex; gap: 4px; background: var(--surface2); border-radius: var(--radius-sm); padding: 3px; }
+  .view-btn {
+    padding: 5px 10px; border: none; border-radius: 4px; background: transparent;
+    cursor: pointer; font-size: 14px; color: var(--text-muted); transition: all 0.15s;
+  }
+  .view-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow); }
+
+  /* ===== Results Info ===== */
+  .results-info { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+
+  /* ===== Cards Grid ===== */
+  #cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  #cards-grid.list-view { grid-template-columns: 1fr; }
+
+  .note-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: var(--shadow); transition: box-shadow 0.15s, transform 0.1s;
+    cursor: pointer; position: relative; overflow: hidden;
+  }
+  .note-card::before {
+    content:''; position: absolute; left:0; top:0; bottom:0; width: 3px;
+    background: var(--gold); border-radius: 3px 0 0 3px;
+  }
+  .note-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 10px; }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; flex: 1; }
+  .card-distillery { font-size: 13px; color: var(--accent); font-weight: 600; }
+  .card-date { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+
+  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag { padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .tag-age { background: var(--gold-light); color: var(--gold); }
+  .tag-abv { background: var(--accent-bg); color: var(--accent); }
+  .tag-region { background: #eef2ff; color: #4f46e5; }
+  .tag-wb { background: var(--surface2); color: var(--text-muted); }
+  .tag-year { background: #f0fdf4; color: var(--green); }
+
+  .card-scores { display: flex; gap: 16px; background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 10px; }
+  .score-item { text-align: center; flex: 1; }
+  .score-val { font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .score-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .card-nose { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
+  .card-nose strong { color: var(--text); font-size: 11px; letter-spacing: 0.5px; }
+  .card-aftertaste { font-size: 12px; color: var(--text-muted); }
+  .card-aftertaste strong { color: var(--text); font-size: 11px; }
+
+  .card-actions {
+    display: flex; gap: 8px; margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border-light); opacity: 0; transition: opacity 0.15s;
+  }
+  .note-card:hover .card-actions { opacity: 1; }
+  .btn-edit, .btn-delete {
+    padding: 5px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid; transition: all 0.15s;
+  }
+  .btn-edit { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+  .btn-edit:hover { background: var(--accent); color: white; }
+  .btn-delete { background: transparent; border-color: var(--border); color: var(--text-muted); margin-left: auto; }
+  .btn-delete:hover { background: #fef2f2; border-color: var(--red); color: var(--red); }
+
+  /* List view overrides */
+  #cards-grid.list-view .note-card { display: flex; gap: 20px; align-items: center; padding: 14px 20px; }
+  #cards-grid.list-view .card-left { min-width: 260px; flex: 2; }
+  #cards-grid.list-view .card-center { flex: 3; }
+  #cards-grid.list-view .card-right { min-width: 160px; flex: 1; }
+  #cards-grid.list-view .card-scores { flex-direction: column; padding: 8px 12px; gap: 4px; }
+  #cards-grid.list-view .score-item { text-align: left; display: flex; align-items: center; gap: 8px; }
+  #cards-grid.list-view .score-val { font-size: 14px; }
+  #cards-grid.list-view .card-actions { margin-top: 0; padding-top: 0; border-top: none; opacity: 1; }
+
+  /* ===== Empty State ===== */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); grid-column: 1/-1; }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .empty-sub { font-size: 13px; }
+
+  /* ===== Modal ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000;
+    display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px);
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal {
+    background: var(--surface); border-radius: 12px; width: 100%;
+    max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--surface); z-index: 1;
+  }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--accent); }
+  .modal-close {
+    background: none; border: none; font-size: 22px; cursor: pointer;
+    color: var(--text-muted); padding: 2px 6px; border-radius: 4px; line-height: 1;
+  }
+  .modal-close:hover { background: var(--surface2); color: var(--text); }
+  .modal-body { padding: 20px 24px 24px; }
+
+  /* Form */
+  .form-section {
+    background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+  }
+  .form-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .form-group input, .form-group textarea, .form-group select {
+    padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; color: var(--text); background: var(--surface);
+    outline: none; transition: border-color 0.15s; font-family: inherit;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 2px rgba(139,69,19,0.08);
+  }
+  .form-group textarea { resize: vertical; min-height: 60px; }
+
+  .score-inputs { display: flex; gap: 10px; align-items: center; }
+  .score-inputs input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .score-display { min-width: 30px; text-align: center; font-weight: 700; color: var(--accent); }
+
+  .modal-footer {
+    padding: 16px 24px; border-top: 1px solid var(--border);
+    display: flex; gap: 10px; justify-content: flex-end;
+    background: var(--surface); position: sticky; bottom: 0;
+  }
+  .btn-cancel, .btn-save {
+    padding: 9px 22px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1px solid; transition: all 0.15s;
+  }
+  .btn-cancel { background: transparent; border-color: var(--border); color: var(--text-muted); }
+  .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-save { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn-save:hover { background: var(--accent-light); }
+  .btn-save.saving { opacity: 0.7; pointer-events: none; }
+
+  /* ===== Delete Confirm ===== */
+  .confirm-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1100;
+    display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px);
+  }
+  .confirm-overlay.hidden { display: none; }
+  .confirm-box {
+    background: var(--surface); border-radius: 10px; padding: 24px 28px;
+    max-width: 360px; width: 100%; box-shadow: var(--shadow-md); text-align: center;
+  }
+  .confirm-icon { font-size: 36px; margin-bottom: 10px; }
+  .confirm-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .confirm-msg { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+  .btn-confirm-cancel {
+    padding: 8px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    background: transparent; color: var(--text-muted); font-size: 13px; cursor: pointer;
+  }
+  .btn-confirm-delete {
+    padding: 8px 20px; border: 1px solid var(--red); border-radius: var(--radius-sm);
+    background: var(--red); color: white; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+
+  /* ===== Toast ===== */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
+    background: #1a1614; color: white; padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 500; z-index: 2000; transition: transform 0.25s ease;
+    pointer-events: none; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ===== Pagination ===== */
+  .pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 24px; }
+  .page-btn {
+    min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
+    font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.15s;
+  }
+  .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .page-btn.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 700; }
+  .page-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+
+  /* ===== Syncing state (body-level) ===== */
+  body.syncing .sync-spinner { display: inline-block; }
+  .sync-spinner { display: none; }
+  .sync-spinner {
+    width: 14px; height: 14px; border: 2px solid rgba(139,69,19,.2);
+    border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite;
+    vertical-align: middle; margin-left: 6px;
+  }
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    header { padding: 12px 16px; } .container { padding: 16px 12px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+    #cards-grid { grid-template-columns: 1fr; } .stats-bar { gap: 10px; } .logo h1 { font-size: 16px; }
+    .conn-banner { flex-direction: column; gap: 6px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <span class="logo-icon">🥃</span>
+    <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
+  </div>
+  <div class="header-right">
+    <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
+    <button id="btn-add">＋ 添加记录</button>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="container">
+
+  <!-- Connection Status -->
+  <div class="conn-banner disconnected" id="conn-banner">
+    <span>
+      <span class="conn-dot disconnected" id="conn-dot"></span>
+      <span id="conn-msg">正在加载...</span>
+    </span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">总记录</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-distilleries">—</div><div class="stat-label">酒厂数</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-avg-palate">—</div><div class="stat-label">平均入口</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-avg-body">—</div><div class="stat-label">平均气韵</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-avg-finish">—</div><div class="stat-label">平均喉感</div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-row">
+      <div class="search-wrap">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="search-input" placeholder="搜索酒款名、酒厂、装瓶商、香气描述..." autocomplete="off">
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="view-grid" title="卡片视图">⊞</button>
+        <button class="view-btn" id="view-list" title="列表视图">≡</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <select id="filter-distillery"><option value="">所有酒厂</option></select>
+      <select id="filter-region"><option value="">所有产区</option></select>
+      <select id="filter-bottler"><option value="">所有装瓶商</option></select>
+      <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;">
+      <input type="number" id="filter-year-to" placeholder="年份 ≤" min="1900" max="2100" style="max-width:90px;">
+      <input type="number" id="filter-age-min" placeholder="年龄 ≥" min="0" max="100" style="max-width:90px;">
+      <div class="sort-btns">
+        <button class="sort-btn active" data-sort="date-desc">最新优先</button>
+        <button class="sort-btn" data-sort="score-desc">评分最高</button>
+        <button class="sort-btn" data-sort="age-desc">年份最老</button>
+        <button class="sort-btn" data-sort="name-asc">名称 A-Z</button>
+      </div>
+      <button id="btn-clear-filter">清除筛选</button>
+    </div>
+  </div>
+
+  <!-- Results Info -->
+  <div class="results-info"><span id="results-info-text"></span></div>
+
+  <!-- Cards -->
+  <div id="cards-grid"></div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+</main>
+
+<!-- Settings Modal (GitHub config) -->
+<div class="modal-overlay hidden" id="settings-overlay">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <span class="modal-title">🔑 GitHub 连接设置</span>
+      <button class="modal-close" onclick="closeSettings()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section">
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;">
+          页面通过 GitHub API 直接读写仓库中的 <code>whisky_notes.json</code>。
+          Token 仅保存在当前浏览器的 localStorage 中，不会提交到仓库。
+        </div>
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <div class="form-group full">
+            <label>Personal Access Token (PAT)</label>
+            <input type="password" id="set-token" placeholder="ghp_xxxxxxxxxxxx"
+              style="font-family:monospace;font-size:12px;">
+            <span style="font-size:11px;color:var(--text-light);margin-top:2px;">
+              需要 <code>repo</code> 权限。<a href="https://github.com/settings/tokens/new?scopes=repo&description=whisky-notes" target="_blank" rel="noopener">点此生成 →</a>
+            </span>
+          </div>
+          <div class="form-group full">
+            <label>仓库地址</label>
+            <input type="text" id="set-repo" placeholder="szligen/whisky-notes">
+            <span style="font-size:11px;color:var(--text-light);margin-top:2px;">格式：owner/repo-name</span>
+          </div>
+          <div class="form-group full">
+            <label>分支 (默认 main)</label>
+            <input type="text" id="set-branch" placeholder="main">
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn-cancel" style="flex:1" onclick="closeSettings()">取消</button>
+        <button class="btn-save" id="btn-save-settings" style="flex:1;background:var(--green);border-color:var(--green);">保存并测试连接</button>
+      </div>
+      <div id="settings-test-result" style="margin-top:12px;font-size:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">添加品酒记录</span>
+      <button class="modal-close" id="modal-close">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- 基本信息 -->
+      <div class="form-section">
+        <div class="form-section-title">📋 基本信息</div>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>酒款名称 *</label>
+            <input type="text" id="f-name" placeholder="e.g. Longmorn 朗摩 31年 3R 三河" required>
+          </div>
+          <div class="form-group">
+            <label>酒厂名称 *</label>
+            <input type="text" id="f-distillery" placeholder="e.g. Longmorn" required list="dl-distilleries">
+            <datalist id="dl-distilleries"></datalist>
+          </div>
+          <div class="form-group">
+            <label>装瓶商</label>
+            <input type="text" id="f-bottler" placeholder="e.g. Three Rivers Tokyo (3R)" list="dl-bottlers">
+            <datalist id="dl-bottlers"></datalist>
+          </div>
+          <div class="form-group">
+            <label>产区</label>
+            <input type="text" id="f-region" placeholder="e.g. Speyside" list="dl-regions">
+            <datalist id="dl-regions">
+              <option value="Speyside"><option value="Highland"><option value="Islay">
+              <option value="Lowland"><option value="Campbeltown"><option value="Islands">
+              <option value="Japan"><option value="Taiwan"><option value="Ireland"><option value="USA">
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label>品鉴日期</label>
+            <input type="date" id="f-date">
+          </div>
+        </div>
+      </div>
+      <!-- 酒款规格 -->
+      <div class="form-section">
+        <div class="form-section-title">🔬 酒款规格</div>
+        <div class="form-grid cols-4">
+          <div class="form-group"><label>酒精度% (ABV)</label><input type="number" id="f-abv" placeholder="54.1" step="0.1" min="0" max="100"></div>
+          <div class="form-group"><label>年份 (年龄)</label><input type="number" id="f-age" placeholder="31" min="0" max="100"></div>
+          <div class="form-group"><label>蒸馏年份</label><input type="number" id="f-distillation-year" placeholder="1975" min="1800" max="2100"></div>
+          <div class="form-group"><label>装瓶年份</label><input type="number" id="f-bottling-year" placeholder="2006" min="1800" max="2100"></div>
+          <div class="form-group"><label>桶型</label><input type="text" id="f-cask-type" placeholder="Sherry Butt" list="dl-casks">
+            <datalist id="dl-casks"><option value="Sherry Butt"><option value="Sherry Hogshead">
+              <option value="Bourbon Barrel"><option value="Bourbon Hogshead"><option value="Port Pipe">
+              <option value="Madeira Drum"><option value="Rum Cask"><option value="Wine Cask">
+              <option value="Refill Hogshead"><option value="First Fill"></datalist>
+          </div>
+          <div class="form-group"><label>桶号</label><input type="text" id="f-cask-number" placeholder="#1234"></div>
+          <div class="form-group"><label>WB号</label><input type="number" id="f-wb-id" placeholder="6348"></div>
+        </div>
+      </div>
+      <!-- 品鉴笔记 -->
+      <div class="form-section">
+        <div class="form-section-title">📝 品鉴笔记</div>
+        <div class="form-grid">
+          <div class="form-group full"><label>闻香描述 (Nose)</label><textarea id="f-nose" placeholder="黄色水果，黄桃，黄色糖果汽水"></textarea></div>
+          <div class="form-group full"><label>余韵 (Aftertaste)</label><textarea id="f-aftertaste" placeholder="桃，奶油，脂粉"></textarea></div>
+          <div class="form-group full"><label>备注</label><textarea id="f-notes" placeholder="其他感受、场合、搭配..."></textarea></div>
+        </div>
+      </div>
+      <!-- 评分 -->
+      <div class="form-section">
+        <div class="form-section-title">⭐ 评分</div>
+        <div class="form-grid">
+          <div class="form-group"><label>入口 (Palate) /5</label>
+            <div class="score-inputs"><input type="range" id="f-palate" min="0" max="5" step="0.1" value="0" oninput="updateScore('palate',this.value)"><span class="score-display" id="disp-palate">—</span></div></div>
+          <div class="form-group"><label>气韵 (Body) /5</label>
+            <div class="score-inputs"><input type="range" id="f-body" min="0" max="5" step="0.1" value="0" oninput="updateScore('body',this.value)"><span class="score-display" id="disp-body">—</span></div></div>
+          <div class="form-group"><label>喉感 (Finish) /5</label>
+            <div class="score-inputs"><input type="range" id="f-finish" min="0" max="5" step="0.1" value="0" oninput="updateScore('finish',this.value)"><span class="score-display" id="disp-finish">—</span></div></div>
+          <div class="form-group"><label>综合 (Overall) /100</label>
+            <div class="score-inputs"><input type="range" id="f-overall" min="0" max="100" step="1" value="0" oninput="updateScore('overall',this.value)"><span class="score-display" id="disp-overall">—</span></div></div>
+        </div>
+      </div>
+      <!-- 标签 -->
+      <div class="form-section">
+        <div class="form-section-title">🏷 标签</div>
+        <div class="form-group"><label>标签 (逗号分隔)</label><input type="text" id="f-tags" placeholder="雪莉，高龄，送礼首选"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="btn-cancel">取消</button>
+      <button class="btn-save" id="btn-save-note">保存记录 <span class="sync-spinner"></span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm -->
+<div class="confirm-overlay hidden" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">确认删除？</div>
+    <div class="confirm-msg" id="confirm-msg">此操作不可撤销</div>
+    <div class="confirm-actions">
+      <button class="btn-confirm-cancel" id="confirm-cancel">取消</button>
+      <button class="btn-confirm-delete" id="confirm-delete">确认删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ============================================================
+// Config — only PAT token in localStorage, data always from GitHub
+// ============================================================
+const CFG_KEY = 'wn_github_cfg';
+let ghCfg = null;   // { token, owner, repo, branch, fileSha }
+
+function loadConfig() {
+  try { ghCfg = JSON.parse(localStorage.getItem(CFG_KEY)); } catch(e) { ghCfg = null; }
+}
+function hasConfig() {
+  return ghCfg && ghCfg.token && ghCfg.owner && ghCfg.repo && ghCfg.branch;
+}
+
+function setStatus(type, msg) {
+  const b = document.getElementById('conn-banner');
+  const d = document.getElementById('conn-dot');
+  document.getElementById('conn-msg').textContent = msg;
+  b.className = 'conn-banner ' + type;
+  d.className = 'conn-dot ' + type;
+}
+
+// ============================================================
+// Data — lives in memory, source of truth is GitHub
+// ============================================================
+let db = { version: "1.0", notes: [] };
+const PAGE_SIZE = 24;
+let filtered = [];
+let currentPage = 1;
+let currentSort = 'date-desc';
+let editingId = null;
+let deletingId = null;
+let viewMode = 'grid';
+let isSyncing = false;
+let scoreActive = { palate:false, body:false, finish:false, overall:false };
+
+// ============================================================
+// GitHub API — read & write
+// ============================================================
+
+/** Load db from GitHub Contents API */
+async function loadFromGitHub() {
+  const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json?ref=${ghCfg.branch}`;
+  const res = await fetch(url, {
+    headers: { Authorization: 'Bearer ' + ghCfg.token }
+  });
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      // File doesn't exist yet
+      ghCfg.fileSha = null;
+      db = { version: "1.0", notes: [] };
+      setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo}（空仓库，开始添加记录吧）`);
+      refresh();
+      return;
+    }
+    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  }
+
+  const info = await res.json();
+  ghCfg.fileSha = info.sha;
+
+  // Decode base64 content
+  const json = atob(info.content.replace(/\n/g, ''));
+  const data = JSON.parse(json);
+
+  if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
+  db = data;
+
+  setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo} · ${db.notes.length} 条记录`);
+  refresh();
+}
+
+/** Write current db to GitHub Contents API (auto-commit) */
+async function pushToGitHub(actionLabel) {
+  if (!hasConfig()) return false;
+  if (isSyncing) return false; // prevent double-sync
+
+  isSyncing = true;
+  setStatus('syncing', `⏳ 正在同步${actionLabel}到 GitHub...`);
+  document.body.classList.add('syncing');
+
+  try {
+    const jsonStr = JSON.stringify(db, null, 2);
+    const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+
+    const payload = {
+      message: commitMessage(actionLabel),
+      content: b64,
+      branch: ghCfg.branch
+    };
+    if (ghCfg.fileSha) payload.sha = ghCfg.fileSha;
+
+    const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json`;
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'Bearer ' + ghCfg.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(`HTTP ${res.status}: ${(errBody.message || res.statusText).slice(0, 120)}`);
+    }
+
+    const result = await res.json();
+    ghCfg.fileSha = result.content.sha;
+    // Update config sha so next push uses latest
+    localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
+
+    setStatus('connected', `✓ 已同步到 GitHub · ${db.notes.length} 条记录`);
+    toast('✓ 已保存到 GitHub');
+    return true;
+  } catch(e) {
+    setStatus('error', '✕ 同步失败: ' + e.message.slice(0, 80));
+    toast('✕ 同步失败: ' + e.message.slice(0, 60));
+    return false;
+  } finally {
+    isSyncing = false;
+    document.body.classList.remove('syncing');
+  }
+}
+
+function commitMessage(label) {
+  const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  return `${label} whisky_notes.json (${now})`;
+}
+
+// ============================================================
+// Init — load config then load data
+// ============================================================
+async function init() {
+  loadConfig();
+
+  if (!hasConfig()) {
+    setStatus('disconnected',
+      '⚠ 未配置 GitHub 连接 — 请点击右上角「⚙️ 设置」输入 Token 和仓库信息');
+    refresh();
+    return;
+  }
+
+  try {
+    await loadFromGitHub();
+  } catch(e) {
+    setStatus('error', '✕ 加载失败: ' + e.message.slice(0, 100));
+    refresh();
+  }
+}
+
+// ============================================================
+// Search & Filter & Sort
+// ============================================================
+let filters = { q:'', distillery:'', region:'', bottler:'', yearFrom:'', yearTo:'', ageMin:'' };
+
+function applyFiltersAndSort() {
+  let notes = db.notes.slice();
+  if (filters.q) {
+    const q = filters.q.toLowerCase();
+    notes = notes.filter(n =>
+      (n.whisky_name||'').toLowerCase().includes(q) ||
+      (n.distillery||'').toLowerCase().includes(q) ||
+      (n.bottler||'').toLowerCase().includes(q) ||
+      (n.nose||'').toLowerCase().includes(q) ||
+      (n.aftertaste||'').toLowerCase().includes(q) ||
+      (n.region||'').toLowerCase().includes(q) ||
+      (n.cask_type||'').toLowerCase().includes(q) ||
+      (n.notes||'').toLowerCase().includes(q) ||
+      (n.tags||[]).some(t=>t.toLowerCase().includes(q)) ||
+      String(n.wb_id||'').includes(q)
+    );
+  }
+  if (filters.distillery) notes = notes.filter(n => n.distillery === filters.distillery);
+  if (filters.region)     notes = notes.filter(n => n.region     === filters.region);
+  if (filters.bottler)    notes = notes.filter(n => n.bottler    === filters.bottler);
+  if (filters.yearFrom)   notes = notes.filter(n => (n.distillation_year||0) >= +filters.yearFrom);
+  if (filters.yearTo)     notes = notes.filter(n => (n.distillation_year||0) <= +filters.yearTo);
+  if (filters.ageMin)     notes = notes.filter(n => (n.age||0) >= +filters.ageMin);
+  notes.sort((a,b)=>{
+    switch(currentSort) {
+      case 'date-desc':  return (b.date||'').localeCompare(a.date||'');
+      case 'score-desc': return avgScore(b)-avgScore(a);
+      case 'age-desc':   return (b.age||0)-(a.age||0);
+      case 'name-asc':   return (a.whisky_name||'').localeCompare(b.whisky_name||'');
+      default: return 0;
+    }
+  });
+  filtered = notes;
+}
+function avgScore(n){
+  const v=[n.palate_score,n.body_score,n.finish_score].filter(x=>x!=null);
+  return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
+}
+
+// ============================================================
+// Render
+// ============================================================
+function refresh(){
+  applyFiltersAndSort(); renderStats(); renderFilterOptions(); renderCards(); renderPagination();
+}
+
+function renderStats(){
+  const N=db.notes;
+  document.getElementById('stat-total').textContent=N.length;
+  document.getElementById('stat-distilleries').textContent=new Set(N.map(n=>n.distillery).filter(Boolean)).size;
+  const avg=(arr,key)=>arr.length?(arr.reduce((s,n)=>s+(n[key]||0),0)/arr.length).toFixed(2):'\u2014';
+  document.getElementById('stat-avg-palate').textContent=avg(N.filter(n=>n.palate_score!=null),'palate_score');
+  document.getElementById('stat-avg-body').textContent  =avg(N.filter(n=>n.body_score!=null),  'body_score');
+  document.getElementById('stat-avg-finish').textContent=avg(N.filter(n=>n.finish_score!=null),'finish_score');
+  document.getElementById('header-count').textContent=N.length+' \u6761\u8bb0\u5f55';
+}
+
+function renderFilterOptions(){
+  const dist=[...new Set(db.notes.map(n=>n.distillery).filter(Boolean))].sort();
+  const reg =[...new Set(db.notes.map(n=>n.region).filter(Boolean))].sort();
+  const bot =[...new Set(db.notes.map(n=>n.bottler).filter(Boolean))].sort();
+  fillSelect('filter-distillery',dist,'\u6240\u6709\u9152\u5382');
+  fillSelect('filter-region',reg,'\u6240\u6709\u4ea7\u533a');
+  fillSelect('filter-bottler',bot,'\u6240\u6709\u88c5\u74f6\u5546');
+  fillDatalist('dl-distilleries',dist);
+  fillDatalist('dl-bottlers',bot);
+}
+function fillSelect(id,arr,ph){
+  const el=document.getElementById(id); const cur=el.value;
+  el.innerHTML='<option value="">'+ph+'</option>'+arr.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+  if(cur) el.value=cur;
+}
+function fillDatalist(id,arr){ const el=document.getElementById(id); if(el) el.innerHTML=arr.map(v=>'<option value="'+esc(v)+'">').join(''); }
+
+function renderCards(){
+  const g=document.getElementById('cards-grid'), s=(currentPage-1)*PAGE_SIZE, p=filtered.slice(s,s+PAGE_SIZE);
+  document.getElementById('results-info-text').textContent=
+    filtered.length===db.notes.length ? '\u5171 '+db.notes.length+' \u6761\u8bb0\u5f55' :
+    '\u627e\u5230 '+filtered.length+' \u6761\uff08\u5171 '+db.notes.length+' \u6761\uff09';
+
+  if(!filtered.length){
+    g.innerHTML='<div class="empty-state">'+
+      '<div class="empty-icon">\U0001F376</div>'+
+      '<div class="empty-title">'+(db.notes.length ? '\u6ca1\u6709\u5339\u914d\u7684\u8bb0\u5f55' : '\u8fd8\u6ca1\u6709\u54c1\u9152\u8bb0\u5f55')+'</div>'+
+      '<div class="empty-sub">'+(db.notes.length ? '\u5c1d\u8bd7\u4fee\u6539\u641c\u7d22\u6761\u4ef6' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb')+'</div></div>';
+    return;
+  }
+  g.innerHTML=p.map(n=>cardHTML(n,viewMode==='list')).join('');
+  g.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.id);}));
+  g.querySelectorAll('.btn-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDelete(b.dataset.id);}));
+  g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openEdit(c.dataset.id)));
+}
+
+function cardHTML(n,isL){
+  const scores=[{lbl:'\u5165\u53e3',val:n.palate_score},{lbl:'\u6c14\u97f5',val:n.body_score},{lbl:'\u5589\u611f',val:n.finish_score}].filter(s=>s.val!=null);
+  const sHTML=scores.length?'<div class="card-scores">'+scores.map(s=>'<div class="score-item"><div class="score-val">'+s.val+'</div><div class="score-lbl">'+s.lbl+'</div></div>').join('')+'</div>':'';
+  const tags=[];
+  if(n.age) tags.push('<span class="tag tag-age">'+n.age+'\u5e74</span>');
+  if(n.abv) tags.push('<span class="tag tag-abv">'+n.abv+'%</span>');
+  if(n.region) tags.push('<span class="tag tag-region">'+esc(n.region)+'</span>');
+  if(n.distillation_year) tags.push('<span class="tag tag-year">'+n.distillation_year+'</span>');
+  if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
+  if(n.overall_score) tags.push('<span class="tag tag-age">\u2B50'+n.overall_score+'</span>');
+
+  if(isL) return '<div class="note-card" data-id="'+n.id+'">'+
+    '<div class="card-left"><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
+    '<div class="card-distillery">'+esc(n.distillery||'')+'</div>'+
+    '<div class="card-meta" style="margin-top:6px">'+tags.join('')+'</div></div>'+
+    '<div class="card-center">'+
+    (n.nose?'<div class="card-nose"><strong>NOSE</strong>&emsp;'+esc(n.nose)+'</div>':'')+
+    (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5</strong>&emsp;'+esc(n.aftertaste)+'</div>':'')+
+    '</div><div class="card-right">'+sHTML+
+    '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
+    '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div></div>';
+
+  return '<div class="note-card" data-id="'+n.id+'">'+
+    '<div class="card-header"><div><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
+    '<div class="card-distillery">'+esc(n.distillery||'')+'</div></div>'+
+    '<div class="card-date">'+(n.date||'')+'</div></div>'+
+    '<div class="card-meta">'+tags.join('')+'</div>'+sHTML+
+    (n.nose?'<div class="card-nose"><strong>NOSE\t</strong>'+esc(n.nose)+'</div>':'')+
+    (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5\t</strong>'+esc(n.aftertaste)+'</div>':'')+
+    '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
+    '<button class="btn-delete" data-id="'+n.id+'\">\u5220\u9664</button></div></div>';
+}
+
+function renderPagination(){
+  const t=filtered.length, p=Math.ceil(t/PAGE_SIZE), el=document.getElementById('pagination');
+  if(p<=1){el.innerHTML='';return;}
+  let h='<button class="page-btn" onclick="goPage('+(currentPage-1)+')"'+(currentPage===1?' disabled':'')+'>\u2039</button>';
+  const range=pageRange(currentPage,p); let prev=null;
+  for(const x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';h+='<button class="page-btn '+(x===currentPage?'active':'')+'" onclick="goPage('+x+')">'+x+'</button>';prev=x;}
+  h+='<button class="page-btn" onclick="goPage('+(currentPage+1)+')"'+(currentPage===p?' disabled':'')+'>\u203A</button>';
+  el.innerHTML=h;
+}
+function pageRange(cur,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);return[...new Set([1,t,cur,cur-1,cur+1].filter(p=>p>=1&&p<=t))].sort((a,b)=>a-b);}
+function goPage(p){const pages=Math.ceil(filtered.length/PAGE_SIZE);if(p<1||p>pages)return;currentPage=p;renderCards();renderPagination();window.scrollTo({top:0,behavior:'smooth'});}
+
+// ============================================================
+// CRUD — each action immediately pushes to GitHub
+// ============================================================
+
+function openAdd(){
+  editingId=null;
+  document.getElementById('modal-title').textContent='\u6dfb\u52a0\u54c1\u9152\u8bb0\u5f55';
+  resetForm();
+  document.getElementById('f-date').value=new Date().toISOString().slice(0,10);
+  openModal();
+}
+
+function openEdit(id){
+  editingId=id;
+  const n=db.notes.find(x=>x.id===id);
+  if(!n)return;
+  document.getElementById('modal-title').textContent='\u7f16\u8f91\u54c1\u9152\u8bb0\u5f55';
+  populateForm(n);
+  openModal();
+}
+
+function populateForm(n){
+  document.getElementById('f-name').value=n.whisky_name||'';
+  document.getElementById('f-distillery').value=n.distillery||'';
+  document.getElementById('f-bottler').value=n.bottler||'';
+  document.getElementById('f-region').value=n.region||'';
+  document.getElementById('f-date').value=n.date||'';
+  document.getElementById('f-abv').value=n.abv!=null?n.abv:'';
+  document.getElementById('f-age').value=n.age!=null?n.age:'';
+  document.getElementById('f-distillation-year').value=n.distillation_year||'';
+  document.getElementById('f-bottling-year').value=n.bottling_year||'';
+  document.getElementById('f-cask-type').value=n.cask_type||'';
+  document.getElementById('f-cask-number').value=n.cask_number||'';
+  document.getElementById('f-wb-id').value=n.wb_id||'';
+  document.getElementById('f-nose').value=n.nose||'';
+  document.getElementById('f-aftertaste').value=n.aftertaste||'';
+  document.getElementById('f-notes').value=n.notes||'';
+  document.getElementById('f-tags').value=(n.tags||[]).join('\uff0c');
+  setSlider('palate',n.palate_score);
+  setSlider('body',n.body_score);
+  setSlider('finish',n.finish_score);
+  setSlider('overall',n.overall_score,100);
+}
+
+function setSlider(k,v,mx){
+  const a=v!=null;
+  scoreActive[k]=a;
+  document.getElementById('f-'+k).value=a?v:0;
+  document.getElementById('disp-'+k).textContent=a?v:'\u2014';
+}
+
+function resetForm(){
+  ['f-name','f-distillery','f-bottler','f-region','f-abv','f-age','f-distillation-year',
+   'f-bottling-year','f-cask-type','f-cask-number','f-wb-id','f-nose','f-aftertaste','f-notes','f-tags']
+   .forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-date').value='';
+  setSlider('palate',null); setSlider('body',null);
+  setSlider('finish',null); setSlider('overall',null,100);
+}
+
+function updateScore(k,v){ scoreActive[k]=true; document.getElementById('disp-'+k).textContent=v; }
+
+/** Save (add or edit) → auto push to GitHub */
+async function saveNote(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){
+    toast('\u8bf7\u586b\u5199\u9152\u6b3e\u540d\u79f0');
+    document.getElementById('f-name').focus();
+    return;
+  }
+
+  const btn = document.getElementById('btn-save-note');
+  btn.classList.add('saving');
+  btn.disabled = true;
+
+  const tags=(document.getElementById('f-tags').value||'').split(/[,\uff0c]/).map(t=>t.trim()).filter(Boolean);
+  const getN=id=>{const v=document.getElementById(id).value; return v===''?null:parseFloat(v);};
+  const getI=id=>{const v=document.getElementById(id).value; return v===''?null:parseInt(v);};
+
+  const note={
+    id: editingId || genId(),
+    date: document.getElementById('f-date').value || new Date().toISOString().slice(0,10),
+    whisky_name: name,
+    distillery: document.getElementById('f-distillery').value.trim(),
+    bottler: document.getElementById('f-bottler').value.trim(),
+    region: document.getElementById('f-region').value.trim(),
+    abv: getN('f-abv'),
+    age: getI('f-age'),
+    distillation_year: getI('f-distillation-year'),
+    bottling_year: getI('f-bottling-year'),
+    cask_type: document.getElementById('f-cask-type').value.trim(),
+    cask_number: document.getElementById('f-cask-number').value.trim(),
+    wb_id: getI('f-wb-id'),
+    nose: document.getElementById('f-nose').value.trim(),
+    aftertaste: document.getElementById('f-aftertaste').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
+    tags,
+    palate_score: scoreActive.palate  ? parseFloat(document.getElementById('f-palate').value)  : null,
+    body_score:   scoreActive.body   ? parseFloat(document.getElementById('f-body').value)    : null,
+    finish_score: scoreActive.finish ? parseFloat(document.getElementById('f-finish').value)  : null,
+    overall_score: scoreActive.overall ? parseInt(document.getElementById('f-overall').value)   : null,
+  };
+
+  if(editingId){
+    const i=db.notes.findIndex(n=>n.id===editingId);
+    if(i>=0) db.notes[i]=note;
+  } else {
+    db.notes.unshift(note);
+  }
+
+  closeModal();
+  currentPage=1;
+  refresh();
+
+  // Auto-push to GitHub
+  await pushToGitHub(editingId ? '\u66f4\u65b0' : '\u6dfb\u52a0');
+
+  btn.classList.remove('saving');
+  btn.disabled = false;
+}
+
+function openDelete(id){
+  deletingId=id;
+  const n=db.notes.find(x=>x.id===id);
+  document.getElementById('confirm-msg').textContent =
+    n ? '\u5c06\u5220\u9664\u300c'+n.whisky_name+'\u300d\uff0c\u6b64\u64cd\u4f5c\u4e0d\u53ef\u64a4\u9500' : '\u6b64\u64cd\u4f5c\u4e0d\u53ef\u64a4\u9500';
+  document.getElementById('confirm-overlay').classList.remove('hidden');
+}
+
+async function confirmDelete(){
+  if(!deletingId) return;
+  const name = db.notes.find(x=>x.id===deletingId)?.whisky_name || '';
+  db.notes=db.notes.filter(n=>n.id!==deletingId);
+  deletingId=null;
+  document.getElementById('confirm-overlay').classList.add('hidden');
+  toast('\u5df2\u5220\u9664');
+  refresh();
+  await pushToGitHub('\u5220\u9664 ' + name);
+}
+
+// ============================================================
+// Settings
+// ============================================================
+function openSettings() {
+  document.getElementById('settings-overlay').classList.remove('hidden');
+  document.getElementById('set-token').value   = ghCfg ? (ghCfg.token || '') : '';
+  document.getElementById('set-repo').value    = ghCfg ? (ghCfg.owner+'/'+ghCfg.repo) : 'szligen/whisky-notes';
+  document.getElementById('set-branch').value  = ghCfg ? (ghCfg.branch || 'main') : 'main';
+  document.getElementById('settings-test-result').innerHTML = '';
+}
+function closeSettings() { document.getElementById('settings-overlay').classList.add('hidden'); }
+
+async function saveSettingsAndTest() {
+  const token  = document.getElementById('set-token').value.trim();
+  const repo   = document.getElementById('set-repo').value.trim();
+  const branch = document.getElementById('set-branch').value.trim() || 'main';
+
+  if(!token || !repo) {
+    toast('\u8bf7\u586b\u5199 Token \u548c\u4ed3\u5e93\u5730\u5740'); return;
+  }
+
+  const [owner, reponame] = repo.split('/');
+  if(!owner || !reponame) {
+    toast('\u4ed3\u5e93\u683c\u5f0f\u5e94\u4e3a \u7528\u6237\u540d/\u4ed3\u5e93\u540d'); return;
+  }
+
+  // Save config to localStorage (only token+repo info, never the data)
+  ghCfg = { token, owner, repo: reponame, branch };
+  localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
+
+  closeSettings();
+  toast('\u6d4b\u8bd5\u8fde\u63a5\u4e2d...');
+
+  try {
+    await loadFromGitHub();
+  } catch(e) {
+    setStatus('error', '\u2715 \u8fde\u63a5\u5931\u8d25: ' + e.message.slice(0, 100));
+  }
+}
+
+// ============================================================
+// Modal helpers
+// ============================================================
+function openModal(){ document.getElementById('modal-overlay').classList.remove('hidden'); }
+function closeModal(){ document.getElementById('modal-overlay').classList.add('hidden'); }
+
+// ============================================================
+// Utilities
+// ============================================================
+function genId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+let toastTimer;
+function toast(m){
+  const el=document.getElementById('toast');
+  el.textContent=m; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'), 2500);
+}
+
+// ============================================================
+// Event Bindings
+// ============================================================
+document.getElementById('btn-add').addEventListener('click', openAdd);
+document.getElementById('btn-save-note').addEventListener('click', saveNote);
+document.getElementById('btn-cancel').addEventListener('click', closeModal);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('modal-overlay')) closeModal();
+});
+document.getElementById('confirm-cancel').addEventListener('click', ()=>{
+  document.getElementById('confirm-overlay').classList.add('hidden');
+});
+document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+document.getElementById('btn-settings').addEventListener('click', openSettings);
+document.getElementById('btn-save-settings').addEventListener('click', saveSettingsAndTest);
+
+document.getElementById('search-input').addEventListener('input', function(){
+  filters.q=this.value.trim(); currentPage=1; refresh();
+});
+document.getElementById('filter-distillery').addEventListener('change', function(){
+  filters.distillery=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-region').addEventListener('change', function(){
+  filters.region=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-bottler').addEventListener('change', function(){
+  filters.bottler=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-year-from').addEventListener('input', function(){
+  filters.yearFrom=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-year-to').addEventListener('input', function(){
+  filters.yearTo=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-age-min').addEventListener('input', function(){
+  filters.ageMin=this.value; currentPage=1; refresh();
+});
+document.getElementById('btn-clear-filter').addEventListener('click', ()=>{
+  filters={q:'',distillery:'',region:'',bottler:'',yearFrom:'',yearTo:'',ageMin:''};
+  document.getElementById('search-input').value='';
+  ['filter-distillery','filter-region','filter-bottler','filter-year-from','filter-year-to','filter-age-min'].forEach(i=>document.getElementById(i).value='');
+  currentPage=1; refresh();
+});
+
+document.querySelectorAll('.sort-btn').forEach(btn=>{
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    currentSort=this.dataset.sort; currentPage=1; refresh();
+  });
+});
+
+document.getElementById('view-grid').addEventListener('click', function(){
+  viewMode='grid';
+  document.getElementById('cards-grid').classList.remove('list-view');
+  this.classList.add('active');
+  document.getElementById('view-list').classList.remove('active');
+  renderCards();
+});
+document.getElementById('view-list').addEventListener('click', function(){
+  viewMode='list';
+  document.getElementById('cards-grid').classList.add('list-view');
+  this.classList.add('active');
+  document.getElementById('view-grid').classList.remove('active');
+  renderCards();
+});
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    closeModal();
+    document.getElementById('confirm-overlay').classList.add('hidden');
+    closeSettings();
+  }
+});
+
+document.getElementById('settings-overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('settings-overlay')) closeSettings();
+});
+
+// ============================================================
+// GO
+// ============================================================
+init();
+</script>
+</body>
+</html>
