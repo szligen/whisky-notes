@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260610-001",
+      "date": "2026-06-10T17:01",
+      "whisky_name": "asfad",
+      "distillery": "Aberfeldy",
+      "bottler": "35WHISKY",
+      "abv": null,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260604-001",
       "date": "2026-06-04T17:08:00",
       "whisky_name": "Longmorn 朗摩 31年 3R 三河",
