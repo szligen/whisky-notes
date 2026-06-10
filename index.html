@@ -799,7 +799,7 @@ function renderCards(){
 
   if(!filtered.length){
     g.innerHTML='<div class="empty-state">'+
-      '<div class="empty-icon">\U0001F376</div>'+
+      '<div class="empty-icon">🍶</div>'+
       '<div class="empty-title">'+(db.notes.length ? '\u6ca1\u6709\u5339\u914d\u7684\u8bb0\u5f55' : '\u8fd8\u6ca1\u6709\u54c1\u9152\u8bb0\u5f55')+'</div>'+
       '<div class="empty-sub">'+(db.notes.length ? '\u5c1d\u8bd7\u4fee\u6539\u641c\u7d22\u6761\u4ef6' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb')+'</div></div>';
     return;
@@ -844,10 +844,10 @@ function cardHTML(n,isL){
 function renderPagination(){
   const t=filtered.length, p=Math.ceil(t/PAGE_SIZE), el=document.getElementById('pagination');
   if(p<=1){el.innerHTML='';return;}
-  let h='<button class="page-btn" onclick="goPage('+(currentPage-1)+')"'+(currentPage===1?' disabled':'')+'>\u2039</button>';
+  let h=`<button class="page-btn" onclick="goPage(${currentPage-1})"${currentPage===1?' disabled':''}>\u2039</button>`;
   const range=pageRange(currentPage,p); let prev=null;
-  for(const x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';h+='<button class="page-btn '+(x===currentPage?'active':'')+'" onclick="goPage('+x+')">'+x+'</button>';prev=x;}
-  h+='<button class="page-btn" onclick="goPage('+(currentPage+1)+')"'+(currentPage===p?' disabled:'')+'>\u203A</button>';
+  for(const x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';h+=`<button class="page-btn ${x===currentPage?'active':''}" onclick="goPage(${x})">${x}</button>`;prev=x;}
+  h+=`<button class="page-btn" onclick="goPage(${currentPage+1})"${currentPage===p?' disabled':''}>\u203A</button>`;
   el.innerHTML=h;
 }
 function pageRange(cur,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);return[...new Set([1,t,cur,cur-1,cur+1].filter(p=>p>=1&&p<=t))].sort((a,b)=>a-b);}
