@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-14:18 -->
+<!-- VERSION: 2026-06-10-14:32 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -486,7 +486,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-14:18</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-14:32</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -901,14 +901,11 @@ function avgScore(n){
   return v.length ? v.reduce((a,b)=>a+b,0)/v.length : 0;
 }
 
-/** Sort comparator: numbers → English → Chinese */
+/* Sort: numbers first, then English, then Chinese */
 function distSortCmp(a, b) {
-  const typeOrder = (s) => {
-    if (/^\d/.test(s)) return 0;    // 数字开头
-    if /^[a-zA-Z]/.test(s)) return 1; // 英文字母开头
-    return 2;                          // 中文或其他
-  };
-  const ta = typeOrder(a), tb = typeOrder(b);
+  var ca = a.charCodeAt(0), cb = b.charCodeAt(0);
+  var ta = (ca >= 48 && ca <= 57) ? 0 : ((ca >= 65 && ca <= 90) || (ca >= 97 && ca <= 122)) ? 1 : 2;
+  var tb = (cb >= 48 && cb <= 57) ? 0 : ((cb >= 65 && cb <= 90) || (cb >= 97 && cb <= 122)) ? 1 : 2;
   if (ta !== tb) return ta - tb;
   return a.localeCompare(b, 'zh-CN');
 }
