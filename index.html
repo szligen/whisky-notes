@@ -631,8 +631,10 @@ async function loadFromGitHub() {
   const info = await res.json();
   ghCfg.fileSha = info.sha;
 
-  // Decode base64 content
-  const json = atob(info.content.replace(/\n/g, ''));
+  // Decode base64 content (UTF-8 safe)
+  const binaryStr = atob(info.content.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(binaryStr, c => c.charCodeAt(0));
+  const json = new TextDecoder('utf-8').decode(bytes);
   const data = JSON.parse(json);
 
   if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
