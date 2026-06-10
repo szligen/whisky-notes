@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-15:32 -->
+<!-- VERSION: 2026-06-10-16:05 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -331,6 +331,66 @@
   .detail-score-lbl { font-size: 11px; color: var(--text-muted); }
   .detail-avg { text-align: center; margin-top: 8px; font-size: 13px; color: var(--text-muted); }
   .detail-avg-val { font-size: 16px; font-weight: 700; color: var(--gold); }
+
+  /* ===== Image Upload ===== */
+  .img-upload-section { margin-bottom: 14px; }
+  .img-upload-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+  }
+  .img-upload-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .img-upload-hint { font-size: 10px; color: var(--text-light); }
+  .img-upload-btn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px;
+    border: 2px dashed var(--border); border-radius: var(--radius);
+    background: var(--surface2); color: var(--text-muted);
+    font-size: 13px; cursor: pointer; transition: all 0.15s;
+  }
+  .img-upload-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  #f-images { display: none; }
+  .img-preview-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin-top: 10px;
+  }
+  .img-preview-item {
+    position: relative; aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden;
+    border: 1px solid var(--border); background: var(--surface2);
+  }
+  .img-preview-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-preview-remove {
+    position: absolute; top: 2px; right: 2px; width: 20px; height: 20px;
+    background: rgba(200,50,50,0.85); color: white; border: none; border-radius: 50%;
+    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1; padding: 0;
+  }
+  .img-preview-remove:hover { background: var(--red); }
+
+  /* Detail view images */
+  .detail-images {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px; margin-top: 8px;
+  }
+  .detail-img-thumb {
+    aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden;
+    cursor: pointer; transition: transform 0.15s; border: 1px solid var(--border);
+  }
+  .detail-img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .detail-img-thumb:hover { transform: scale(1.04); box-shadow: var(--shadow-md); }
+
+  /* Image lightbox overlay */
+  .img-lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.78); z-index: 3000;
+    display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px);
+  }
+  .img-lightbox.show { display: flex; }
+  .img-lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 8px; box-shadow: 0 12px 48px rgba(0,0,0,0.45); }
+  .img-lightbox-close {
+    position: absolute; top: 16px; right: 24px; color: #fff; font-size: 36px;
+    background: none; border: none; cursor: pointer; line-height: 1; opacity: 0.7;
+  }
+  .img-lightbox-close:hover { opacity: 1; }
+
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
     background: #1a1614; color: white; padding: 10px 20px; border-radius: 20px;
@@ -481,6 +541,11 @@
     /* Score inputs bigger touch targets */
     .score-inputs input[type="range"] { height: 32px; }
 
+
+    /* Image upload mobile */
+    .img-preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
+    .img-upload-btn { padding: 8px 14px; font-size: 12px; }
+    .detail-images { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
     /* --- Confirm dialog --- */
     .confirm-box { margin: 0 24px; padding: 20px 24px; }
   }
@@ -519,7 +584,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-15:32</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-16:05</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -698,6 +763,20 @@
           </div>
         </div>
       </div>
+      <!-- 图片上传（可选） -->
+      <div class="form-section">
+        <div class="img-upload-section">
+          <div class="img-upload-header">
+            <span class="img-upload-title">📸 图片（可选）</span>
+            <span class="img-upload-hint">最夕5张，自动压缩后上传到 GitHub album/</span>
+          </div>
+          <label class="img-upload-btn" id="label-add-image">
+            &#65279;＋添加图片
+            <input type="file" id="f-images" accept="image/*" multiple>
+          </label>
+          <div class="img-preview-grid" id="img-preview-grid"></div>
+        </div>
+      </div>
       <!-- 评分 -->
       <div class="form-section">
         <div class="form-section-title">⭐ 评分</div>
@@ -745,6 +824,12 @@
       <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);">🗑️ 删除</button>
     </div>
   </div>
+</div>
+
+<!-- Image Lightbox -->
+<div class="img-lightbox" id="img-lightbox">
+  <button class="img-lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img src="" alt="" id="lightbox-img">
 </div>
 
 <!-- Toast -->
@@ -1110,6 +1195,10 @@ function populateForm(n){
   setSlider('palate',n.palate_score);
   setSlider('body',n.body_score);
   setSlider('finish',n.finish_score);
+  // Load existing images
+  existingImages = Array.isArray(n.images) ? n.images.slice() : [];
+  pendingImageFiles = [];
+  renderImagePreviews();
   updateAllHints();
 }
 
@@ -1128,6 +1217,12 @@ function resetForm(){
   document.getElementById('f-date').value='';
   setSlider('palate',null); setSlider('body',null);
   setSlider('finish',null);
+  // Clear image state
+  pendingImageFiles.forEach(function(f){ URL.revokeObjectURL(URL.createObjectURL(f)); });
+  pendingImageFiles = [];
+  existingImages = [];
+  var grid = document.getElementById('img-preview-grid');
+  if (grid) grid.innerHTML = '';
   updateAllHints();
 }
 
@@ -1193,12 +1288,45 @@ async function saveNote(){
     db.notes.unshift(note);
   }
 
+  // Merge images
+  note.images = existingImages.slice();
+
+  if(editingId){
+    const i=db.notes.findIndex(n=>n.id===editingId);
+    if(i>=0) db.notes[i]=note;
+  } else {
+    db.notes.unshift(note);
+  }
+
   closeModal();
   currentPage=1;
   refresh();
 
-  // Auto-push to GitHub
-  await pushToGitHub(editingId ? '\u66f4\u65b0' : '\u6dfb\u52a0');
+  // Auto-push JSON to GitHub first
+  const jsonOk = await pushToGitHub(editingId ? '\u66f4\u65b0' : '\u6dfb\u52a0');
+
+  // Then upload new images (if any)
+  if (jsonOk && pendingImageFiles.length > 0) {
+    setStatus('syncing', '\u2b07 \u6b63\u5728\u4e0a\u4f20\u56fe\u7247... (' + pendingImageFiles.length + ' \u5f20)');
+    var uploadedNames = [];
+    try {
+      for (var pi = 0; pi < pendingImageFiles.length; pi++) {
+        var fname = await uploadImageToGitHub(pendingImageFiles[pi], note.id, pi + 1);
+        uploadedNames.push(fname);
+      }
+      // Update note with uploaded filenames
+      var ni = db.notes.findIndex(function(x){ return x.id === note.id; });
+      if (ni >= 0) {
+        db.notes[ni].images = existingImages.concat(uploadedNames);
+      }
+      // Re-push JSON to save image filenames
+      await pushToGitHub('\u6dfb\u52a0\u56fe\u7247');
+      toast('\u2705 ' + uploadedNames.length + ' \u5f20\u56fe\u7247\u5df2\u4e0a\u4f20');
+    } catch(imgErr) {
+      setStatus('error', '\u2715 \u56fe\u7247\u4e0a\u4f20\u5931\u8d25: ' + imgErr.message.slice(0, 60));
+      toast('\u2715 \u56fe\u7247\u4e0a\u4f20\u5931\u8d25\uff0c\u8bb0\u5f55\u5df2\u4fdd\u5b58');
+    }
+  }
 
   btn.classList.remove('saving');
   btn.disabled = false;
@@ -1214,7 +1342,17 @@ function openDelete(id){
 
 async function confirmDelete(){
   if(!deletingId) return;
-  const name = db.notes.find(x=>x.id===deletingId)?.whisky_name || '';
+  const note = db.notes.find(x=>x.id===deletingId);
+  const name = (note && note.whisky_name) || '';
+
+  // Delete associated images first
+  if (note && Array.isArray(note.images) && note.images.length > 0) {
+    setStatus('syncing', '\u2b07 \u6b63\u5728\u5220\u9664\u5173\u8054\u56fe\u7247...');
+    for (var di = 0; di < note.images.length; di++) {
+      try { await deleteImageFromGitHub(note.images[di]); } catch(e) {}
+    }
+  }
+
   db.notes=db.notes.filter(n=>n.id!==deletingId);
   deletingId=null;
   document.getElementById('confirm-overlay').classList.add('hidden');
@@ -1409,6 +1547,183 @@ document.getElementById('detail-overlay').addEventListener('click', e=>{
 // ============================================================
 let detailId = null;
 
+
+// ============================================================
+// Image Upload — compress & push to GitHub album/
+// ============================================================
+let pendingImageFiles = [];   // File objects waiting for upload
+let existingImages = [];      // Filenames already on GitHub (edit mode)
+const MAX_IMAGES = 5;
+
+document.getElementById('f-images').addEventListener('change', handleImageSelect);
+
+function handleImageSelect(e) {
+  var files = Array.from(e.target.files || []);
+  var remaining = MAX_IMAGES - pendingImageFiles.length - existingImages.length;
+
+  if (!remaining) {
+    toast('最多只能添加' + MAX_IMAGES + '张图片');
+    e.target.value = '';
+    return;
+  }
+  if (files.length > remaining) {
+    toast('还能添加 ' + remaining + ' 张图片');
+    files.length = remaining;
+  }
+
+  files.forEach(function(file) {
+    if (!file.type.startsWith('image/')) return;
+    pendingImageFiles.push(file);
+  });
+
+  renderImagePreviews();
+  e.target.value = '';
+}
+
+function renderImagePreviews() {
+  var container = document.getElementById('img-preview-grid');
+  if (!container) return;
+
+  var html = '';
+
+  // Existing images from GitHub
+  existingImages.forEach(function(filename, i) {
+    var url = getImageUrl(filename);
+    html += '<div class="img-preview-item"><img src="' + esc(url) + '" alt="">' +
+      '<button class="img-preview-remove" data-type="existing" data-index="' + i +
+      '" onclick="removeExistingImage(this)">\u00D7</button></div>';
+  });
+
+  // Pending new images (local)
+  pendingImageFiles.forEach(function(file, i) {
+    var url = URL.createObjectURL(file);
+    html += '<div class="img-preview-item"><img src="' + url + '" alt="">' +
+      '<button class="img-preview-remove" data-type="new" data-index="' + i +
+      '" onclick="removePendingImage(this)">\u00D7</button></div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function removeExistingImage(btn) {
+  var idx = parseInt(btn.dataset.index);
+  existingImages.splice(idx, 1);
+  renderImagePreviews();
+}
+
+function removePendingImage(btn) {
+  var idx = parseInt(btn.dataset.index);
+  URL.revokeObjectURL(pendingImageFiles[idx]);
+  pendingImageFiles.splice(idx, 1);
+  renderImagePreviews();
+}
+
+/** Compress image via Canvas → Blob (max 1920px, JPEG 0.8) */
+function compressImage(file, maxSize, quality) {
+  return new Promise(function(resolve, reject) {
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var w = img.naturalWidth, h = img.naturalHeight;
+
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+      canvas.toBlob(function(blob) {
+        if (blob) resolve(blob);
+        else reject(new Error('Canvas toBlob failed'));
+      }, 'image/jpeg', quality);
+
+      URL.revokeObjectURL(img.src);  // cleanup
+    };
+    img.onerror = function() { reject(new Error('\u56fe\u7247\u52a0\u8f7d\u5931\u8d25')); };
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+/** Build raw URL for an album image on GitHub */
+function getImageUrl(filename) {
+  return 'https://raw.githubusercontent.com/' + ghCfg.owner + '/' + ghCfg.repo + '/' + ghCfg.branch + '/album/' + encodeURIComponent(filename);
+}
+
+/** Upload one image file to GitHub album/ directory */
+async function uploadImageToGitHub(file, noteId, seq) {
+  try {
+    var blob = await compressImage(file, 1920, 0.8);
+    var arrBuf = await blob.arrayBuffer();
+    var bytes = new Uint8Array(arrBuf);
+
+    var ext = (file.type === 'image/png') ? 'png' : 'jpg';
+    var seqStr = String(seq).padStart(2, '0');
+    var filename = noteId + '_' + seqStr + '.' + ext;
+
+    var b64 = '';
+    for (var bi = 0; bi < bytes.length; bi++) b64 += String.fromCharCode(bytes[bi]);
+    b64 = btoa(b64);
+
+    var payload = { message: '\u4e0a\u4f20\u56fe\u7247: ' + filename, content: b64, branch: ghCfg.branch };
+
+    // Check if file already exists
+    var checkUrl = 'https://api.github.com/repos/' + ghCfg.owner + '/' + ghCfg.repo + '/contents/album/' + filename + '?ref=' + ghCfg.branch;
+    try {
+      var checkRes = await fetch(checkUrl, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+      if (checkRes.ok) {
+        var info = await checkRes.json();
+        payload.sha = info.sha;
+      }
+    } catch(ex) {}
+
+    var url = 'https://api.github.com/repos/' + ghCfg.owner + '/' + ghCfg.repo + '/contents/album/' + filename;
+    var res = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + ghCfg.token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      var errBody = await res.json().catch(function(){ return {}; });
+      throw new Error('HTTP ' + res.status + ': ' + (errBody.message || res.statusText).slice(0, 80));
+    }
+
+    return filename;
+  } catch(err) {
+    console.error('Image upload error:', err);
+    throw err;
+  }
+}
+
+/** Delete one image from GitHub album/ */
+async function deleteImageFromGitHub(filename) {
+  var url = 'https://api.github.com/repos/' + ghCfg.owner + '/' + ghCfg.repo + '/contents/album/' + encodeURIComponent(filename) + '?ref=' + ghCfg.branch;
+  var res = await fetch(url, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+  if (!res.ok) return false;  // Already gone
+
+  var info = await res.json();
+  var delRes = await fetch(url, {
+    method: 'DELETE',
+    headers: { 'Authorization': 'Bearer ' + ghCfg.token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: '\u5220\u9664\u56fe\u7247: ' + filename, sha: info.sha, branch: ghCfg.branch })
+  });
+  return delRes.ok;
+}
+
+/** Open lightbox */
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('img-lightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('img-lightbox').classList.remove('show');
+  document.getElementById('lightbox-img').src = '';
+}
+
+
 function openDetail(id){
   const n = db.notes.find(x=>x.id===id);
   if(!n) return;
@@ -1422,6 +1737,18 @@ function renderDetailContent(n){
   const avg = avgScore(n);
   const hasScore = (n.palate_score!=null || n.body_score!=null || n.finish_score!=null);
   let h = '';
+
+  // Image gallery
+  if (Array.isArray(n.images) && n.images.length > 0) {
+    h += '<div class="detail-section"><div class="detail-section-title">📸 图片 (' + n.images.length + ' 张)</div>';
+    h += '<div class="detail-images">';
+    n.images.forEach(function(filename) {
+      var url = getImageUrl(filename);
+      h += '<div class="detail-img-thumb" onclick="openLightbox(\'' + esc(url) + '\')"><img src="' + esc(url) + '" alt="" loading="lazy"></div>';
+    });
+    h += '</div></div>';
+  }
+
   h += '<div class="detail-section"><div class="detail-section-title">📋 基本信息</div>';
   h += '<div class="detail-grid">';
   h += '<div class="detail-field"><span class="detail-label">酒款名称</span><span class="detail-value">'+(esc(n.whisky_name)||'<span class="empty">未填</span>')+'</span></div>';
