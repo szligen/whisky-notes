@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-007",
+      "date": "2026-06-11T15:24",
+      "whisky_name": "发",
+      "distillery": "",
+      "bottler": "",
+      "abv": 49.9,
+      "vintage_age": 25,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "丰富黄色水果，果味丰富，脂粉",
+      "aftertaste": "粉香，",
+      "notes": "",
+      "palate_score": 4.1,
+      "body_score": 4,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260611-006",
       "date": "2026-06-11T15:10",
       "whisky_name": "本尼 沪上阿姨",
