@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-011",
+      "date": "2026-06-11T16:29",
+      "whisky_name": "布纳哈本",
+      "distillery": "",
+      "bottler": "",
+      "abv": 43,
+      "vintage_age": 45,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色大酒，淡淡雪莉，焦糖糖霜",
+      "aftertaste": "人参糖，淡淡肉桂，淡淡红糖",
+      "notes": "很柔顺，浓郁，43度真不错",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260611-010",
       "date": "2026-06-11T16:14",
       "whisky_name": "图里巴丁",
