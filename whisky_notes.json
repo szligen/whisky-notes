@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-008",
+      "date": "2026-06-11T15:39",
+      "whisky_name": "拉弗格",
+      "distillery": "",
+      "bottler": "",
+      "abv": 50.9,
+      "vintage_age": 33,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "果味丰富，像水果糖，泥煤味淡淡的像点缀",
+      "aftertaste": "烟熏，饭焦味，淡淡皮革",
+      "notes": "很甜，很拉弗格",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260611-007",
       "date": "2026-06-11T15:24",
       "whisky_name": "皮迪维克",
