@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-001",
+      "date": "2026-06-11T14:13",
+      "whisky_name": "泰斯卡",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57.9,
+      "vintage_age": 8,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "烟熏，海洋，新鲜水果，蜜糖",
+      "aftertaste": "烟熏，海洋，咸味，豆腥",
+      "notes": "",
+      "palate_score": 3.7,
+      "body_score": 3.7,
+      "finish_score": 3.2,
+      "images": []
+    },
+    {
       "id": "20260604-001",
       "date": "2026-06-04T17:08:00",
       "whisky_name": "Longmorn 朗摩 31年 3R 三河",
