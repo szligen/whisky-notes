@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-005",
+      "date": "2026-06-11T14:57",
+      "whisky_name": "美味",
+      "distillery": "",
+      "bottler": "",
+      "abv": 51.9,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色水果，谷物调和爆米花，木头",
+      "aftertaste": "甜美谷物，奶油",
+      "notes": "",
+      "palate_score": 4.9,
+      "body_score": 4.1,
+      "finish_score": 3.6,
+      "images": []
+    },
+    {
       "id": "20260611-004",
       "date": "2026-06-11T14:46",
       "whisky_name": "费特肯",
