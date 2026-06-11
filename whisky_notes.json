@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-004",
+      "date": "2026-06-11T14:46",
+      "whisky_name": "本尼",
+      "distillery": "",
+      "bottler": "",
+      "abv": 48.9,
+      "vintage_age": 28,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "正常波本风",
+      "aftertaste": "蜜糖，黄色糖果",
+      "notes": "余韵短",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260611-003",
       "date": "2026-06-11T14:27",
       "whisky_name": "克莱嘉赫",
