@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-010",
+      "date": "2026-06-11T16:14",
+      "whisky_name": "大摩",
+      "distillery": "",
+      "bottler": "",
+      "abv": 49.9,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "雪莉，蜜香水果，焦糖，甜食，该有的都有",
+      "aftertaste": "雪莉果干，黑加仑。烤香味十足，碧根果",
+      "notes": "余韵一开始糊在一起，后面才展开",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260611-009",
       "date": "2026-06-11T16:02",
       "whisky_name": "檀都",
