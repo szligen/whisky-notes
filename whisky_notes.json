@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260611-009",
+      "date": "2026-06-11T16:02",
+      "whisky_name": "檀都",
+      "distillery": "",
+      "bottler": "",
+      "abv": 54.5,
+      "vintage_age": 26,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "淡淡的火药，果香雪莉，果脯",
+      "aftertaste": "黑巧，果脯，新鲜雪莉",
+      "notes": "很饱满的雪莉，甜感雪莉",
+      "palate_score": 4.1,
+      "body_score": 4,
+      "finish_score": 4.1,
+      "images": []
+    },
+    {
       "id": "20260611-008",
       "date": "2026-06-11T15:39",
       "whisky_name": "拉弗格",
