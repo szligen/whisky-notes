@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260614-001",
+      "date": "2026-06-14T13:56",
+      "whisky_name": "Ardmore 阿德摩尔 15年 Artist #15 LMDW",
+      "distillery": "Ardmore",
+      "bottler": "La Maison du Whisky (LMDW)",
+      "abv": 57,
+      "vintage_age": 15,
+      "distillation_year": 2009,
+      "wb_id": null,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260611-012",
       "date": "2026-06-11T16:44",
       "whisky_name": "Caol Ila 卡尔里拉 34年 Old Particular DL",
