@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-010",
+      "date": "2026-06-21T15:47",
+      "whisky_name": "格兰盖瑞",
+      "distillery": "",
+      "bottler": "",
+      "abv": 46.3,
+      "vintage_age": 29,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄桃，蜜糖，焦糖，老味",
+      "aftertaste": "老味，枸杞，香料，皂味",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260621-009",
       "date": "2026-06-21T15:34",
       "whisky_name": "弥尔顿达芙",
