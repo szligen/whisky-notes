@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-002",
+      "date": "2026-06-21T14:07",
+      "whisky_name": "Rhinns",
+      "distillery": "",
+      "bottler": "",
+      "abv": 52.3,
+      "vintage_age": 12,
+      "distillation_year": 2011,
+      "wb_id": null,
+      "nose": "烤糊焦糖，根茎味",
+      "aftertaste": "",
+      "notes": "根茎味，后段中药味",
+      "palate_score": 3.7,
+      "body_score": 3.6,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260621-001",
       "date": "2026-06-21T14:00",
       "whisky_name": "格兰莫雷",
