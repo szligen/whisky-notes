@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-008",
+      "date": "2026-06-21T15:19",
+      "whisky_name": "欧特班",
+      "distillery": "",
+      "bottler": "",
+      "abv": 48.5,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "水果硬糖，脂粉",
+      "aftertaste": "甜，粉",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260621-007",
       "date": "2026-06-21T15:04",
       "whisky_name": "本尼维斯",
