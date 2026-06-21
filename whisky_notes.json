@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-009",
+      "date": "2026-06-21T15:34",
+      "whisky_name": "位置",
+      "distillery": "",
+      "bottler": "",
+      "abv": 58,
+      "vintage_age": 30,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "水果硬糖，香料，蜜糖橘子",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260621-008",
       "date": "2026-06-21T15:19",
       "whisky_name": "欧特班",
