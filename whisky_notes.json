@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-005",
+      "date": "2026-06-21T14:42",
+      "whisky_name": "格兰卡登",
+      "distillery": "",
+      "bottler": "",
+      "abv": 59.3,
+      "vintage_age": 23,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "超级甜，甜梨，高级蜜糖，雪莉",
+      "aftertaste": "奶油，粉，雪莉",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260621-004",
       "date": "2026-06-21T14:27",
       "whisky_name": "格兰花格",
