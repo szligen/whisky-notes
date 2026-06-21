@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-015",
+      "date": "2026-06-21T17:00",
+      "whisky_name": "未知",
+      "distillery": "",
+      "bottler": "",
+      "abv": 42.3,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "水果硬糖，脂粉",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260621-014",
       "date": "2026-06-21T16:41",
       "whisky_name": "卡拉格摩尔",
