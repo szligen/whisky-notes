@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-003",
+      "date": "2026-06-21T14:17",
+      "whisky_name": "神秘",
+      "distillery": "",
+      "bottler": "",
+      "abv": 46,
+      "vintage_age": 18,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "焦糖，甜食，红色水果，奶油",
+      "aftertaste": "粉，甜，可可",
+      "notes": "",
+      "palate_score": 3.7,
+      "body_score": 3.6,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260621-002",
       "date": "2026-06-21T14:07",
       "whisky_name": "Rhinns",
