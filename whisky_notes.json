@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260621-013",
+      "date": "2026-06-21T16:27",
+      "whisky_name": "本利林",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.6,
+      "vintage_age": 21,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色浆果，菊花，糖果",
+      "aftertaste": "陈皮，干花",
+      "notes": "",
+      "palate_score": 3.1,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260621-012",
       "date": "2026-06-21T16:11",
       "whisky_name": "朱拉",
