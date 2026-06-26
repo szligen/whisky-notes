@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-007",
+      "date": "2026-06-26T20:28",
+      "whisky_name": "格兰盖瑞 bartalk",
+      "distillery": "",
+      "bottler": "",
+      "abv": 52.4,
+      "vintage_age": 13,
+      "distillation_year": 2011,
+      "wb_id": null,
+      "nose": "哈密瓜，水果，甜食",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 2.1,
+      "finish_score": 3.6,
+      "images": []
+    },
+    {
       "id": "20260626-006",
       "date": "2026-06-26T20:14",
       "whisky_name": "卡尔里拉",
