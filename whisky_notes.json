@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-006",
+      "date": "2026-06-26T20:14",
+      "whisky_name": "卡尔里拉",
+      "distillery": "",
+      "bottler": "",
+      "abv": 52,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "芒果，梨，老味",
+      "aftertaste": "旧书，尘土",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260626-005",
       "date": "2026-06-26T19:55",
       "whisky_name": "本尼",
