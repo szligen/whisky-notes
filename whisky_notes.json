@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-001",
+      "date": "2026-06-26T19:16",
+      "whisky_name": "盖瑞",
+      "distillery": "",
+      "bottler": "",
+      "abv": 43,
+      "vintage_age": 12,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260621-015",
       "date": "2026-06-21T17:00",
       "whisky_name": "斯特拉塞斯拉",
