@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-011",
+      "date": "2026-06-26T20:57",
+      "whisky_name": "Kildalton",
+      "distillery": "",
+      "bottler": "",
+      "abv": 56.6,
+      "vintage_age": 16,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酸水果泥煤，无缝融合",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4.1,
+      "body_score": 4,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260626-010",
       "date": "2026-06-26T20:47",
       "whisky_name": "汀思图 1996",
