@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-009",
+      "date": "2026-06-26T20:40",
+      "whisky_name": "朗摩",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.7,
+      "vintage_age": 16,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "梨，黄色水果，熟果皮",
+      "aftertaste": "奶油，脂粉",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260626-008",
       "date": "2026-06-26T20:36",
       "whisky_name": "爱琴",
