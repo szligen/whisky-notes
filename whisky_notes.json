@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260626-010",
+      "date": "2026-06-26T20:47",
+      "whisky_name": "汀思图 1996",
+      "distillery": "",
+      "bottler": "",
+      "abv": 52.8,
+      "vintage_age": 26,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "高蜜，梨，",
+      "aftertaste": "",
+      "notes": "尾韵散得快",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260626-009",
       "date": "2026-06-26T20:40",
       "whisky_name": "朗摩",
