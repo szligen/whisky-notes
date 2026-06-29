@@ -7206,20 +7206,21 @@
     },
     {
       "id": "20251113-383",
-      "date": "2025-11-13T14:40:00",
-      "whisky_name": "Laphroaig 拉弗格10年 Cask Strength",
+      "date": "2025-11-13T14:40",
+      "whisky_name": "Laphroaig 拉弗格 10年 Cask Strength B10",
       "distillery": "Laphroaig",
       "bottler": "OB",
       "abv": 58,
-      "vintage_age": null,
+      "vintage_age": 10,
       "distillation_year": null,
       "wb_id": 111750,
       "nose": "咸菜海鲜，泥煤药水，轻盈",
+      "aftertaste": "奶酪，咸腥，药水味很持续",
+      "notes": "浓郁清甜eld风格，很重口味很浓郁，好喝",
       "palate_score": 4,
       "body_score": 4,
       "finish_score": 4,
-      "aftertaste": "奶酪，咸腥，药水味很持续",
-      "notes": "浓郁清甜eld风格，很重口味很浓郁，好喝"
+      "images": []
     },
     {
       "id": "20251113-384",
