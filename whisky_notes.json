@@ -8858,20 +8858,21 @@
     },
     {
       "id": "20250918-480",
-      "date": "2025-09-18T15:12:00",
-      "whisky_name": "Clynelish 小猫 10年 SMOS Eld",
+      "date": "2025-09-18T15:12",
+      "whisky_name": "Clynelish 小猫 10年 SMOS ElD",
       "distillery": "Clynelish",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 59.8,
       "vintage_age": 10,
       "distillation_year": 2011,
       "wb_id": 236989,
       "nose": "脂粉，香料，桂皮，黄色水果",
+      "aftertaste": "朗姆，蜜枣，超高蜜香",
+      "notes": "好喝，10年的小猫又颠覆了想象中的样子",
       "palate_score": 4,
       "body_score": 4,
       "finish_score": 3.6,
-      "aftertaste": "朗姆，蜜枣，超高蜜香",
-      "notes": "好喝，10年的小猫又颠覆了想象中的样子"
+      "images": []
     },
     {
       "id": "20250918-481",
