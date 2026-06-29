@@ -10841,8 +10841,8 @@
     },
     {
       "id": "20250701-596",
-      "date": "2025-07-01T16:15:00",
-      "whisky_name": "Teaninich 第林可 23年 Rare Malts Selection RMS",
+      "date": "2025-07-01T16:15",
+      "whisky_name": "Teaninich 第林可 23年 RMS",
       "distillery": "Teaninich",
       "bottler": "OB",
       "abv": 64.95,
@@ -10850,11 +10850,12 @@
       "distillation_year": 1972,
       "wb_id": 1796,
       "nose": "杏，桃，橙",
+      "aftertaste": "",
+      "notes": "",
       "palate_score": 4.1,
       "body_score": 4.2,
       "finish_score": 4.2,
-      "aftertaste": "",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250701-597",
