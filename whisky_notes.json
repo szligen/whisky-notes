@@ -3839,20 +3839,21 @@
     },
     {
       "id": "20260301-185",
-      "date": "2026-03-01T15:31:00",
-      "whisky_name": "Glen Garioch 匿名格兰盖瑞 33年 TWF x Shelter 老陈 10周年",
+      "date": "2026-03-01T15:31",
+      "whisky_name": "Glen Garioch 匿名格兰盖瑞 33年 TWf x Shelter 老陈 10周年",
       "distillery": "Glen Garioch",
-      "bottler": "TWF x Shelter",
+      "bottler": "TWf x Shelter",
       "abv": 46.3,
       "vintage_age": 33,
       "distillation_year": 1992,
       "wb_id": null,
       "nose": "蜜香，黄色水果，",
+      "aftertaste": "黄色水果，若有若无的烟皂",
+      "notes": "",
       "palate_score": 4,
       "body_score": 3.9,
       "finish_score": 3.7,
-      "aftertaste": "黄色水果，若有若无的烟皂",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260301-186",
@@ -7398,8 +7399,8 @@
     },
     {
       "id": "20251106-394",
-      "date": "2025-11-06T16:13:00",
-      "whisky_name": "Cooley 库利 20年 郑问三国 桃园结义",
+      "date": "2025-11-06T16:13",
+      "whisky_name": "Cooley 库利 20年 郑问三国 桃园结义 TWf",
       "distillery": "Cooley",
       "bottler": "The Whiskyfind (TWf)",
       "abv": 49.6,
@@ -7407,11 +7408,12 @@
       "distillation_year": 2001,
       "wb_id": 219529,
       "nose": "菠萝蜜，热带水果，脂粉味",
+      "aftertaste": "桃味，很本尼",
+      "notes": "库利真香，高级版本尼",
       "palate_score": 3.8,
       "body_score": 3.8,
       "finish_score": 3.9,
-      "aftertaste": "桃味，很本尼",
-      "notes": "库利真香，高级版本尼"
+      "images": []
     },
     {
       "id": "20251106-395",
@@ -9666,8 +9668,8 @@
     },
     {
       "id": "20250828-527",
-      "date": "2025-08-28T16:24:00",
-      "whisky_name": "Caol Ila 卡尔里拉 12年 BBR & TWF 立冬",
+      "date": "2025-08-28T16:24",
+      "whisky_name": "Caol Ila 卡尔里拉 12年 立冬 BBR & TWF",
       "distillery": "Caol Ila",
       "bottler": "BBR & TWF",
       "abv": 53.1,
@@ -9675,11 +9677,12 @@
       "distillation_year": 2010,
       "wb_id": 266878,
       "nose": "雪莉，红枣，泥煤",
+      "aftertaste": "红枣，药材味，熟苹果，皂味。",
+      "notes": "这种红酒桶很不自然，丢了卡尔里拉的个性",
       "palate_score": 3.5,
       "body_score": 3.6,
       "finish_score": 3.2,
-      "aftertaste": "红枣，药材味，熟苹果，皂味。",
-      "notes": "这种红酒桶很不自然，丢了卡尔里拉的个性"
+      "images": []
     },
     {
       "id": "20250828-528",
@@ -9838,20 +9841,21 @@
     },
     {
       "id": "20250820-537",
-      "date": "2025-08-20T15:18:00",
-      "whisky_name": "Glentauchers 格兰陶切斯 22年 TWF 莲香楼",
+      "date": "2025-08-20T15:18",
+      "whisky_name": "Glentauchers 格兰陶切斯 22年 莲香楼 TWF",
       "distillery": "Glentauchers",
-      "bottler": "TWF",
+      "bottler": "The Whiskyfind (TWf)",
       "abv": 50,
       "vintage_age": 22,
       "distillation_year": 1996,
       "wb_id": 133879,
       "nose": "醉甜黄水果",
+      "aftertaste": "菠萝，芒果等黄色水果味",
+      "notes": "高年份的陶切斯完全没有了草味，太好喝了",
       "palate_score": 4,
       "body_score": 3.9,
       "finish_score": 3.9,
-      "aftertaste": "菠萝，芒果等黄色水果味",
-      "notes": "高年份的陶切斯完全没有了草味，太好喝了"
+      "images": []
     },
     {
       "id": "20250820-538",
