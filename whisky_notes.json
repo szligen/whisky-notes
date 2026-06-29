@@ -1880,8 +1880,8 @@
     },
     {
       "id": "20260413-070",
-      "date": "2026-04-13T22:50:00",
-      "whisky_name": "Jura 朱拉 17年 Macbeth Collection - Act Two - The Murderers",
+      "date": "2026-04-13T22:50",
+      "whisky_name": "Jura 朱拉 17年 Macbeth Collection - Act Two - The Murderers ElD",
       "distillery": "Jura",
       "bottler": "Elixir Distillers (ElD)",
       "abv": 48.5,
@@ -1889,11 +1889,12 @@
       "distillation_year": null,
       "wb_id": 272667,
       "nose": "果香，轻烟泥煤，老味",
+      "aftertaste": "红果轻泥煤，旧书，一点点药",
+      "notes": "尾韵烟挺长",
       "palate_score": 3.8,
       "body_score": 3.8,
       "finish_score": 3.4,
-      "aftertaste": "红果轻泥煤，旧书，一点点药",
-      "notes": "尾韵烟挺长"
+      "images": []
     },
     {
       "id": "20260413-071",
