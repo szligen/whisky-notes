@@ -8606,8 +8606,8 @@
     },
     {
       "id": "20250920-465",
-      "date": "2025-09-20T16:45:00",
-      "whisky_name": "Caol Ila 卡尔里拉 20年 1975 RMS",
+      "date": "2025-09-20T16:45",
+      "whisky_name": "Caol Ila 卡尔里拉 20年 RMS",
       "distillery": "Caol Ila",
       "bottler": "OB",
       "abv": 61.18,
@@ -8615,11 +8615,12 @@
       "distillation_year": 1975,
       "wb_id": 9835,
       "nose": "酸葡萄酸杨桃的幽香，尾巴灰烬",
+      "aftertaste": "绷带药水味",
+      "notes": "闻香让人可以迷幻",
       "palate_score": 4.2,
       "body_score": 4.3,
       "finish_score": 4.5,
-      "aftertaste": "绷带药水味",
-      "notes": "闻香让人可以迷幻"
+      "images": []
     },
     {
       "id": "20250920-466",
