@@ -7632,20 +7632,21 @@
     },
     {
       "id": "20251013-408",
-      "date": "2025-10-13T17:00:00",
-      "whisky_name": "A Speyside Distillery 匿名格兰威特 31年 TWT 带墨镜的狐狸 Eld",
+      "date": "2025-10-13T17:00",
+      "whisky_name": "A Speyside Distillery 匿名格兰威特 31年 TWT 带墨镜的狐狸 ElD",
       "distillery": "Glenlivet",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 51.6,
       "vintage_age": 31,
       "distillation_year": 1990,
       "wb_id": 259352,
       "nose": "脂粉味，葡萄干，",
+      "aftertaste": "",
+      "notes": "喉咙里的甜味很像陶切斯",
       "palate_score": 4,
       "body_score": 4,
       "finish_score": 4,
-      "aftertaste": "",
-      "notes": "喉咙里的甜味很像陶切斯"
+      "images": []
     },
     {
       "id": "20251013-409",
