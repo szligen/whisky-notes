@@ -9751,8 +9751,8 @@
     },
     {
       "id": "20250820-532",
-      "date": "2025-08-20T15:49:00",
-      "whisky_name": "Benrinnes 本利林 21年 1974 RMS",
+      "date": "2025-08-20T15:49",
+      "whisky_name": "Benrinnes 本利林 21年 RMS",
       "distillery": "Benrinnes",
       "bottler": "OB",
       "abv": 60.4,
@@ -9760,11 +9760,12 @@
       "distillation_year": 1974,
       "wb_id": 2364,
       "nose": "青苹果，熟苹果，酸水果，很复杂的高香味，水蜜桃，杨桃，什么水果都有",
+      "aftertaste": "太强烈了，已经有点烟熏的错觉",
+      "notes": "浓郁度爆炸，喉底有点苦，依然瑕不掩瑜",
       "palate_score": 4.5,
       "body_score": 4.5,
       "finish_score": 4.5,
-      "aftertaste": "太强烈了，已经有点烟熏的错觉",
-      "notes": "浓郁度爆炸，喉底有点苦，依然瑕不掩瑜"
+      "images": []
     },
     {
       "id": "20250820-533",
