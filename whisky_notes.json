@@ -7725,8 +7725,8 @@
     },
     {
       "id": "20251013-413",
-      "date": "2025-10-13T15:45:00",
-      "whisky_name": "Cooley 库利 23年 Roots 女人在树上",
+      "date": "2025-10-13T15:45",
+      "whisky_name": "Cooley 库利 23年 Roots 女人在树上 TR",
       "distillery": "Cooley",
       "bottler": "The Roots (TR)",
       "abv": 50.8,
@@ -7734,11 +7734,12 @@
       "distillation_year": 2001,
       "wb_id": 276302,
       "nose": "脂粉味，酸葡萄，超多黄色水果",
+      "aftertaste": "脂粉，奶粉，奶油，杏仁",
+      "notes": "闻香超级好，香气诱人",
       "palate_score": 4,
       "body_score": 3.6,
       "finish_score": 3.3,
-      "aftertaste": "脂粉，奶粉，奶油，杏仁",
-      "notes": "闻香超级好，香气诱人"
+      "images": []
     },
     {
       "id": "20251013-414",
