@@ -240,23 +240,26 @@
 
 /* List view overrides */
 #cards-grid.list-view .note-card {
-  display: flex; flex-direction: column; gap: 6px; align-items: stretch;
-  padding: 12px 20px;
-}
-.list-compact {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 5px 14px; min-height: 0; gap: 10px;
+  display: flex; flex-direction: row; align-items: center;
+  padding: 5px 16px; gap: 8px;
 }
 .list-name {
-  flex: 1; font-size: 13px; font-weight: normal;
+  flex: 1; min-width: 0; font-size: 13px; font-weight: normal;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   color: var(--text);
 }
-#cards-grid.list-view .card-title { font-size: 13px; background: none; padding: 0; display: inline; border-radius: 0; }
-#cards-grid.list-view .note-card { padding: 5px 16px; gap: 4px; }
+#cards-grid.list-view .card-title { font-size: 13px; background: none; padding: 0; border-radius: 0; }
 #cards-grid.list-view .card-actions {
   margin-top: 0; padding-top: 0; border-top: none; opacity: 1;
-  margin-left: auto; flex-shrink: 0;
+  gap: 4px; flex-shrink: 0; background: transparent;
+}
+#cards-grid.list-view .btn-edit,
+#cards-grid.list-view .btn-delete {
+  width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 1px solid var(--border);
+  font-size: 14px; line-height: 1; display: inline-flex; align-items: center; justify-content: center;
+}
+#cards-grid.list-view .btn-edit { background: transparent; border-color: var(--accent); }
+#cards-grid.list-view .btn-delete { background: transparent; border-color: var(--border); margin-left: 0; }
 }
 
   /* ===== Empty State ===== */
@@ -556,9 +559,9 @@
     .btn-delete::before { content: '🗑️ '; font-size: 12px; }
 
     /* List view mobile tweaks */
-    #cards-grid.list-view .note-card { padding: 10px 16px; gap: 4px; }
-    .list-compact { padding: 6px 14px; }
-    .list-name { font-size: 13px; }
+    #cards-grid.list-view .note-card { padding: 4px 12px; gap: 6px; }
+    #cards-grid.list-view .btn-edit,
+    #cards-grid.list-view .btn-delete { width: 26px; height: 26px; font-size: 13px; }
 
     /* --- Results info --- */
     .results-info { font-size: 12px; flex-wrap: wrap; gap: 4px; }
@@ -628,7 +631,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-13:55</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-14:05</span>
   </div>
   <div class="header-right">
     <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式">🌙</button>
@@ -1170,10 +1173,10 @@ function cardHTML(n,isL){
 
   if(isL) {
     // List view — compact: only show whisky name
-    return '<div class="note-card list-compact" data-id="'+n.id+'">'+
+    return '<div class="note-card" data-id="'+n.id+'">'+
       '<span class="card-title list-name">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</span>'+
-      '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
-      '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div>';
+      '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'" title="\u7f16\u8f91">\u270F</button>'+
+      '<button class="btn-delete" data-id="'+n.id+'" title="\u5220\u9664">\uD83D\uDDD1</button></div></div>';
   }
 
   return '<div class="note-card" data-id="'+n.id+'">'+
