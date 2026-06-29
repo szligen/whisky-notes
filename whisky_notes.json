@@ -7163,20 +7163,21 @@
     },
     {
       "id": "20251113-380",
-      "date": "2025-11-13T15:19:00",
-      "whisky_name": "Tsunuki 津贯 5年",
+      "date": "2025-11-13T15:19",
+      "whisky_name": "Tsunuki 津贯 5年 T803 LMDW",
       "distillery": "Tsunuki",
-      "bottler": "LMDW",
+      "bottler": "OB",
       "abv": 58.5,
       "vintage_age": 5,
       "distillation_year": 2018,
       "wb_id": 261480,
       "nose": "深色水果，轻微泥煤",
+      "aftertaste": "深红枣，冰糖，糖浆，皂味",
+      "notes": "好喝，尾韵甜味很足",
       "palate_score": 4,
       "body_score": 3.8,
       "finish_score": 3.8,
-      "aftertaste": "深红枣，冰糖，糖浆，皂味",
-      "notes": "好喝，尾韵甜味很足"
+      "images": []
     },
     {
       "id": "20251113-381",
