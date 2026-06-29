@@ -6949,20 +6949,21 @@
     },
     {
       "id": "20251115-368",
-      "date": "2025-11-15T15:15:00",
-      "whisky_name": "Linkwood 林可伍德 16年 SMOS Eld",
+      "date": "2025-11-15T15:15",
+      "whisky_name": "Linkwood 林可伍德 16年 SMOS ElD",
       "distillery": "Linkwood",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 60.1,
       "vintage_age": 16,
       "distillation_year": 2006,
       "wb_id": null,
       "nose": "青苹果，新酒青味。喝完再闻很不错",
+      "aftertaste": "水果硬糖",
+      "notes": "强度有提升",
       "palate_score": 3.9,
       "body_score": 4,
       "finish_score": 3.7,
-      "aftertaste": "水果硬糖",
-      "notes": "强度有提升"
+      "images": []
     },
     {
       "id": "20251115-369",
