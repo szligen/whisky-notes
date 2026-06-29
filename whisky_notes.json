@@ -10936,8 +10936,8 @@
     },
     {
       "id": "20250701-601",
-      "date": "2025-07-01T00:00:00",
-      "whisky_name": "Ardmore 阿德摩尔 19年 Batch 3 TBWC",
+      "date": "2025-07-01T00:00",
+      "whisky_name": "Ardmore 阿德摩尔 19年 Batch 3 漫画标 TBWC",
       "distillery": "Ardmore",
       "bottler": "That Boutique-y Whisky Company (TBWC)",
       "abv": 48.7,
@@ -10945,11 +10945,12 @@
       "distillation_year": 2018,
       "wb_id": 124118,
       "nose": "泥煤味很淡，隐约有一点，但是和果味结合得很好",
+      "aftertaste": "比较弱，无功无过，像低年份的小甜水",
+      "notes": "",
       "palate_score": 3.6,
       "body_score": 3.5,
       "finish_score": 3,
-      "aftertaste": "比较弱，无功无过，像低年份的小甜水",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250630-602",
