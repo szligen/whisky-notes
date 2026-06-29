@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-10-16:05 -->
+<!-- VERSION: 2026-06-29-12:40 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -266,7 +266,7 @@
   .form-group textarea { resize: vertical; min-height: 60px; }
 
   .score-inputs { display: flex; gap: 10px; align-items: center; }
-  .score-inputs input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .score-inputs input[type="number"] { width: 90px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; background: var(--bg); color: var(--text); }
   .score-display { min-width: 30px; text-align: center; font-weight: 700; color: var(--accent); }
 
   /* Input length hint */
@@ -539,7 +539,7 @@
     .form-group select { font-size: 16px !important; }  /* prevent iOS zoom */
 
     /* Score inputs bigger touch targets */
-    .score-inputs input[type="range"] { height: 32px; }
+    .score-inputs input[type="number"] { height: 32px; width: 80px; }
 
 
     /* Image upload mobile */
@@ -584,7 +584,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.10-16:41</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-12:40</span>
   </div>
   <div class="header-right">
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
@@ -782,11 +782,11 @@
         <div class="form-section-title">⭐ 评分</div>
         <div class="form-grid">
           <div class="form-group"><label>入口 (Palate) /5</label>
-            <div class="score-inputs"><input type="range" id="f-palate" min="0" max="5" step="0.1" value="0" oninput="updateScore('palate',this.value)"><span class="score-display" id="disp-palate">—</span></div></div>
+            <div class="score-inputs"><input type="number" id="f-palate" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('palate',this.value)"><span class="score-display" id="disp-palate">—</span></div></div>
           <div class="form-group"><label>气韵 (Body) /5</label>
-            <div class="score-inputs"><input type="range" id="f-body" min="0" max="5" step="0.1" value="0" oninput="updateScore('body',this.value)"><span class="score-display" id="disp-body">—</span></div></div>
+            <div class="score-inputs"><input type="number" id="f-body" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('body',this.value)"><span class="score-display" id="disp-body">—</span></div></div>
           <div class="form-group"><label>喉感 (Finish) /5</label>
-            <div class="score-inputs"><input type="range" id="f-finish" min="0" max="5" step="0.1" value="0" oninput="updateScore('finish',this.value)"><span class="score-display" id="disp-finish">—</span></div></div>
+            <div class="score-inputs"><input type="number" id="f-finish" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('finish',this.value)"><span class="score-display" id="disp-finish">—</span></div></div>
         </div>
       </div>
     </div>
@@ -1192,9 +1192,9 @@ function populateForm(n){
   document.getElementById('f-nose').value=n.nose||'';
   document.getElementById('f-aftertaste').value=n.aftertaste||'';
   document.getElementById('f-notes').value=n.notes||'';
-  setSlider('palate',n.palate_score);
-  setSlider('body',n.body_score);
-  setSlider('finish',n.finish_score);
+  setScoreInput('palate',n.palate_score);
+  setScoreInput('body',n.body_score);
+  setScoreInput('finish',n.finish_score);
   // Load existing images
   existingImages = Array.isArray(n.images) ? n.images.slice() : [];
   pendingImageFiles = [];
@@ -1202,11 +1202,11 @@ function populateForm(n){
   updateAllHints();
 }
 
-function setSlider(k,v,mx){
+function setScoreInput(k,v){
   const a=v!=null;
   scoreActive[k]=a;
-  document.getElementById('f-'+k).value=a?v:0;
-  document.getElementById('disp-'+k).textContent=a?v:'\u2014';
+  document.getElementById('f-'+k).value=a?v:'';
+  document.getElementById('disp-'+k).textContent=a?v.toFixed(1):'\u2014';
 }
 
 function resetForm(){
@@ -1215,8 +1215,8 @@ function resetForm(){
    'f-nose','f-aftertaste','f-notes']
    .forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-date').value='';
-  setSlider('palate',null); setSlider('body',null);
-  setSlider('finish',null);
+  setScoreInput('palate',null); setScoreInput('body',null);
+  setScoreInput('finish',null);
   // Clear image state
   pendingImageFiles.forEach(function(f){ URL.revokeObjectURL(URL.createObjectURL(f)); });
   pendingImageFiles = [];
@@ -1226,7 +1226,7 @@ function resetForm(){
   updateAllHints();
 }
 
-function updateScore(k,v){ scoreActive[k]=true; document.getElementById('disp-'+k).textContent=v; }
+function updateScore(k,v){ const num=parseFloat(v); if(!isNaN(num)&&num>=0&&num<=5){ scoreActive[k]=true; document.getElementById('disp-'+k).textContent=num.toFixed(1); } else { scoreActive[k]=false; document.getElementById('disp-'+k).textContent='—'; } }
 
 /** Update character count hints */
 function updateAllHints() {
@@ -1250,11 +1250,6 @@ function updateHint(field, max) {
 /** Save (add or edit) → auto push to GitHub */
 async function saveNote(){
   const name=document.getElementById('f-name').value.trim();
-  if(!name){
-    toast('\u8bf7\u586b\u5199\u9152\u6b3e\u540d\u79f0');
-    document.getElementById('f-name').focus();
-    return;
-  }
 
   const btn = document.getElementById('btn-save-note');
   btn.classList.add('saving');
@@ -1436,9 +1431,10 @@ document.getElementById('btn-add').addEventListener('click', openAdd);
 document.getElementById('btn-save-note').addEventListener('click', saveNote);
 document.getElementById('btn-cancel').addEventListener('click', closeModal);
 document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal-overlay').addEventListener('click', e=>{
-  if(e.target===document.getElementById('modal-overlay')) closeModal();
-});
+// 禁止背景点击关闭 — 用户必须点击"保存记录"或"取消"
+// document.getElementById('modal-overlay').addEventListener('click', e=>{
+//   if(e.target===document.getElementById('modal-overlay')) closeModal();
+// });
 document.getElementById('confirm-cancel').addEventListener('click', ()=>{
   document.getElementById('confirm-overlay').classList.add('hidden');
 });
@@ -1524,8 +1520,9 @@ document.getElementById('detail-close').addEventListener('click', closeDetail);
 document.getElementById('btn-detail-close').addEventListener('click', closeDetail);
 document.getElementById('btn-detail-edit').addEventListener('click', ()=>{
   if(!detailId) return;
+  const id = detailId;
   closeDetail();
-  setTimeout(()=> openEdit(detailId), 50);
+  setTimeout(()=> openEdit(id), 50);
 });
 document.getElementById('btn-detail-delete').addEventListener('click', ()=>{
   if(!detailId) return;
