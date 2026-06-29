@@ -6967,20 +6967,21 @@
     },
     {
       "id": "20251115-369",
-      "date": "2025-11-15T15:05:00",
-      "whisky_name": "Linkwood 林可伍德 15年 SMOS Smart World TW Eld",
+      "date": "2025-11-15T15:05",
+      "whisky_name": "Linkwood 林可伍德 15年 SMOS Smart World TW ElD",
       "distillery": "Linkwood",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 58.9,
       "vintage_age": 15,
       "distillation_year": 2006,
       "wb_id": 273129,
       "nose": "青苹果，新酒青味。喝完再闻很不错",
+      "aftertaste": "水果硬糖",
+      "notes": "穿透力很强",
       "palate_score": 3.9,
       "body_score": 4,
       "finish_score": 3.5,
-      "aftertaste": "水果硬糖",
-      "notes": "穿透力很强"
+      "images": []
     },
     {
       "id": "20251115-370",
