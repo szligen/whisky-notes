@@ -4107,20 +4107,21 @@
     },
     {
       "id": "20260201-201",
-      "date": "2026-02-01T16:49:00",
-      "whisky_name": "Imperial 帝国 24年 酒厂平面贴画 TWT Eld",
+      "date": "2026-02-01T16:49",
+      "whisky_name": "Imperial 帝国 24年 酒厂平面贴画 TWT ElD",
       "distillery": "Imperial",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 54.1,
       "vintage_age": 24,
       "distillation_year": 1995,
       "wb_id": 230773,
       "nose": "脂粉，酸梨，麦芽啤酒，烤面包",
+      "aftertaste": "酸水果，芒果，黑巧烟",
+      "notes": "典型帝国跟库利风格很像，还有littlemill",
       "palate_score": 4.1,
       "body_score": 4,
       "finish_score": 4,
-      "aftertaste": "酸水果，芒果，黑巧烟",
-      "notes": "典型帝国跟库利风格很像，还有littlemill"
+      "images": []
     },
     {
       "id": "20260201-202",
