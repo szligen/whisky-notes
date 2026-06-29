@@ -7541,20 +7541,21 @@
     },
     {
       "id": "20251102-402",
-      "date": "2025-11-02T16:11:00",
-      "whisky_name": "Compass Box 指南针 This is not a Festival Whisky",
+      "date": "2025-11-02T16:11",
+      "whisky_name": "Compass Box 指南针 This is not a Festival Whisky LMDW",
       "distillery": "Compass Box",
-      "bottler": "LMDW",
+      "bottler": "OB",
       "abv": 49,
       "vintage_age": null,
       "distillation_year": null,
       "wb_id": 166214,
       "nose": "调和，哈密瓜，淡泥煤",
+      "aftertaste": "",
+      "notes": "简单好喝，吨吨吨",
       "palate_score": 3.6,
       "body_score": 3.7,
       "finish_score": 3.6,
-      "aftertaste": "",
-      "notes": "简单好喝，吨吨吨"
+      "images": []
     },
     {
       "id": "20251102-403",
@@ -8700,20 +8701,21 @@
     },
     {
       "id": "20250920-470",
-      "date": "2025-09-20T15:21:00",
-      "whisky_name": "Chichibu 秩父 6年 LMDW Flowers Series # 2",
+      "date": "2025-09-20T15:21",
+      "whisky_name": "Chichibu 秩父 6年 Flowers Series # 2 LMDW",
       "distillery": "Chichibu",
-      "bottler": "LMDW",
+      "bottler": "OB",
       "abv": 63.9,
       "vintage_age": 6,
       "distillation_year": 2016,
       "wb_id": 221716,
       "nose": "年轻波本，热带果脯，芒果",
+      "aftertaste": "热带水果余味，不是很奶油",
+      "notes": "酒体入口很浓郁，甚至有点烈。支撑不够，后面散开",
       "palate_score": 3.5,
       "body_score": 3.8,
       "finish_score": 3,
-      "aftertaste": "热带水果余味，不是很奶油",
-      "notes": "酒体入口很浓郁，甚至有点烈。支撑不够，后面散开"
+      "images": []
     },
     {
       "id": "20250918-471",
@@ -10734,8 +10736,8 @@
     },
     {
       "id": "20250703-589",
-      "date": "2025-07-03T00:00:00",
-      "whisky_name": "BenRiach 本利亚克 27年 LMDW选桶 #2057",
+      "date": "2025-07-03T00:00",
+      "whisky_name": "BenRiach 本利亚克 27年 #2057 LMDW",
       "distillery": "BenRiach",
       "bottler": "OB",
       "abv": 53,
@@ -10743,11 +10745,12 @@
       "distillation_year": 1994,
       "wb_id": 217801,
       "nose": "非常讨喜，樱桃果味浓郁夹杂泥煤带点皂味，可以一直闻。有点像单薄一点的波摩22px。",
+      "aftertaste": "温暖舒服泥煤",
+      "notes": "回气有甜味，第一次有这种feel",
       "palate_score": 3.9,
       "body_score": 3.9,
       "finish_score": 4,
-      "aftertaste": "温暖舒服泥煤",
-      "notes": "回气有甜味，第一次有这种feel"
+      "images": []
     },
     {
       "id": "20250703-590",
@@ -11756,8 +11759,8 @@
     },
     {
       "id": "20250529-649",
-      "date": "2025-05-29T00:00:00",
-      "whisky_name": "Benromach 本诺曼克 19年 Artist #14 Lmdw",
+      "date": "2025-05-29T00:00",
+      "whisky_name": "Benromach 本诺曼克 19年 Artist #14 LMDW",
       "distillery": "Benromach",
       "bottler": "La Maison du Whisky (LMDW)",
       "abv": 58.9,
@@ -11765,11 +11768,12 @@
       "distillation_year": null,
       "wb_id": null,
       "nose": "坎贝尔镇的淡泥煤",
+      "aftertaste": "泥煤味",
+      "notes": "好喝",
       "palate_score": 3.9,
       "body_score": 3.9,
       "finish_score": 3.7,
-      "aftertaste": "泥煤味",
-      "notes": "好喝"
+      "images": []
     },
     {
       "id": "20250529-650",
