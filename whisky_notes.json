@@ -7164,7 +7164,7 @@
     {
       "id": "20251113-380",
       "date": "2025-11-13T15:19",
-      "whisky_name": "Tsunuki 津贯 5年 T803 LMDW",
+      "whisky_name": "Tsunuki 津贯 5年 曼陀罗 蒸馏塔楼 T803 LMDW",
       "distillery": "Tsunuki",
       "bottler": "OB",
       "abv": 58.5,
@@ -7181,20 +7181,21 @@
     },
     {
       "id": "20251113-381",
-      "date": "2025-11-13T15:13:00",
-      "whisky_name": "Komagatake 驹之岳 5年",
+      "date": "2025-11-13T15:13",
+      "whisky_name": "Komagatake 驹之岳 5年 LMDW",
       "distillery": "The Mars Shinshu",
-      "bottler": "LMDW",
+      "bottler": "OB",
       "abv": 62,
       "vintage_age": 5,
       "distillation_year": 2018,
       "wb_id": 261482,
       "nose": "梨香，甜霜，脂粉，还是有草味",
+      "aftertaste": "青提，奶油尾调，酒精度数有点高",
+      "notes": "好喝",
       "palate_score": 4.2,
       "body_score": 4,
       "finish_score": 4,
-      "aftertaste": "青提，奶油尾调，酒精度数有点高",
-      "notes": "好喝"
+      "images": []
     },
     {
       "id": "20251113-382",
