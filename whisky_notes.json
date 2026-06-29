@@ -10070,8 +10070,8 @@
     },
     {
       "id": "20250801-551",
-      "date": "2025-08-01T00:00:00",
-      "whisky_name": "Ledaig 里爵 17年 2005 SMOS ElD",
+      "date": "2025-08-01T00:00",
+      "whisky_name": "Ledaig 里爵 17年 SMOS ElD",
       "distillery": "Tobermory",
       "bottler": "Elixir Distillers (ElD)",
       "abv": 55.5,
@@ -10079,11 +10079,12 @@
       "distillation_year": 2005,
       "wb_id": 245572,
       "nose": "闻香又误判是卡尔里拉",
+      "aftertaste": "",
+      "notes": "很柔顺，喝完很暖心",
       "palate_score": 4,
       "body_score": 3.8,
       "finish_score": 3.6,
-      "aftertaste": "",
-      "notes": "很柔顺，喝完很暖心"
+      "images": []
     },
     {
       "id": "20250801-552",
