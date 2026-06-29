@@ -8772,20 +8772,21 @@
     },
     {
       "id": "20250918-475",
-      "date": "2025-09-18T16:11:00",
-      "whisky_name": "Ben Nevis 本尼维斯 23年 TWT 知更鸟 Eld",
+      "date": "2025-09-18T16:11",
+      "whisky_name": "Ben Nevis 本尼维斯 23年 TWT 知更鸟 ElD",
       "distillery": "Ben Nevis",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 51.8,
       "vintage_age": 23,
       "distillation_year": 1996,
       "wb_id": 144299,
       "nose": "酸水果中，透出清晰的桃味芒果味",
+      "aftertaste": "",
+      "notes": "好喝的本尼",
       "palate_score": 3.8,
       "body_score": 3.8,
       "finish_score": 3.5,
-      "aftertaste": "",
-      "notes": "好喝的本尼"
+      "images": []
     },
     {
       "id": "20250918-476",
