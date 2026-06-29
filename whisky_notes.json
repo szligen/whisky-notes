@@ -7059,20 +7059,21 @@
     },
     {
       "id": "20251113-374",
-      "date": "2025-11-13T17:17:00",
+      "date": "2025-11-13T17:17",
       "whisky_name": "Arran 艾伦 27年 LMDW",
       "distillery": "Arran",
-      "bottler": "LMDW",
+      "bottler": "OB",
       "abv": 49.8,
       "vintage_age": 27,
       "distillation_year": 1995,
       "wb_id": 240496,
       "nose": "蜜香，脂粉味，淡雪莉",
+      "aftertaste": "梨，杨桃，奶油瓜子，尾韵有一点深色水果",
+      "notes": "艾伦的开厂之作，雪莉味但淡，但是很惊艳，香气融合得很好。",
       "palate_score": 4.3,
       "body_score": 4,
       "finish_score": 4.1,
-      "aftertaste": "梨，杨桃，奶油瓜子，尾韵有一点深色水果",
-      "notes": "艾伦的开厂之作，雪莉味但淡，但是很惊艳，香气融合得很好。"
+      "images": []
     },
     {
       "id": "20251113-375",
