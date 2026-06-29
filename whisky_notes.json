@@ -6217,20 +6217,21 @@
     },
     {
       "id": "20251210-325",
-      "date": "2025-12-10T14:43:00",
+      "date": "2025-12-10T14:43",
       "whisky_name": "Clynelish 小猫 12年 Whisky Mew Art Expression 山岗秀雄 ElD",
       "distillery": "Clynelish",
-      "bottler": "Elixir Ditstillers (ElD)",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 61,
       "vintage_age": 12,
       "distillation_year": 2011,
       "wb_id": 252976,
       "nose": "奶油话梅，青苹果，新酒青草味",
+      "aftertaste": "脂粉，甜到最后苦尾",
+      "notes": "",
       "palate_score": 3.8,
       "body_score": 3.6,
       "finish_score": 3.2,
-      "aftertaste": "脂粉，甜到最后苦尾",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20251210-326",
