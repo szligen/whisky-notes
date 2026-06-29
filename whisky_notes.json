@@ -3753,8 +3753,8 @@
     },
     {
       "id": "20260301-180",
-      "date": "2026-03-01T16:31:00",
-      "whisky_name": "Caol Ila 卡尔里拉 23年 Rare Malts Selection RMS",
+      "date": "2026-03-01T16:31",
+      "whisky_name": "Caol Ila 卡尔里拉 23年 RMS",
       "distillery": "Caol Ila",
       "bottler": "OB",
       "abv": 61.7,
@@ -3762,11 +3762,12 @@
       "distillation_year": 1978,
       "wb_id": 1118,
       "nose": "油桃，生瓜，黄色水果包裹泥煤，酒精味",
+      "aftertaste": "无尽糖果，烟熏味",
+      "notes": "",
       "palate_score": 4,
       "body_score": 4.2,
       "finish_score": 4,
-      "aftertaste": "无尽糖果，烟熏味",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260301-181",
