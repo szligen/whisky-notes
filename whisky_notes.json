@@ -12027,8 +12027,8 @@
     },
     {
       "id": "20250510-666",
-      "date": "2025-05-10T00:00:00",
-      "whisky_name": "Caol Ila 卡尔里拉 15年 The Single Malts of Scotland SMOS ElD",
+      "date": "2025-05-10T00:00",
+      "whisky_name": "Caol Ila 卡尔里拉 15年 SMOS ElD",
       "distillery": "Caol Ila",
       "bottler": "Elixir Distillers (ElD)",
       "abv": 59.9,
@@ -12036,11 +12036,12 @@
       "distillation_year": 2007,
       "wb_id": 240490,
       "nose": "泥煤加青草药，深邃，和酒精度融合刚好",
+      "aftertaste": "酸味淡泥煤",
+      "notes": "",
       "palate_score": 4.2,
       "body_score": 4.1,
       "finish_score": 4.2,
-      "aftertaste": "酸味淡泥煤",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250510-667",
