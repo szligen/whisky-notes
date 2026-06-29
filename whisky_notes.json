@@ -9678,20 +9678,21 @@
     },
     {
       "id": "20250828-528",
-      "date": "2025-08-28T16:15:00",
-      "whisky_name": "Teaninich 第林可 13年 TWT 苍鹭 Eld",
+      "date": "2025-08-28T16:15",
+      "whisky_name": "Teaninich 第林可 13年 苍鹭 TWT ElD",
       "distillery": "Teaninich",
-      "bottler": "Eld",
+      "bottler": "Elixir Distillers (ElD)",
       "abv": 58.1,
       "vintage_age": 13,
       "distillation_year": 2007,
       "wb_id": 257057,
       "nose": "淡颜色，青苹果，偏蜜香",
+      "aftertaste": "清新葡萄。竟然是雪梨桶，翻车",
+      "notes": "Eld牛逼",
       "palate_score": 3.7,
       "body_score": 3.8,
       "finish_score": 3.5,
-      "aftertaste": "清新葡萄。竟然是雪梨桶，翻车",
-      "notes": "Eld牛逼"
+      "images": []
     },
     {
       "id": "20250828-529",
