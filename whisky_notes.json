@@ -2596,8 +2596,8 @@
     },
     {
       "id": "20260329-112",
-      "date": "2026-03-29T14:44:00",
-      "whisky_name": "Cardhu 卡杜 15年 TMD",
+      "date": "2026-03-29T14:44",
+      "whisky_name": "Cardhu 卡杜 15年 The Manager's Dram TMD",
       "distillery": "Cardhu",
       "bottler": "OB",
       "abv": 63,
@@ -2605,11 +2605,12 @@
       "distillation_year": 1989,
       "wb_id": 17868,
       "nose": "黄色水果，油桃，极其迷幻复杂，一点烘烤",
+      "aftertaste": "黄色水果酱，微皂",
+      "notes": "人生第一支TMD，真·TMD好喝",
       "palate_score": 4.1,
       "body_score": 4.1,
       "finish_score": 4.3,
-      "aftertaste": "黄色水果酱，微皂",
-      "notes": "人生第一支TMD，真·TMD好喝"
+      "images": []
     },
     {
       "id": "20260329-113",
