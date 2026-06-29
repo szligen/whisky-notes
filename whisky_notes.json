@@ -6306,8 +6306,8 @@
     },
     {
       "id": "20251207-330",
-      "date": "2025-12-07T16:53:00",
-      "whisky_name": "North Port 北港 20年 Rare Malts Selection RMS",
+      "date": "2025-12-07T16:53",
+      "whisky_name": "North Port 北港 20年 RMS",
       "distillery": "North Port",
       "bottler": "OB",
       "abv": 61.2,
@@ -6315,11 +6315,12 @@
       "distillation_year": 1979,
       "wb_id": 3253,
       "nose": "脂粉，又很活泼",
+      "aftertaste": "奶油蛋糕，葡萄酸水果",
+      "notes": "好好喝",
       "palate_score": 4.3,
       "body_score": 4.2,
       "finish_score": 4.2,
-      "aftertaste": "奶油蛋糕，葡萄酸水果",
-      "notes": "好好喝"
+      "images": []
     },
     {
       "id": "20251207-331",
