@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-29-12:40 -->
+<!-- VERSION: 2026-06-29-13:35 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -29,6 +29,48 @@
     --radius: 8px;
     --radius-sm: 5px;
   }
+
+  /* ===== Dark Theme ===== */
+  [data-theme="dark"] {
+    --bg: #1a1618;
+    --surface: #242024;
+    --surface2: #2e2a2e;
+    --border: #3a3538;
+    --border-light: #332e32;
+    --text: #ede8e4;
+    --text-muted: #9a8f88;
+    --text-light: #6b6260;
+    --accent: #d4943a;
+    --accent-light: #e6a854;
+    --accent-bg: #3a2e24;
+    --gold: #e6b84a;
+    --gold-light: #3a3224;
+    --green: #3dbf8a;
+    --red: #ef5555;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  [data-theme="dark"] header { background: #201c20; border-bottom-color: #3a3538; }
+  [data-theme="dark"] .modal-content, [data-theme="dark"] .detail-content,
+  [data-theme="dark"] .confirm-content { background: #242024; }
+  [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select {
+    background: #1a1618; color: #ede8e4; border-color: #3a3538;
+  }
+  [data-theme="dark"] .btn-cancel { background: #3a3538; color: #ede8e4; }
+  [data-theme="dark"] .toast { background: #242024; color: #ede8e4; }
+  [data-theme="dark"] .empty-state { color: #6b6260; }
+  [data-theme="dark"] .loading-spinner { border-color: #3a3538; border-top-color: var(--accent); }
+  [data-theme="dark"] .score-display { color: var(--text-muted); }
+  [data-theme="dark"] .version-badge { background: var(--surface2); }
+
+  /* Theme toggle button */
+  .btn-theme {
+    background: none; border: 1px solid var(--border); border-radius: 50%;
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(--text-muted);
+  }
+  .btn-theme:hover { border-color: var(--accent); color: var(--accent); }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
     background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
@@ -161,7 +203,7 @@
   .note-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 
   .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 10px; }
-  .card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; flex: 1; }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; flex: 1; background: var(--accent-bg); padding: 4px 10px; border-radius: var(--radius-sm); display: inline-block; }
   .card-distillery { font-size: 13px; color: var(--accent); font-weight: 600; }
   .card-date { font-size: 11px; color: var(--text-light); white-space: nowrap; }
 
@@ -201,14 +243,16 @@
   display: flex; flex-direction: column; gap: 6px; align-items: stretch;
   padding: 12px 20px;
 }
-.list-line1 { display: flex; align-items: center; }
-#cards-grid.list-view .card-title { font-size: 15px; }
-.list-line2 {
-  display: flex; align-items: center; gap: 14px;
+.list-compact {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; min-height: 0; gap: 10px;
 }
-.list-meta {
-  font-size: 13px; color: var(--text-muted); white-space: nowrap;
+.list-name {
+  flex: 1; font-size: 14px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--text);
 }
+#cards-grid.list-view .card-title { font-size: 14px; }
 #cards-grid.list-view .card-actions {
   margin-top: 0; padding-top: 0; border-top: none; opacity: 1;
   margin-left: auto; flex-shrink: 0;
@@ -512,9 +556,8 @@
 
     /* List view mobile tweaks */
     #cards-grid.list-view .note-card { padding: 10px 16px; gap: 4px; }
-    .list-line2 { flex-wrap: wrap; gap: 8px; }
-    .list-meta { font-size: 12px; width: 100%; }
-    #cards-grid.list-view .card-actions { border-top: none; margin-left: 0; }
+    .list-compact { padding: 6px 14px; }
+    .list-name { font-size: 13px; }
 
     /* --- Results info --- */
     .results-info { font-size: 12px; flex-wrap: wrap; gap: 4px; }
@@ -584,9 +627,10 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-12:40</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-13:35</span>
   </div>
   <div class="header-right">
+    <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式">🌙</button>
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
     <button id="btn-add">＋ 添加记录</button>
   </div>
@@ -836,6 +880,29 @@
 <div id="toast"></div>
 
 <script>
+
+// ===== Theme (light/dark) =====
+function initTheme(){
+  const saved = localStorage.getItem('wn-theme');
+  if(saved==='dark' || (!saved && window.matchMedia('(prefers-color-scheme:dark)').matches)){
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('btn-theme').textContent = '☀️';
+  }
+}
+function toggleTheme(){
+  const isDark = document.documentElement.getAttribute('data-theme')==='dark';
+  if(isDark){
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('btn-theme').textContent = '🌙';
+    localStorage.setItem('wn-theme','light');
+  } else {
+    document.documentElement.setAttribute('data-theme','dark');
+    document.getElementById('btn-theme').textContent = '☀️';
+    localStorage.setItem('wn-theme','dark');
+  }
+}
+initTheme();
+
 // ============================================================
 // Config — only PAT token in localStorage, data always from GitHub
 // ============================================================
@@ -1101,17 +1168,11 @@ function cardHTML(n,isL){
   if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
 
   if(isL) {
-    // List view — compact 2-line layout
-    var parts = [];
-    if(n.distillation_year) parts.push(esc(n.distillation_year));
-    if(n.abv) parts.push(esc(n.abv)+'%');
-    if(n.wb_id) parts.push('WB#'+esc(n.wb_id));
-    var metaStr = parts.join(' \u00B7 ') || '\u2014';
-    return '<div class="note-card" data-id="'+n.id+'">'+
-      '<div class="list-line1"><span class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</span></div>'+
-      '<div class="list-line2"><span class="list-meta">'+metaStr+'</span>'+
+    // List view — compact: only show whisky name
+    return '<div class="note-card list-compact" data-id="'+n.id+'">'+
+      '<span class="card-title list-name">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</span>'+
       '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
-      '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div></div>';
+      '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div>';
   }
 
   return '<div class="note-card" data-id="'+n.id+'">'+
@@ -1439,6 +1500,7 @@ document.getElementById('confirm-cancel').addEventListener('click', ()=>{
   document.getElementById('confirm-overlay').classList.add('hidden');
 });
 document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+document.getElementById('btn-theme').addEventListener('click', toggleTheme);
 document.getElementById('btn-settings').addEventListener('click', openSettings);
 document.getElementById('btn-save-settings').addEventListener('click', saveSettingsAndTest);
 
