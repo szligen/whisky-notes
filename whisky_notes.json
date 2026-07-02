@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260702-010",
+      "date": "2026-07-02T16:17",
+      "whisky_name": "库利",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.9,
+      "vintage_age": 23,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "脂粉，黄色水果，",
+      "aftertaste": "桃，奶油，木质",
+      "notes": "油润",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260702-009",
       "date": "2026-07-02T16:07",
       "whisky_name": "匿名麦卡伦",
