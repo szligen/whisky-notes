@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260702-006",
+      "date": "2026-07-02T15:31",
+      "whisky_name": "云顶",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57.1,
+      "vintage_age": 5,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酸水果，水果硬糖",
+      "aftertaste": "麦芽",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260702-005",
       "date": "2026-07-02T15:15",
       "whisky_name": "格兰威特",
