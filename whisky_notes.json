@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260702-009",
+      "date": "2026-07-02T16:07",
+      "whisky_name": "匿名麦卡伦",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57.1,
+      "vintage_age": 20,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "活泼，梨香型雪莉",
+      "aftertaste": "粉香，话梅，奶油，黑巧",
+      "notes": "干邑",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260702-008",
       "date": "2026-07-02T15:55",
       "whisky_name": "哈索本",
