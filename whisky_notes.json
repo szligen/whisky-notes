@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260702-004",
+      "date": "2026-07-02T15:09",
+      "whisky_name": "波摩",
+      "distillery": "",
+      "bottler": "",
+      "abv": 43,
+      "vintage_age": 17,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "梨，高蜜，苹果",
+      "aftertaste": "皂味（廉价香水），老味",
+      "notes": "",
+      "palate_score": 3.6,
+      "body_score": 3.7,
+      "finish_score": 3.1,
+      "images": []
+    },
+    {
       "id": "20260702-003",
       "date": "2026-07-02T15:03",
       "whisky_name": "可蓝",
