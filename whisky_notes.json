@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260702-014",
+      "date": "2026-07-02T17:11",
+      "whisky_name": "小磨坊",
+      "distillery": "",
+      "bottler": "",
+      "abv": 52.1,
+      "vintage_age": 24,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "甜脂粉雪莉",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260702-013",
       "date": "2026-07-02T17:02",
       "whisky_name": "慕赫",
