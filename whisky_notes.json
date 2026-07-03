@@ -3887,8 +3887,8 @@
     },
     {
       "id": "20260308-173",
-      "date": "2026-03-08T20:43:00",
-      "whisky_name": "Glenlivet 格兰利威特 17年 Batch 1.1",
+      "date": "2026-03-08T20:43",
+      "whisky_name": "Glenlivet 格兰威特 17年 Batch 1.1",
       "distillery": "Glenlivet",
       "bottler": "OB",
       "abv": 60.8,
@@ -3896,11 +3896,12 @@
       "distillation_year": null,
       "wb_id": 253942,
       "nose": "熟苹果，雪莉，糖霜，坚果，酒精冲鼻",
+      "aftertaste": "红糖，红茶，黑巧，拿铁",
+      "notes": "风味浓郁，但酒精感有点压不住，很干涩显得苦",
       "palate_score": 3.8,
       "body_score": 3.9,
       "finish_score": 3.6,
-      "aftertaste": "红糖，红茶，黑巧，拿铁",
-      "notes": "风味浓郁，但酒精感有点压不住，很干涩显得苦"
+      "images": []
     },
     {
       "id": "20260308-174",
