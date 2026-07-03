@@ -1692,8 +1692,8 @@
     },
     {
       "id": "20260514-044",
-      "date": "2026-05-14T14:19:00",
-      "whisky_name": "Glenlivet 格兰利威 18年 Cask Strength Collection SV",
+      "date": "2026-05-14T14:19",
+      "whisky_name": "Glenlivet 格兰威特 18年 Cask Strength Collection SV",
       "distillery": "Glenlivet",
       "bottler": "Signatory Vintage (SV)",
       "abv": 59.5,
@@ -1701,11 +1701,12 @@
       "distillation_year": 2006,
       "wb_id": 289263,
       "nose": "弱酱，雪莉",
+      "aftertaste": "葡萄干，果干，黑巧",
+      "notes": "挺浓郁，但酒精感也强烈",
       "palate_score": 3.9,
       "body_score": 3.9,
       "finish_score": 3.5,
-      "aftertaste": "葡萄干，果干，黑巧",
-      "notes": "挺浓郁，但酒精感也强烈"
+      "images": []
     },
     {
       "id": "20260514-045",
