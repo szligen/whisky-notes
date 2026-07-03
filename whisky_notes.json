@@ -6032,8 +6032,8 @@
     },
     {
       "id": "20251218-299",
-      "date": "2025-12-18T15:18:00",
-      "whisky_name": "Glenlivet 格兰利威 Code 黑麦桶收尾",
+      "date": "2025-12-18T15:18",
+      "whisky_name": "Glenlivet 格兰威特 Code 黑麦桶收尾",
       "distillery": "Glenlivet",
       "bottler": "OB",
       "abv": 48,
@@ -6041,11 +6041,12 @@
       "distillation_year": null,
       "wb_id": 108762,
       "nose": "酸梨，刺柠，果核",
+      "aftertaste": "奶油，一丝波本。深色果皮，烘烤",
+      "notes": "一般好喝",
       "palate_score": 3.7,
       "body_score": 3.5,
       "finish_score": 3.2,
-      "aftertaste": "奶油，一丝波本。深色果皮，烘烤",
-      "notes": "一般好喝"
+      "images": []
     },
     {
       "id": "20251218-300",
