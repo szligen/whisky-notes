@@ -3447,8 +3447,8 @@
     },
     {
       "id": "20260319-146",
-      "date": "2026-03-19T14:57:00",
-      "whisky_name": "Auchroisk 奥克罗斯克 11 SMWS 95.103 Enveloped by España",
+      "date": "2026-03-19T14:57",
+      "whisky_name": "Auchroisk 奥克罗斯克 11年 SMWS 95.103 Enveloped by España",
       "distillery": "Auchroisk",
       "bottler": "SMWS",
       "abv": 60.1,
@@ -3456,11 +3456,12 @@
       "distillation_year": 2012,
       "wb_id": 258988,
       "nose": "淡淡雪莉味，花果脂粉，桑葚",
+      "aftertaste": "奶油，威化饼，甜葡萄",
+      "notes": "",
       "palate_score": 3.8,
       "body_score": 3.7,
       "finish_score": 3.5,
-      "aftertaste": "奶油，威化饼，甜葡萄",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260319-147",
