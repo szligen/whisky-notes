@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260727-001",
+      "date": "2026-07-27T20:35",
+      "whisky_name": "格兰路思 BBR",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.9,
+      "vintage_age": 23,
+      "distillation_year": 1995,
+      "wb_id": null,
+      "nose": "轻硫味雪莉，红糖，红果皮，奶油，脂粉",
+      "aftertaste": "奶油雪莉，很奶",
+      "notes": "轻微硫味不影响，后段奶油风味很足",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260706-001",
       "date": "2026-07-06T21:19",
       "whisky_name": "Glen Keith 格兰凯斯 Homage to Caledonia Shot Bar Morutoya 25th Anniversary Aco",
