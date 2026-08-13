@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-013",
+      "date": "2026-08-13T22:31",
+      "whisky_name": "9.287",
+      "distillery": "",
+      "bottler": "",
+      "abv": null,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260813-012",
       "date": "2026-08-13T15:47",
       "whisky_name": "42.64",
