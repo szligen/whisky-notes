@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-004",
+      "date": "2026-08-13T13:47",
+      "whisky_name": "4.341",
+      "distillery": "",
+      "bottler": "",
+      "abv": 63.1,
+      "vintage_age": 12,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色，甜食",
+      "aftertaste": "干果，干树叶，茶味",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260813-003",
       "date": "2026-08-13T13:37",
       "whisky_name": "10.227",
