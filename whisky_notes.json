@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-001",
+      "date": "2026-08-13T13:18",
+      "whisky_name": "73.149",
+      "distillery": "",
+      "bottler": "",
+      "abv": 59.6,
+      "vintage_age": 11,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "蜜糖，甜食，苹果",
+      "aftertaste": "密瓜，木质",
+      "notes": "闻香不错",
+      "palate_score": 3.7,
+      "body_score": 3.8,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260727-001",
       "date": "2026-07-27T20:35",
       "whisky_name": "格兰路思 BBR",
