@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-009",
+      "date": "2026-08-13T14:53",
+      "whisky_name": "格兰威特",
+      "distillery": "",
+      "bottler": "",
+      "abv": 62.1,
+      "vintage_age": 17,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "沉淀黄果，酸木头，山楂雪莉",
+      "aftertaste": "桃味，脂粉，干燥，泥尘",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 4,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260813-008",
       "date": "2026-08-13T14:42",
       "whisky_name": "卡尔里拉 岛节 2026",
