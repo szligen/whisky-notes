@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-008",
+      "date": "2026-08-13T14:42",
+      "whisky_name": "卡尔里拉 岛节 2026",
+      "distillery": "",
+      "bottler": "",
+      "abv": 56.1,
+      "vintage_age": 11,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "焦香泥煤，米饭味",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260813-007",
       "date": "2026-08-13T14:27",
       "whisky_name": "24.166",
