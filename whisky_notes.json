@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-007",
+      "date": "2026-08-13T14:27",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": null,
+      "vintage_age": 13,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "青苹果，油桃",
+      "aftertaste": "烘烤麦芽，轻雪莉，奶油",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260813-006",
       "date": "2026-08-13T14:15",
       "whisky_name": "伯奇 71.104",
