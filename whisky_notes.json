@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260813-003",
+      "date": "2026-08-13T13:37",
+      "whisky_name": "10.227",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.9,
+      "vintage_age": 7,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "沥青，竹，黄果",
+      "aftertaste": "竹排，泥炭，烟灰",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260813-002",
       "date": "2026-08-13T13:28",
       "whisky_name": "26.149",
