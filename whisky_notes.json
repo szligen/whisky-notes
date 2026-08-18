@@ -8583,20 +8583,21 @@
     },
     {
       "id": "20250926-430",
-      "date": "2025-09-26T16:40:00",
+      "date": "2025-09-26T16:40",
       "whisky_name": "Caperdonich 卡普多尼克 26年 SMWS 38.33 Enter the fruit lair",
       "distillery": "Caperdonich",
-      "bottler": "SMSW",
+      "bottler": "SMWS",
       "abv": 53.6,
       "vintage_age": 26,
       "distillation_year": 1994,
       "wb_id": 190157,
       "nose": "黄色水果，脂粉味，哈密瓜",
+      "aftertaste": "奶油，瓜子，烤面包",
+      "notes": "闻香淡雅不浓重",
       "palate_score": 3.8,
       "body_score": 4,
       "finish_score": 3.5,
-      "aftertaste": "奶油，瓜子，烤面包",
-      "notes": "闻香淡雅不浓重"
+      "images": []
     },
     {
       "id": "20250926-431",
