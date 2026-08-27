@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-014",
+      "date": "2026-08-27T16:52",
+      "whisky_name": "Strathisla Gm",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57,
+      "vintage_age": 15,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "老味雪莉，干树枝 ，淡烟熏火药",
+      "aftertaste": "红枣，老味，红果，红糖",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260827-013",
       "date": "2026-08-27T16:27",
       "whisky_name": "Glen Albyn rms",
