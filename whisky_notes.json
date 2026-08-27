@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-007",
+      "date": "2026-08-27T14:56",
+      "whisky_name": "格兰莫",
+      "distillery": "Glen Mhor",
+      "bottler": "",
+      "abv": 43,
+      "vintage_age": 10,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酱味，熟烂酸水果，花香",
+      "aftertaste": "柴火老味，花果香",
+      "notes": "水，老味突出",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260827-006",
       "date": "2026-08-27T14:37",
       "whisky_name": "富特尼",
