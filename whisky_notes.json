@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-002",
+      "date": "2026-08-27T13:53",
+      "whisky_name": "本尼维斯 Pst",
+      "distillery": "",
+      "bottler": "",
+      "abv": 50,
+      "vintage_age": 9,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "烧干的荔枝，朗姆，坏了的啤酒",
+      "aftertaste": "",
+      "notes": "闻香很怪，有苦尾",
+      "palate_score": 3.6,
+      "body_score": 3.6,
+      "finish_score": 3.1,
+      "images": []
+    },
+    {
       "id": "20260827-001",
       "date": "2026-08-27T13:49",
       "whisky_name": "海盗女王",
