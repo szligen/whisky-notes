@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-012",
+      "date": "2026-08-27T15:58",
+      "whisky_name": "林可伍德 Sv vc",
+      "distillery": "",
+      "bottler": "",
+      "abv": 56.1,
+      "vintage_age": 26,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酸水果，酸醋栗，复杂果味",
+      "aftertaste": "皂味，花果香，老味",
+      "notes": "皂味明显，",
+      "palate_score": 3.8,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260827-011",
       "date": "2026-08-27T15:48",
       "whisky_name": "本利亚克",
