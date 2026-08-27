@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-011",
+      "date": "2026-08-27T15:48",
+      "whisky_name": "本利亚克",
+      "distillery": "",
+      "bottler": "",
+      "abv": 46.2,
+      "vintage_age": 38,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "深色果脯，浓郁果味，葡萄",
+      "aftertaste": "青味脂粉，老味，茶味，出烟味",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260827-010",
       "date": "2026-08-27T15:43",
       "whisky_name": "秩父 dfs",
