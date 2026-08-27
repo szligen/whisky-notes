@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-001",
+      "date": "2026-08-27T13:49",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": 40,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "青果",
+      "aftertaste": "干树枝",
+      "notes": "类尊美醇，很水，但有苦尾",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260813-015",
       "date": "2026-08-13T22:35",
       "whisky_name": "Longmorn 朗摩 37年 3R",
