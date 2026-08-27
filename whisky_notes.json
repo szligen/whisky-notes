@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-013",
+      "date": "2026-08-27T16:27",
+      "whisky_name": "Glen Albyn",
+      "distillery": "",
+      "bottler": "",
+      "abv": 54.8,
+      "vintage_age": 26,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色酱水果，青梨",
+      "aftertaste": "",
+      "notes": "平顺好喝，余韵散得很快",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260827-012",
       "date": "2026-08-27T15:58",
       "whisky_name": "林可伍德 Sv vc",
