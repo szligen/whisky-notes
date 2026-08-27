@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-006",
+      "date": "2026-08-27T14:37",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": 62.5,
+      "vintage_age": 13,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酱香雪莉，香料",
+      "aftertaste": "粉香，脂粉",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260827-005",
       "date": "2026-08-27T14:29",
       "whisky_name": "卡尔里拉",
