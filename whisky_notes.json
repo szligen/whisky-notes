@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260827-010",
+      "date": "2026-08-27T15:43",
+      "whisky_name": "秩父 dfs",
+      "distillery": "",
+      "bottler": "",
+      "abv": 63.7,
+      "vintage_age": 6,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色酱果",
+      "aftertaste": "脂粉",
+      "notes": "强劲",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260827-009",
       "date": "2026-08-27T15:24",
       "whisky_name": "本利林",
