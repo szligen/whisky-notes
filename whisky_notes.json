@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260904-011",
+      "date": "2026-09-04T20:05",
+      "whisky_name": "格兰路思",
+      "distillery": "",
+      "bottler": "",
+      "abv": 51.8,
+      "vintage_age": 27,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "甜美水果，果酱",
+      "aftertaste": "香水，洗手液",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260904-010",
       "date": "2026-09-04T19:52",
       "whisky_name": "阿苏",
