@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260904-007",
+      "date": "2026-09-04T19:13",
+      "whisky_name": "波摩",
+      "distillery": "",
+      "bottler": "",
+      "abv": 53.9,
+      "vintage_age": 18,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "发酵的酸水果，酒精味",
+      "aftertaste": "木质，烧灼的味道",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260904-006",
       "date": "2026-09-04T19:03",
       "whisky_name": "克莱嘉赫",
