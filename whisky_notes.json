@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260904-012",
+      "date": "2026-09-04T20:15",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": 56.3,
+      "vintage_age": 21,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "木质雪莉，茶感",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260904-011",
       "date": "2026-09-04T20:05",
       "whisky_name": "格兰路思",
