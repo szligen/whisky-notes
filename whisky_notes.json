@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260904-005",
+      "date": "2026-09-04T18:59",
+      "whisky_name": "拉弗格 sv",
+      "distillery": "",
+      "bottler": "",
+      "abv": 46,
+      "vintage_age": 12,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄果烟熏",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.6,
+      "body_score": 3.7,
+      "finish_score": 3.6,
+      "images": []
+    },
+    {
       "id": "20260904-004",
       "date": "2026-09-04T18:49",
       "whisky_name": "艾伯迪",
