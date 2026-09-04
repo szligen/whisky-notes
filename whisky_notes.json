@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260904-002",
+      "date": "2026-09-04T18:37",
+      "whisky_name": "林多斯",
+      "distillery": "",
+      "bottler": "",
+      "abv": 60.7,
+      "vintage_age": 3,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "花香，密瓜，有谷物味",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260904-001",
       "date": "2026-09-04T18:31",
       "whisky_name": "本尼",
