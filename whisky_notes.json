@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-008",
+      "date": "2026-09-10T21:26",
+      "whisky_name": "Basil Hayden",
+      "distillery": "Jim Beam",
+      "bottler": "",
+      "abv": 40,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "谷物波本，没什么特别",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260910-007",
       "date": "2026-09-10T21:19",
       "whisky_name": "Laphroaig 拉弗格 SMWS 29.292 Peat in parts per thousand",
