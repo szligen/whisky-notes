@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-015",
+      "date": "2026-09-10T23:26",
+      "whisky_name": "Ardbeg 阿贝 Kildalton 十字架",
+      "distillery": "",
+      "bottler": "",
+      "abv": 46,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": 189917,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260910-014",
       "date": "2026-09-10T23:22",
       "whisky_name": "Aberlour 亚伯乐 15年 Select Cask Reserve",
