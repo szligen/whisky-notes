@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-002",
+      "date": "2026-09-10T17:30",
+      "whisky_name": "Raasay 拉塞岛 SMWS 162.5  Invigorating and refreshing",
+      "distillery": "Raasay",
+      "bottler": "SMWS",
+      "abv": 61.1,
+      "vintage_age": 5,
+      "distillation_year": 2019,
+      "wb_id": 274570,
+      "nose": "黄色水果、酸木头和焦糖蜜",
+      "aftertaste": "微酸水果硬糖、麦芽香味",
+      "notes": "有桃味，辣喉咙",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260910-001",
       "date": "2026-09-10T17:27",
       "whisky_name": "Raasay 拉塞岛 SMWS 162.3  Grilled lobster tail in garlic butter",
