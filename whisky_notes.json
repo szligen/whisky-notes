@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-012",
+      "date": "2026-09-10T21:50",
+      "whisky_name": "Deanston 丁斯顿 15年 Organic",
+      "distillery": "Deanston",
+      "bottler": "OB",
+      "abv": 46.3,
+      "vintage_age": 15,
+      "distillation_year": null,
+      "wb_id": 95824,
+      "nose": "波本，酒精味",
+      "aftertaste": "奶油瓜子，还是有处女桶那股不喜欢的木头味，酒精味",
+      "notes": "",
+      "palate_score": 3.4,
+      "body_score": 3.3,
+      "finish_score": 3,
+      "images": []
+    },
+    {
       "id": "20260910-011",
       "date": "2026-09-10T21:46",
       "whisky_name": "Miyagikyo 宫城侠",
