@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-004",
+      "date": "2026-09-10T17:36",
+      "whisky_name": "Teaninich 第林可 SMWS 59.88  Breakfast tea and potpourri",
+      "distillery": "Teaninich",
+      "bottler": "SMWS",
+      "abv": 57.3,
+      "vintage_age": 17,
+      "distillation_year": 2007,
+      "wb_id": 273502,
+      "nose": "酸熟苹果、洋梨和酸百香果",
+      "aftertaste": "白花调",
+      "notes": "很像陶切斯",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260910-003",
       "date": "2026-09-10T17:33",
       "whisky_name": "Clynelish 小猫 SMWS 26.220 Granny's fruit candy jar",
