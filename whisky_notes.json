@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-003",
+      "date": "2026-09-10T17:33",
+      "whisky_name": "Clynelish 小猫 SMWS 26.220 Granny's fruit candy jar",
+      "distillery": "Clynelish",
+      "bottler": "SMWS",
+      "abv": 60.6,
+      "vintage_age": 10,
+      "distillation_year": 2012,
+      "wb_id": 256168,
+      "nose": "花蜜、青苹果和香草瓜子仁",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260910-002",
       "date": "2026-09-10T17:30",
       "whisky_name": "Raasay 拉塞岛 SMWS 162.5  Invigorating and refreshing",
