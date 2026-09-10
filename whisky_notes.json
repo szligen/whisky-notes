@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-014",
+      "date": "2026-09-10T23:22",
+      "whisky_name": "Aberlour 亚伯乐 15年 Select Cask Reserve",
+      "distillery": "",
+      "bottler": "OB",
+      "abv": 43,
+      "vintage_age": 15,
+      "distillation_year": null,
+      "wb_id": 28757,
+      "nose": "熟苹果、黑醋栗、果脯",
+      "aftertaste": "深色果皮",
+      "notes": "",
+      "palate_score": 3.5,
+      "body_score": 3.5,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260910-013",
       "date": "2026-09-10T23:17",
       "whisky_name": "Hibiki 響 Japanese Harmony Ryusui-Hyakka Limited Edition 2021",
