@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-011",
+      "date": "2026-09-10T21:46",
+      "whisky_name": "Miyagikyo 宫城侠",
+      "distillery": "Miyagikyo",
+      "bottler": "OB",
+      "abv": 45,
+      "vintage_age": null,
+      "distillation_year": null,
+      "wb_id": 252695,
+      "nose": "波本带苹果香，猜测过了雪莉桶之类",
+      "aftertaste": "后段有酒精味",
+      "notes": "柔顺小甜水，有酒精味，余韵后段烟灰味，空杯泥煤味",
+      "palate_score": 3.2,
+      "body_score": 3.2,
+      "finish_score": 3,
+      "images": []
+    },
+    {
       "id": "20260910-010",
       "date": "2026-09-10T21:38",
       "whisky_name": "Bruichladdich 布赫拉迪 10年 Rock'ndaal 03.1 Feis Ile 2024 岛节",
