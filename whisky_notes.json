@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260910-005",
+      "date": "2026-09-10T17:39",
+      "whisky_name": "Inchmurrin 英尺马林 SMWS 112.125 Chiselled features",
+      "distillery": "Loch Lomond",
+      "bottler": "SMWS",
+      "abv": 54.9,
+      "vintage_age": 17,
+      "distillation_year": 2007,
+      "wb_id": 275743,
+      "nose": "奶油、杏、雪莉",
+      "aftertaste": "干邑深色葡萄、雪莉风格和深色葡萄皮",
+      "notes": "很厚",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260910-004",
       "date": "2026-09-10T17:36",
       "whisky_name": "Teaninich 第林可 SMWS 59.88  Breakfast tea and potpourri",
