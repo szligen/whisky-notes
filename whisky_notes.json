@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-001",
+      "date": "2026-09-11T09:18",
+      "whisky_name": "Aberlour 亚伯乐 16年 Double Cask Matured 双桶",
+      "distillery": "Aberlour",
+      "bottler": "OB",
+      "abv": 40,
+      "vintage_age": 16,
+      "distillation_year": null,
+      "wb_id": 266020,
+      "nose": "深色浆果酱香，深色果脯",
+      "aftertaste": "",
+      "notes": "一般",
+      "palate_score": 3.6,
+      "body_score": 3.7,
+      "finish_score": 3.2,
+      "images": []
+    },
+    {
       "id": "20260910-015",
       "date": "2026-09-10T23:26",
       "whisky_name": "Ardbeg 阿贝 Kildalton 十字架",
