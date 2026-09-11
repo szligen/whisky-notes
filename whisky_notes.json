@@ -9450,20 +9450,21 @@
     },
     {
       "id": "20251106-400",
-      "date": "2025-11-06T15:00:00",
+      "date": "2025-11-06T15:00",
       "whisky_name": "Shizuoka 静冈 4年 百世不磨",
-      "distillery": "静冈",
+      "distillery": "Shizuoka",
       "bottler": "OB",
       "abv": 50.5,
       "vintage_age": 4,
       "distillation_year": 2020,
       "wb_id": 272355,
       "nose": "花果香，蜜香，青苹果",
+      "aftertaste": "蜜香调",
+      "notes": "胜在闻香",
       "palate_score": 3.1,
       "body_score": 3.2,
       "finish_score": 3,
-      "aftertaste": "蜜香调",
-      "notes": "胜在闻香"
+      "images": []
     },
     {
       "id": "20251106-401",
