@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-022",
+      "date": "2026-09-11T12:44",
+      "whisky_name": "Aberlour 亚伯乐 12年 35WHISKY 热带鱼",
+      "distillery": "Aberlour",
+      "bottler": "35WHISKY",
+      "abv": 53.5,
+      "vintage_age": 12,
+      "distillation_year": 2013,
+      "wb_id": 279495,
+      "nose": "熟苹果，酸苹果",
+      "aftertaste": "酸，酸枣。好喝的酸",
+      "notes": "",
+      "palate_score": 3.6,
+      "body_score": 3.6,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260911-021",
       "date": "2026-09-11T12:41",
       "whisky_name": "Miltonduff  弥尔顿达夫 12年 100 Proof - Edition #14 SV",
