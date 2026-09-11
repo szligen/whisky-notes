@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-031",
+      "date": "2026-09-11T14:26",
+      "whisky_name": "Glen Grant 格兰冠 27年 DR",
+      "distillery": "Glen Grant",
+      "bottler": "A.D. Rattray (DR)",
+      "abv": 51.2,
+      "vintage_age": 27,
+      "distillation_year": 1985,
+      "wb_id": 42106,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260911-030",
       "date": "2026-09-11T14:20",
       "whisky_name": "Ben Nevis 本尼维斯 26年 The Antelope 羚羊星皓广场开业 LT",
