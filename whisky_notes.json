@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-006",
+      "date": "2026-09-11T10:04",
+      "whisky_name": "Clynelish 小猫 Dun Bheagan IM",
+      "distillery": "Clynelish",
+      "bottler": "Ian Macleod (IM)",
+      "abv": 49.5,
+      "vintage_age": 27,
+      "distillation_year": 1990,
+      "wb_id": 115893,
+      "nose": "蜜香型雪莉",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260911-005",
       "date": "2026-09-11T09:53",
       "whisky_name": "Blended Malt 雪莉调和 32年 Founder's Selection Vol 5 Wisedrink 流星",
