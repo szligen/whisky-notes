@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-017",
+      "date": "2026-09-11T12:07",
+      "whisky_name": "Ledaig 里爵 25年 LIQ 彩线人头",
+      "distillery": "Ledaig",
+      "bottler": "The Liquoree (LIQ)",
+      "abv": 49,
+      "vintage_age": 25,
+      "distillation_year": 1995,
+      "wb_id": 211794,
+      "nose": "有点怪，汗馊味，肉味，酸水果",
+      "aftertaste": "奶油瓜子，水蜜桃",
+      "notes": "中段有桃味，但太水了",
+      "palate_score": 3.7,
+      "body_score": 3.7,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260911-016",
       "date": "2026-09-11T12:05",
       "whisky_name": "Linkwood 林可伍德 22年 AqV",
