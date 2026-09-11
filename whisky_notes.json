@@ -8816,20 +8816,21 @@
     },
     {
       "id": "20251113-377",
-      "date": "2025-11-13T16:40:00",
+      "date": "2025-11-13T16:40",
       "whisky_name": "Dailuaine 大云 30年 Dollar Cat Kanpaikai & The Antelope",
       "distillery": "Dailuaine",
-      "bottler": "The Antelope",
+      "bottler": "Kanpaikai & The Antelope",
       "abv": 55.5,
       "vintage_age": 30,
       "distillation_year": 1995,
       "wb_id": 277085,
       "nose": "超级脂粉味",
+      "aftertaste": "",
+      "notes": "大云再次惊艳",
       "palate_score": 4.1,
       "body_score": 4,
       "finish_score": 4.2,
-      "aftertaste": "",
-      "notes": "大云再次惊艳"
+      "images": []
     },
     {
       "id": "20251113-378",
