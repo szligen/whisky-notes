@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-026",
+      "date": "2026-09-11T14:00",
+      "whisky_name": "Tobermory 托本莫瑞 19年 Finest Collection HB",
+      "distillery": "Tobermory",
+      "bottler": "Hart Brothers (HB)",
+      "abv": 53.8,
+      "vintage_age": 19,
+      "distillation_year": 1995,
+      "wb_id": 63801,
+      "nose": "酱香雪莉，非常像麦卡伦",
+      "aftertaste": "黑巧，糖浆。尾调真的很像麦",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260911-025",
       "date": "2026-09-11T13:57",
       "whisky_name": "Bowmore 波摩 Vault Edit1°N 一号酒窖 2016's",
