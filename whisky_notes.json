@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-005",
+      "date": "2026-09-11T09:53",
+      "whisky_name": "Blended Malt Scotch Whisky 雪莉调和 32年 Wisedrink 流星",
+      "distillery": "Blended",
+      "bottler": "Wisedrink",
+      "abv": 49.5,
+      "vintage_age": 32,
+      "distillation_year": 1992,
+      "wb_id": 281102,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260911-004",
       "date": "2026-09-11T09:43",
       "whisky_name": "Ben Nevis 本尼维斯 28年 Little Malts & Mateo Art",
