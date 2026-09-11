@@ -11350,7 +11350,7 @@
     },
     {
       "id": "20250907-511",
-      "date": "2025-09-07T12:09:00",
+      "date": "2025-09-07T12:09",
       "whisky_name": "Glencadam 格兰卡登 22年 免税装瓶",
       "distillery": "Glencadam",
       "bottler": "OB",
@@ -11359,11 +11359,12 @@
       "distillation_year": 1999,
       "wb_id": 245453,
       "nose": "",
-      "palate_score": null,
-      "body_score": null,
-      "finish_score": null,
       "aftertaste": "",
-      "notes": "好喝，但打不过格兰冠15"
+      "notes": "好喝，但打不过格兰冠15",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
     },
     {
       "id": "20250907-512",
