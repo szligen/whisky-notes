@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-027",
+      "date": "2026-09-11T14:09",
+      "whisky_name": "Ardbeg 阿贝 Galileo 伽利略",
+      "distillery": "Ardbeg",
+      "bottler": "OB",
+      "abv": 49,
+      "vintage_age": 12,
+      "distillation_year": 1999,
+      "wb_id": 34525,
+      "nose": "熟水果，生草根",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.6,
+      "images": []
+    },
+    {
       "id": "20260911-026",
       "date": "2026-09-11T14:00",
       "whisky_name": "Tobermory 托本莫瑞 19年 Finest Collection HB",
