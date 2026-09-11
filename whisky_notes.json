@@ -11468,20 +11468,21 @@
     },
     {
       "id": "20250907-517",
-      "date": "2025-09-07T11:11:00",
+      "date": "2025-09-07T11:11",
       "whisky_name": "Saburomaru 三郎丸 3年 百世不磨 9",
       "distillery": "Saburomaru",
-      "bottler": "Rudder",
+      "bottler": "The Ultimate Spirits, Rudder Ltd (TUS)",
       "abv": 60,
       "vintage_age": 3,
       "distillation_year": 2020,
       "wb_id": 262997,
       "nose": "调和，略有泥煤消毒水",
+      "aftertaste": "",
+      "notes": "调和，略有泥煤消毒水",
       "palate_score": 3.2,
       "body_score": 3.5,
       "finish_score": 2,
-      "aftertaste": "",
-      "notes": "调和，略有泥煤消毒水"
+      "images": []
     },
     {
       "id": "20250828-518",
