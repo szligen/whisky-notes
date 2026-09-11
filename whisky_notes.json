@@ -9951,8 +9951,8 @@
     },
     {
       "id": "20250924-443",
-      "date": "2025-09-24T16:36:00",
-      "whisky_name": "Macallan 麦卡伦 15年  24.177 Fig Noir / A moongazing dram",
+      "date": "2025-09-24T16:36",
+      "whisky_name": "Macallan 麦卡伦 15年  24.177 SMWS Fig Noir / A moongazing dram",
       "distillery": "Macallan",
       "bottler": "SMWS",
       "abv": 62.1,
@@ -9960,11 +9960,12 @@
       "distillation_year": 2008,
       "wb_id": 266394,
       "nose": "黑醋栗，深色巧克力",
+      "aftertaste": "味很正，真的很黑巧，血色",
+      "notes": "比布纳哈本沉闷，不够年份",
       "palate_score": 4,
       "body_score": 4,
       "finish_score": 4.2,
-      "aftertaste": "味很正，真的很黑巧，血色",
-      "notes": "比布纳哈本沉闷，不够年份"
+      "images": []
     },
     {
       "id": "20250924-444",
