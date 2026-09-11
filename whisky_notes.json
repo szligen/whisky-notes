@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-003",
+      "date": "2026-09-11T09:29",
+      "whisky_name": "Imperial 帝国 22年 A Whisky Anthology - Monologue Ch7",
+      "distillery": "Imperial",
+      "bottler": "Chapter 7 (Ch7)",
+      "abv": 52.1,
+      "vintage_age": null,
+      "distillation_year": 1998,
+      "wb_id": 169252,
+      "nose": "",
+      "aftertaste": "微酸，奶油水果",
+      "notes": "黄色水果汁",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260911-002",
       "date": "2026-09-11T09:23",
       "whisky_name": "Burnside 匿名百富 27年 Whisky Sponge Edition No. 87 DeDr",
