@@ -10138,20 +10138,21 @@
     },
     {
       "id": "20250922-454",
-      "date": "2025-09-22T17:28:00",
-      "whisky_name": "Maccallan 麦卡伦 16年 SMWS 24.185 Textbook Sherry",
-      "distillery": "Maccallan",
+      "date": "2025-09-22T17:28",
+      "whisky_name": "Macallan 麦卡伦 16年 SMWS 24.185 Textbook Sherry",
+      "distillery": "Macallan",
       "bottler": "SMWS",
       "abv": 63.2,
       "vintage_age": 16,
       "distillation_year": 2008,
       "wb_id": 282161,
       "nose": "蜜枣，哈密瓜，深色果皮",
+      "aftertaste": "",
+      "notes": "",
       "palate_score": 4.2,
       "body_score": 4.2,
       "finish_score": 4.3,
-      "aftertaste": "",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250922-455",
