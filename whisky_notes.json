@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-010",
+      "date": "2026-09-11T10:36",
+      "whisky_name": "Glenrothes 格兰露丝 10年",
+      "distillery": "",
+      "bottler": "",
+      "abv": null,
+      "vintage_age": null,
+      "distillation_year": 2014,
+      "wb_id": null,
+      "nose": "青苹果混雪莉",
+      "aftertaste": "中段酒精味",
+      "notes": "雪莉味比较正，但给的不多",
+      "palate_score": 3.7,
+      "body_score": 3.7,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260911-009",
       "date": "2026-09-11T10:29",
       "whisky_name": "Linkwood 林可伍德 11年 Whisky Lovers Hong Kong 月饮|乙醇",
