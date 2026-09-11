@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-013",
+      "date": "2026-09-11T11:19",
+      "whisky_name": "Chichibu 秩父 10年 Takashimaya 高岛屋",
+      "distillery": "Chichibu",
+      "bottler": "OB",
+      "abv": 63,
+      "vintage_age": 9,
+      "distillation_year": 2014,
+      "wb_id": 245792,
+      "nose": "酸蜜桃、烤果酱，俗称大酒味",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260911-012",
       "date": "2026-09-11T11:16",
       "whisky_name": "Williamson 匿名拉弗格 15年 The Antelope",
