@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-021",
+      "date": "2026-09-11T12:41",
+      "whisky_name": "Miltonduff  弥尔顿达夫 12年 100 Proof - Edition #14 SV",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57.1,
+      "vintage_age": 12,
+      "distillation_year": 2011,
+      "wb_id": 251427,
+      "nose": "酸雪莉",
+      "aftertaste": "",
+      "notes": "很简单直接的雪莉味，还有一点美国波本（谷物）",
+      "palate_score": 3.7,
+      "body_score": 3.7,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260911-020",
       "date": "2026-09-11T12:37",
       "whisky_name": "Saburomaru 三郎丸 调和 百世不磨 Vol 10 LESS IS MORE Rudder",
