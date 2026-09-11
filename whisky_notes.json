@@ -8132,20 +8132,21 @@
     },
     {
       "id": "20251207-337",
-      "date": "2025-12-07T15:22:00",
+      "date": "2025-12-07T15:22",
       "whisky_name": "Ben Nevis 本尼维斯 28年 鹰 KANPAIKAI And The Antelope",
       "distillery": "Ben Nevis",
-      "bottler": "KANPAIKAI And The Antelope",
+      "bottler": "Kanpaikai And The Antelope",
       "abv": 49.6,
       "vintage_age": 28,
       "distillation_year": 1996,
       "wb_id": 276008,
       "nose": "酸梨，黄色水果，略青涩",
+      "aftertaste": "桃味，脂粉味",
+      "notes": "本尼本尼",
       "palate_score": 3.7,
       "body_score": 3.5,
       "finish_score": 3.2,
-      "aftertaste": "桃味，脂粉味",
-      "notes": "本尼本尼"
+      "images": []
     },
     {
       "id": "20251207-338",
