@@ -4,8 +4,8 @@
     {
       "id": "20260911-028",
       "date": "2026-09-11T14:11",
-      "whisky_name": "Secret Speyside Distillery 1997 HY",
-      "distillery": "",
+      "whisky_name": "Secret Speyside Distillery 匿名麦卡伦 23年 HY",
+      "distillery": "Macallan",
       "bottler": "Hideo Yamaoka (HY)",
       "abv": 51.9,
       "vintage_age": 23,
@@ -16,7 +16,7 @@
       "notes": "麦的波本桶很强",
       "palate_score": 3.9,
       "body_score": 3.9,
-      "finish_score": 3.8,
+      "finish_score": 3.9,
       "images": []
     },
     {
