@@ -11694,20 +11694,21 @@
     },
     {
       "id": "20250828-531",
-      "date": "2025-08-28T15:56:00",
-      "whisky_name": "Saburomaru 三郎丸 百世不磨 Vol 10 LESS IS MORE",
+      "date": "2025-08-28T15:56",
+      "whisky_name": "Saburomaru 三郎丸 百世不磨 Vol 10 LESS IS MORE TUS",
       "distillery": "Saburomaru",
-      "bottler": "Rudder",
+      "bottler": "The Ultimate Spirits, Rudder Ltd (TUS)",
       "abv": 51,
       "vintage_age": null,
       "distillation_year": null,
       "wb_id": 274301,
       "nose": "苹果，甜，能闻出来调和",
+      "aftertaste": "尾巴一丁点皂味",
+      "notes": "柔顺，有点咸。还不错",
       "palate_score": 3,
       "body_score": 3,
       "finish_score": 3,
-      "aftertaste": "尾巴一丁点皂味",
-      "notes": "柔顺，有点咸。还不错"
+      "images": []
     },
     {
       "id": "20250820-532",
