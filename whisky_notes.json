@@ -13312,8 +13312,8 @@
     },
     {
       "id": "20250515-655",
-      "date": "2025-05-15T00:00:00",
-      "whisky_name": "Ben Nevis 本尼维斯 28年 Founder's Selection Vol 2 猫头鹰 流星",
+      "date": "2025-05-15T00:00",
+      "whisky_name": "Ben Nevis 本尼维斯 28年 Founder's Selection Vol 2 猫头鹰 Wisedrink 流星",
       "distillery": "Ben Nevis",
       "bottler": "Wisedrink",
       "abv": 48.8,
@@ -13321,11 +13321,12 @@
       "distillation_year": 1996,
       "wb_id": 264908,
       "nose": "深邃的青苹果酸味，深闻酒精味刺鼻",
+      "aftertaste": "",
+      "notes": "",
       "palate_score": 3.9,
       "body_score": 3.6,
       "finish_score": 3.3,
-      "aftertaste": "",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250515-656",
