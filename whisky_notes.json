@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-033",
+      "date": "2026-09-11T14:36",
+      "whisky_name": "Glen Keith 格兰凯斯 30年 Cask Supplied by TWA TUS",
+      "distillery": "Glen Keith",
+      "bottler": "The Ultimate Spirits, Rudder Ltd (TUS)",
+      "abv": 30,
+      "vintage_age": 47,
+      "distillation_year": 1993,
+      "wb_id": 259145,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260911-032",
       "date": "2026-09-11T14:31",
       "whisky_name": "Caperdonich 卡普多尼克 27年 花果标 LT",
