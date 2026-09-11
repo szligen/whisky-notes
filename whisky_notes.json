@@ -12890,8 +12890,8 @@
     },
     {
       "id": "20250701-600",
-      "date": "2025-07-01T00:00:00",
-      "whisky_name": "Caol Ila 匿名卡尔里拉",
+      "date": "2025-07-01T00:00",
+      "whisky_name": "Caol Ila 匿名卡尔里拉 13年 蓝底圣杯 TWJ",
       "distillery": "Caol Ila",
       "bottler": "The Whisky Jury (TWJ)",
       "abv": 56.3,
@@ -12899,11 +12899,12 @@
       "distillation_year": 2009,
       "wb_id": 219235,
       "nose": "淡泥煤",
+      "aftertaste": "",
+      "notes": "",
       "palate_score": 3.8,
       "body_score": 3.9,
       "finish_score": 3.7,
-      "aftertaste": "",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250701-601",
