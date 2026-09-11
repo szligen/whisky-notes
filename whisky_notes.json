@@ -8181,7 +8181,7 @@
     },
     {
       "id": "20251210-326",
-      "date": "2025-12-10T14:39:00",
+      "date": "2025-12-10T14:39",
       "whisky_name": "Hinomaru 日之丸 Cream Sherry Cask 奶油雪莉桶 百世不磨 TUS",
       "distillery": "Hinomaru",
       "bottler": "The Ultimate Spirits (TUS)",
@@ -8190,11 +8190,12 @@
       "distillation_year": 2018,
       "wb_id": 282274,
       "nose": "红枣，雅文邑",
+      "aftertaste": "红糖，深色葡萄，奶油",
+      "notes": "柔和，很像雅文邑",
       "palate_score": 3.6,
       "body_score": 3.6,
       "finish_score": 3.2,
-      "aftertaste": "红糖，深色葡萄，奶油",
-      "notes": "柔和，很像雅文邑"
+      "images": []
     },
     {
       "id": "20251210-327",
