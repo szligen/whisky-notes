@@ -5353,20 +5353,21 @@
     },
     {
       "id": "20260308-174",
-      "date": "2026-03-08T18:20:00",
-      "whisky_name": "麦卡伦 No.6",
-      "distillery": "",
-      "bottler": "",
+      "date": "2026-03-08T18:20",
+      "whisky_name": "Macallan 麦卡伦 Edition No. 6 2020's",
+      "distillery": "Macallan",
+      "bottler": "OB",
       "abv": 48.6,
       "vintage_age": null,
       "distillation_year": null,
-      "wb_id": null,
+      "wb_id": 159712,
       "nose": "甜美型雪莉，干净，蜂蜜",
+      "aftertaste": "雪莉味淡，背景有些许黑巧，酒精感稍有一些",
+      "notes": "风味比较少",
       "palate_score": 3.7,
       "body_score": 3.7,
       "finish_score": 3.2,
-      "aftertaste": "雪莉味淡，背景有些许黑巧，酒精感稍有一些",
-      "notes": "风味比较少"
+      "images": []
     },
     {
       "id": "20260308-175",
