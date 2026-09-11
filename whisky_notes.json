@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-015",
+      "date": "2026-09-11T12:00",
+      "whisky_name": "Glen Garioch 格兰盖瑞 22年 Maggie's Collection HI",
+      "distillery": "Glen Garioch",
+      "bottler": "Highlander Inn (HI)",
+      "abv": 57.8,
+      "vintage_age": 22,
+      "distillation_year": 2003,
+      "wb_id": 274722,
+      "nose": "黄色水果，蜜香威化饼",
+      "aftertaste": "奶油蜜桃",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260911-014",
       "date": "2026-09-11T11:29",
       "whisky_name": "Deanston 丁斯顿 20年",
