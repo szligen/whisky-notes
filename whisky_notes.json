@@ -13467,20 +13467,21 @@
     },
     {
       "id": "20250510-664",
-      "date": "2025-05-10T00:00:00",
-      "whisky_name": "Ben Nevis 本尼维斯 27年 Founder's Selection Vol 1",
+      "date": "2025-05-10T00:00",
+      "whisky_name": "Ben Nevis 本尼维斯 27年 Founder's Selection Vol 1 Wisedrink 流星",
       "distillery": "Ben Nevis",
-      "bottler": "Wisedrink流星",
+      "bottler": "Wisedrink",
       "abv": 48,
       "vintage_age": 27,
       "distillation_year": 1996,
       "wb_id": 264907,
       "nose": "酸水果，冰淇淋，烂木头",
+      "aftertaste": "",
+      "notes": "喉感垮，余韵散得很快",
       "palate_score": 3.6,
       "body_score": 3.6,
       "finish_score": 3,
-      "aftertaste": "",
-      "notes": "喉感垮，余韵散得很快"
+      "images": []
     },
     {
       "id": "20250510-665",
