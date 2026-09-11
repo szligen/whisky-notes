@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-009",
+      "date": "2026-09-11T10:29",
+      "whisky_name": "Linkwood 林可伍德 11年 Whisky Lovers Hong Kong 月饮|乙醇",
+      "distillery": "Linkwood",
+      "bottler": "Whisky Lovers - Hong Kong",
+      "abv": 56.2,
+      "vintage_age": 11,
+      "distillation_year": 2010,
+      "wb_id": 217442,
+      "nose": "酸浆果雪莉",
+      "aftertaste": "深色果脯，椰子尾",
+      "notes": "尾段有邪杂桶味，像是红酒桶，马德拉桶那种味道",
+      "palate_score": 3.7,
+      "body_score": 3.7,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260911-008",
       "date": "2026-09-11T10:22",
       "whisky_name": "Highland PBS Cadenhead's 1842 CA",
