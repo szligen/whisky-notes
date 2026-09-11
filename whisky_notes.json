@@ -10993,20 +10993,21 @@
     },
     {
       "id": "20250907-504",
-      "date": "2025-09-07T14:00:00",
-      "whisky_name": "Maccallan 麦卡伦 13年 SMWS 24.168 Edge of darkness 黑暗边缘",
-      "distillery": "Maccallan",
+      "date": "2025-09-07T14:00",
+      "whisky_name": "Macallan 麦卡伦 13年 SMWS 24.168 Edge of darkness 黑暗边缘",
+      "distillery": "Macallan",
       "bottler": "SMWS",
       "abv": 63.2,
       "vintage_age": 13,
       "distillation_year": 2008,
       "wb_id": 221830,
       "nose": "重雪莉，火药味雪莉",
+      "aftertaste": "雪莉味后段有瑕疵",
+      "notes": "酒精感压的好，后段有支撑",
       "palate_score": 3.6,
       "body_score": 3.8,
       "finish_score": 3,
-      "aftertaste": "雪莉味后段有瑕疵",
-      "notes": "酒精感压的好，后段有支撑"
+      "images": []
     },
     {
       "id": "20250907-505",
