@@ -6156,20 +6156,21 @@
     },
     {
       "id": "20260114-236",
-      "date": "2026-01-14T15:03:00",
-      "whisky_name": "Port Charlotte 波夏 17年 Dragon Force 喷火龙 Vosne Romanee Barrique 流星",
+      "date": "2026-01-14T15:03",
+      "whisky_name": "Port Charlotte 波夏 17年 Dragon Force 喷火龙 Vosne Romanee Barrique Wisedrink 流星",
       "distillery": "Bruichladdich",
-      "bottler": "Wisedrink 流星",
+      "bottler": "Wisedrink",
       "abv": 60.2,
       "vintage_age": 17,
       "distillation_year": 2007,
       "wb_id": 284913,
       "nose": "火药，皮革，枣味，雪莉",
+      "aftertaste": "酸甜，烟灰，根茎，单宁酸涩",
+      "notes": "",
       "palate_score": 3.8,
       "body_score": 3.7,
       "finish_score": 3.5,
-      "aftertaste": "酸甜，烟灰，根茎，单宁酸涩",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260114-237",
