@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-024",
+      "date": "2026-09-11T13:54",
+      "whisky_name": "Caol Ila 卡尔里拉 12年 二十四节气·立冬 TWf BR",
+      "distillery": "Caol Ila",
+      "bottler": "Berry Bros & Rudd (BR)",
+      "abv": 53.1,
+      "vintage_age": 12,
+      "distillation_year": 2010,
+      "wb_id": 266878,
+      "nose": "雪莉红枣泥煤",
+      "aftertaste": "余韵熟苹果，皂味",
+      "notes": "红枣，药材味，这种红酒桶很不自然",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.5,
+      "images": []
+    },
+    {
       "id": "20260911-023",
       "date": "2026-09-11T13:44",
       "whisky_name": "Teaninich 第林可 13年 The Whisky Trail - Birds Series TWT ElD",
