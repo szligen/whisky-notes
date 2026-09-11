@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-028",
+      "date": "2026-09-11T14:11",
+      "whisky_name": "Secret Speyside Distillery 1997 HY",
+      "distillery": "",
+      "bottler": "Hideo Yamaoka (HY)",
+      "abv": 51.9,
+      "vintage_age": 23,
+      "distillation_year": 1997,
+      "wb_id": 179139,
+      "nose": "高密香，酸水果，很像陶切斯",
+      "aftertaste": "",
+      "notes": "麦的波本桶很强",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260911-027",
       "date": "2026-09-11T14:09",
       "whisky_name": "Ardbeg 阿贝 Galileo 伽利略",
