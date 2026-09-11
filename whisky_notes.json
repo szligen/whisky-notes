@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260911-014",
+      "date": "2026-09-11T11:29",
+      "whisky_name": "Deanston 丁斯顿 20年 Un-Chill Filtered",
+      "distillery": "Deanston",
+      "bottler": "OB",
+      "abv": 55.3,
+      "vintage_age": 20,
+      "distillation_year": null,
+      "wb_id": 75098,
+      "nose": "深色果脯，蜜饯",
+      "aftertaste": "酱味（芝麻酱，酱油味），一些枫糖味",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 3.8,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260911-013",
       "date": "2026-09-11T11:19",
       "whisky_name": "Chichibu 秩父 10年 Takashimaya 高岛屋",
