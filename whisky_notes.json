@@ -10788,20 +10788,21 @@
     },
     {
       "id": "20250918-477",
-      "date": "2025-09-18T15:50:00",
+      "date": "2025-09-18T15:50",
       "whisky_name": "Glenmorrange 格兰杰 18年 DFS",
       "distillery": "Glenmorrange",
       "bottler": "OB",
       "abv": 55.2,
       "vintage_age": 18,
       "distillation_year": null,
-      "wb_id": null,
+      "wb_id": 300273,
       "nose": "酸水果，挺浓郁，以为是本尼",
+      "aftertaste": "酸李子，梨，水果麦芽发酵",
+      "notes": "酒精压的很好",
       "palate_score": 3.7,
       "body_score": 3.8,
       "finish_score": 3.2,
-      "aftertaste": "酸李子，梨，水果麦芽发酵",
-      "notes": "酒精压的很好"
+      "images": []
     },
     {
       "id": "20250918-478",
