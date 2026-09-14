@@ -10805,20 +10805,21 @@
     },
     {
       "id": "20250918-478",
-      "date": "2025-09-18T15:44:00",
+      "date": "2025-09-18T15:44",
       "whisky_name": "Chichibu 秩父 9年 IPA桶 DFS",
       "distillery": "Chichibu",
       "bottler": "OB",
       "abv": 63.3,
       "vintage_age": 9,
-      "distillation_year": null,
-      "wb_id": null,
+      "distillation_year": 2016,
+      "wb_id": 282469,
       "nose": "梨香，菊花蜜",
+      "aftertaste": "浓郁的酸甜，秋梨膏，菊花蜜，到后面有烟熏的错觉",
+      "notes": "又一支颠覆的酒，味道特别",
       "palate_score": 4.1,
       "body_score": 4.2,
       "finish_score": 3.9,
-      "aftertaste": "浓郁的酸甜，秋梨膏，菊花蜜，到后面有烟熏的错觉",
-      "notes": "又一支颠覆的酒，味道特别"
+      "images": []
     },
     {
       "id": "20250918-479",
