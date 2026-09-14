@@ -10564,20 +10564,21 @@
     },
     {
       "id": "20250920-464",
-      "date": "2025-09-20T17:17:00",
-      "whisky_name": "Lornmorn 朗摩 39年 GM Celtic Series - The Book of Kells",
-      "distillery": "Lornmorn",
+      "date": "2025-09-20T17:17",
+      "whisky_name": "Longmorn 朗摩 39年 GM Celtic Series - The Book of Kells",
+      "distillery": "Longmorn",
       "bottler": "Gordon & MacPhail (GM)",
       "abv": 58.9,
       "vintage_age": 39,
       "distillation_year": 1969,
       "wb_id": 10482,
       "nose": "多变：朗姆，干邑，浓郁，雪莉味刚刚好",
+      "aftertaste": "葡萄皮，果干，果核，果脯，干邑。浓烈。持续爆发。后段还有波摩的陈味。",
+      "notes": "尾韵激荡起伏，血液上涌冲击大脑，久久不能平复。",
       "palate_score": 4.5,
       "body_score": 4.3,
       "finish_score": 4.6,
-      "aftertaste": "葡萄皮，果干，果核，果脯，干邑。浓烈。持续爆发。后段还有波摩的陈味。",
-      "notes": "尾韵激荡起伏，血液上涌冲击大脑，久久不能平复。"
+      "images": []
     },
     {
       "id": "20250920-465",
