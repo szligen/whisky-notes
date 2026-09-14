@@ -10702,20 +10702,21 @@
     },
     {
       "id": "20250918-472",
-      "date": "2025-09-18T17:12:00",
+      "date": "2025-09-18T17:12",
       "whisky_name": "Glentauchers 格兰陶切斯 44年 MOM",
       "distillery": "Glentauchers",
-      "bottler": "MOM",
+      "bottler": "Master of Malt (MoM)",
       "abv": 42,
       "vintage_age": 44,
       "distillation_year": 1975,
       "wb_id": 219356,
       "nose": "脂粉味，黄色水果",
+      "aftertaste": "水果瓜子，巧克力",
+      "notes": "比较失望，可能度数太低",
       "palate_score": 3.5,
       "body_score": 3.5,
       "finish_score": 3.2,
-      "aftertaste": "水果瓜子，巧克力",
-      "notes": "比较失望，可能度数太低"
+      "images": []
     },
     {
       "id": "20250918-473",
