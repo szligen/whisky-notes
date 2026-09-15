@@ -10001,20 +10001,21 @@
     },
     {
       "id": "20250926-431",
-      "date": "2025-09-26T16:26:00",
+      "date": "2025-09-26T16:26",
       "whisky_name": "Macallan 麦卡伦 16年 SMWS 24.183 Take the espresso way",
       "distillery": "Macallan",
       "bottler": "SMWS",
       "abv": 61.8,
       "vintage_age": 16,
       "distillation_year": null,
-      "wb_id": null,
+      "wb_id": 283823,
       "nose": "浓重雪莉味中依然有果香",
+      "aftertaste": "收尾干净，散得比较快",
+      "notes": "失望",
       "palate_score": 3.8,
       "body_score": 3.8,
       "finish_score": 3.3,
-      "aftertaste": "收尾干净，散得比较快",
-      "notes": "失望"
+      "images": []
     },
     {
       "id": "20250926-432",
