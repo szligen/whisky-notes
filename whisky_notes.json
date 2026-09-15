@@ -8678,20 +8678,21 @@
     },
     {
       "id": "20251120-354",
-      "date": "2025-11-20T15:54:00",
+      "date": "2025-11-20T15:54",
       "whisky_name": "Macallan 麦卡伦 16年 SMWS 24.189",
       "distillery": "Macallan",
       "bottler": "SMWS",
       "abv": 62.8,
       "vintage_age": 16,
-      "distillation_year": null,
-      "wb_id": null,
+      "distillation_year": 2008,
+      "wb_id": 288404,
       "nose": "酱香雪莉，干邑，沙爹",
+      "aftertaste": "雪莉味超正",
+      "notes": "雪莉味浓郁，结构平衡饱满，但输给185",
       "palate_score": 4.1,
       "body_score": 4,
       "finish_score": 4.1,
-      "aftertaste": "雪莉味超正",
-      "notes": "雪莉味浓郁，结构平衡饱满，但输给185"
+      "images": []
     },
     {
       "id": "20251120-355",
