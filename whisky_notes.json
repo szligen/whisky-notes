@@ -8354,7 +8354,7 @@
     },
     {
       "id": "20251207-335",
-      "date": "2025-12-07T15:46:00",
+      "date": "2025-12-07T15:46",
       "whisky_name": "Imperial 帝国 23年 Old & Rare HL",
       "distillery": "Imperial",
       "bottler": "Hunter Laing (HL)",
@@ -8363,11 +8363,12 @@
       "distillation_year": 1998,
       "wb_id": 215058,
       "nose": "脂粉味，芒果，乳酸菌",
+      "aftertaste": "菠萝，奶油",
+      "notes": "",
       "palate_score": 4.2,
       "body_score": 3.5,
       "finish_score": 3.7,
-      "aftertaste": "菠萝，奶油",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20251207-336",
