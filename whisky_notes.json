@@ -8952,20 +8952,21 @@
     },
     {
       "id": "20251115-370",
-      "date": "2025-11-15T14:44:00",
+      "date": "2025-11-15T14:44",
       "whisky_name": "Glen Spey 格兰斯佩 15年",
       "distillery": "Glen Spey",
       "bottler": "麦芽宇宙xFloatingChair选桶",
       "abv": 52.1,
       "vintage_age": 15,
-      "distillation_year": null,
-      "wb_id": null,
+      "distillation_year": 2009,
+      "wb_id": 298544,
       "nose": "深色水果，雪莉，脂粉",
+      "aftertaste": "雪莉味正，稍微有点焦味",
+      "notes": "很不错",
       "palate_score": 3.7,
       "body_score": 3.8,
       "finish_score": 3.2,
-      "aftertaste": "雪莉味正，稍微有点焦味",
-      "notes": "很不错"
+      "images": []
     },
     {
       "id": "20251115-371",
