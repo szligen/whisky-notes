@@ -9522,20 +9522,21 @@
     },
     {
       "id": "20251102-403",
-      "date": "2025-11-02T15:53:00",
+      "date": "2025-11-02T15:53",
       "whisky_name": "Longmorn 朗摩 25年",
       "distillery": "Longmorn",
       "bottler": "OB",
       "abv": 53,
       "vintage_age": 25,
       "distillation_year": 1995,
-      "wb_id": 196410,
+      "wb_id": 287650,
       "nose": "脂粉，干花，葡萄干",
+      "aftertaste": "脂粉，坚果，杏仁，果脯干",
+      "notes": "好酒",
       "palate_score": 4,
       "body_score": 4.2,
       "finish_score": 4.2,
-      "aftertaste": "脂粉，坚果，杏仁，果脯干",
-      "notes": "好酒"
+      "images": []
     },
     {
       "id": "20251102-404",
