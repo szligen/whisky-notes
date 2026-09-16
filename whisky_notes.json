@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-010",
+      "date": "2026-09-16T17:37",
+      "whisky_name": "Ledaig 里爵 Batch 7 TBWC",
+      "distillery": "Tobermory",
+      "bottler": "That Boutique-y Whisky Company (TBWC)",
+      "abv": 49.4,
+      "vintage_age": 17,
+      "distillation_year": null,
+      "wb_id": 127114,
+      "nose": "",
+      "aftertaste": "泥煤的岛酒",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 4,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260916-009",
       "date": "2026-09-16T17:33",
       "whisky_name": "Caol Ila 卡尔里拉 10年 Hand bottled at Distillery",
