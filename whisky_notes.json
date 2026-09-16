@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-013",
+      "date": "2026-09-16T17:48",
+      "whisky_name": "Glentauchers 格兰陶切丝 Authentic Collection CA",
+      "distillery": "Glentauchers",
+      "bottler": "Cadenhead's (CA)",
+      "abv": 50.8,
+      "vintage_age": 38,
+      "distillation_year": 1976,
+      "wb_id": 66182,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260916-012",
       "date": "2026-09-16T17:46",
       "whisky_name": "Glentauchers 2008 DHGS",
