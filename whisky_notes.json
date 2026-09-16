@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-004",
+      "date": "2026-09-16T17:23",
+      "whisky_name": "An Irish Distillery 匿名库利 21年 NSpS",
+      "distillery": "Cooley",
+      "bottler": "Nectar Spirit Selection (NSpS)",
+      "abv": 51.2,
+      "vintage_age": 21,
+      "distillation_year": 2002,
+      "wb_id": 252867,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 3.8,
+      "body_score": 3.7,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260916-003",
       "date": "2026-09-16T17:21",
       "whisky_name": "Scapa 斯卡帕 16年 Single Cask Edition",
