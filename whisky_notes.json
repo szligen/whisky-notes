@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-008",
+      "date": "2026-09-16T17:31",
+      "whisky_name": "Bunnahabhain 布纳哈本 12年 The Whisky Hoop SV",
+      "distillery": "Bunnahabhain",
+      "bottler": "Signatory Vintage (SV)",
+      "abv": 58,
+      "vintage_age": 12,
+      "distillation_year": 2007,
+      "wb_id": 172210,
+      "nose": "",
+      "aftertaste": "雪莉奶油瓜子，饼干",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260916-007",
       "date": "2026-09-16T17:28",
       "whisky_name": "Ardbeg 阿贝 Uigeadail L4 187 2004's",
