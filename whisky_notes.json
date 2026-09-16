@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-002",
+      "date": "2026-09-16T17:19",
+      "whisky_name": "Ben Nevis 26年 EVWC",
+      "distillery": "Ben Nevis",
+      "bottler": "East Village Whisky Company (EVWC)",
+      "abv": 49.7,
+      "vintage_age": 26,
+      "distillation_year": 1997,
+      "wb_id": 228263,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "平均线以上",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260916-001",
       "date": "2026-09-16T16:26",
       "whisky_name": "Glenburgie 格兰伯奇 13年 Connoisseurs Choice - Cask Strength GM",
