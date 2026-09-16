@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-006",
+      "date": "2026-09-16T17:26",
+      "whisky_name": "Burnside 匿名百富 27年 NSpS",
+      "distillery": "Balvenie",
+      "bottler": "Nectar Spirit Selection (NSpS)",
+      "abv": 49.1,
+      "vintage_age": 27,
+      "distillation_year": 1996,
+      "wb_id": 249859,
+      "nose": "高密香，花果香，深色水果",
+      "aftertaste": "奶油饼干，非常斯贝塞",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260916-005",
       "date": "2026-09-16T17:24",
       "whisky_name": "Balvenie 百富 15年 1980-1997 Bottled By Hand",
