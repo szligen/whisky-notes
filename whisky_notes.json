@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-012",
+      "date": "2026-09-16T17:46",
+      "whisky_name": "Glentauchers 2008 DHGS",
+      "distillery": "Glentauchers",
+      "bottler": "DH Global Spirits Limited (DHGS)",
+      "abv": 59.6,
+      "vintage_age": 15,
+      "distillation_year": 2008,
+      "wb_id": 241250,
+      "nose": "",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": null,
+      "body_score": null,
+      "finish_score": null,
+      "images": []
+    },
+    {
       "id": "20260916-011",
       "date": "2026-09-16T17:40",
       "whisky_name": "Strathisla 斯特拉塞拉 SMWS 58.28 Usquebae an' blankets warm",
