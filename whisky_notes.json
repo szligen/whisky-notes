@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-011",
+      "date": "2026-09-16T17:40",
+      "whisky_name": "Strathisla 斯特拉塞拉 SMWS 58.28 Usquebae an' blankets warm",
+      "distillery": "Strathisla",
+      "bottler": "SMWS",
+      "abv": 59.7,
+      "vintage_age": 13,
+      "distillation_year": 2005,
+      "wb_id": 123926,
+      "nose": "",
+      "aftertaste": "奶油瓜子",
+      "notes": "",
+      "palate_score": 3.9,
+      "body_score": 4.1,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260916-010",
       "date": "2026-09-16T17:37",
       "whisky_name": "Ledaig 里爵 Batch 7 TBWC",
