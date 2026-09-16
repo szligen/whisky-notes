@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260916-003",
+      "date": "2026-09-16T17:21",
+      "whisky_name": "Scapa 斯卡帕 16年 Single Cask Edition",
+      "distillery": "Scapa",
+      "bottler": "OB",
+      "abv": 57.4,
+      "vintage_age": 16,
+      "distillation_year": 2006,
+      "wb_id": 256759,
+      "nose": "",
+      "aftertaste": "淡雪莉风格",
+      "notes": "",
+      "palate_score": 3.6,
+      "body_score": 3.6,
+      "finish_score": 3.3,
+      "images": []
+    },
+    {
       "id": "20260916-002",
       "date": "2026-09-16T17:19",
       "whisky_name": "Ben Nevis 26年 EVWC",
