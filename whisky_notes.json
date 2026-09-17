@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-014",
+      "date": "2026-09-17T16:25",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.3,
+      "vintage_age": 22,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色水果罐头，",
+      "aftertaste": "",
+      "notes": "",
+      "palate_score": 4.1,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260917-013",
       "date": "2026-09-17T16:10",
       "whisky_name": "本利林",
