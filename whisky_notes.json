@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-003",
+      "date": "2026-09-17T14:01",
+      "whisky_name": "噶玛兰 s06",
+      "distillery": "",
+      "bottler": "",
+      "abv": 57.1,
+      "vintage_age": 8,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "干邑，酸雪莉，",
+      "aftertaste": "粉香干邑",
+      "notes": "缺点是太像干邑",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260917-002",
       "date": "2026-09-17T13:49",
       "whisky_name": "新道",
