@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-001",
+      "date": "2026-09-17T13:44",
+      "whisky_name": "新西兰",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.8,
+      "vintage_age": 3,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "甜水果，高果香，有点深色水果",
+      "aftertaste": "",
+      "notes": "薄，透出酒精",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.4,
+      "images": []
+    },
+    {
       "id": "20260916-013",
       "date": "2026-07-27T17:48",
       "whisky_name": "Glentauchers 格兰陶切丝 Authentic Collection CA",
