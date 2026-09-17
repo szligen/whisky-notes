@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-012",
+      "date": "2026-09-17T15:57",
+      "whisky_name": "波摩",
+      "distillery": "",
+      "bottler": "",
+      "abv": 48.6,
+      "vintage_age": 40,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄色水果，杨桃，复杂",
+      "aftertaste": "香甜皂味，老味",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 3.9,
+      "finish_score": 3.8,
+      "images": []
+    },
+    {
       "id": "20260917-011",
       "date": "2026-09-17T15:48",
       "whisky_name": "泰斯卡",
