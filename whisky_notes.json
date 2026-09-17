@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-007",
+      "date": "2026-09-17T14:48",
+      "whisky_name": "朗格罗",
+      "distillery": "",
+      "bottler": "",
+      "abv": 54.7,
+      "vintage_age": 10,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "熟苹果泥煤",
+      "aftertaste": "",
+      "notes": "很岛酒",
+      "palate_score": 3.8,
+      "body_score": 3.8,
+      "finish_score": 3.7,
+      "images": []
+    },
+    {
       "id": "20260917-006",
       "date": "2026-09-17T14:26",
       "whisky_name": "斯特拉塞斯拉",
