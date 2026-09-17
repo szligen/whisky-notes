@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-017",
+      "date": "2026-09-17T17:04",
+      "whisky_name": "秩父",
+      "distillery": "",
+      "bottler": "",
+      "abv": 62.3,
+      "vintage_age": 10,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "酸水果雪莉，火药",
+      "aftertaste": "有点果皮味",
+      "notes": "轻微吃桶过深",
+      "palate_score": 4.2,
+      "body_score": 4.1,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260917-016",
       "date": "2026-09-17T16:53",
       "whisky_name": "格兰爱琴",
