@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-006",
+      "date": "2026-09-17T14:26",
+      "whisky_name": "",
+      "distillery": "",
+      "bottler": "",
+      "abv": 56.8,
+      "vintage_age": 16,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "高蜜，深色果皮",
+      "aftertaste": "脂粉，又充满果味，出奶味",
+      "notes": "",
+      "palate_score": 4,
+      "body_score": 4,
+      "finish_score": 4,
+      "images": []
+    },
+    {
       "id": "20260917-005",
       "date": "2026-09-17T14:21",
       "whisky_name": "小猫 gm",
