@@ -2,6 +2,24 @@
   "version": "1.0",
   "notes": [
     {
+      "id": "20260917-009",
+      "date": "2026-09-17T15:24",
+      "whisky_name": "哈索本",
+      "distillery": "",
+      "bottler": "",
+      "abv": 55.6,
+      "vintage_age": 8,
+      "distillation_year": null,
+      "wb_id": null,
+      "nose": "黄桃，桃子，酸树枝",
+      "aftertaste": "黄果，奶油",
+      "notes": "咬一口黄色水果的感觉",
+      "palate_score": 3.9,
+      "body_score": 3.9,
+      "finish_score": 3.9,
+      "images": []
+    },
+    {
       "id": "20260917-008",
       "date": "2026-09-17T15:06",
       "whisky_name": "云顶",
