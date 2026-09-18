@@ -14990,8 +14990,8 @@
     },
     {
       "id": "20250101-691",
-      "date": "2025-01-01T00:00:00",
-      "whisky_name": "Longmorn 15年 Old Malt Cask",
+      "date": "2025-01-01T00:00",
+      "whisky_name": "Longmorn 15年 The Old Malt Cask HL",
       "distillery": "Longmorn",
       "bottler": "Hunter Laing (HL)",
       "abv": 50,
@@ -14999,11 +14999,12 @@
       "distillation_year": 2003,
       "wb_id": 187106,
       "nose": "",
+      "aftertaste": "",
+      "notes": "",
       "palate_score": 3.8,
       "body_score": 3.8,
       "finish_score": 3.6,
-      "aftertaste": "",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20250101-692",
