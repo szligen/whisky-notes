@@ -8382,8 +8382,8 @@
     },
     {
       "id": "20251218-305",
-      "date": "2025-12-18T14:17:00",
-      "whisky_name": "Mortlach 慕赫 13年 Hepburn's Choice",
+      "date": "2025-12-18T14:17",
+      "whisky_name": "Mortlach 慕赫 13年 Hepburn's Choice HL",
       "distillery": "Mortlach",
       "bottler": "Hunter Laing (HL)",
       "abv": 46,
@@ -8391,11 +8391,12 @@
       "distillation_year": 2007,
       "wb_id": 174354,
       "nose": "蜜糖，花果香",
+      "aftertaste": "树莓味，葡萄皮，不喜欢",
+      "notes": "闻香不错，不甜但是齁嗓子",
       "palate_score": 3.4,
       "body_score": 3.2,
       "finish_score": 2.9,
-      "aftertaste": "树莓味，葡萄皮，不喜欢",
-      "notes": "闻香不错，不甜但是齁嗓子"
+      "images": []
     },
     {
       "id": "20251214-306",
