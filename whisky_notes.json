@@ -8125,8 +8125,8 @@
     },
     {
       "id": "20251220-290",
-      "date": "2025-12-20T22:47:00",
-      "whisky_name": "Balmenach 巴门纳克 21年 HL OMC",
+      "date": "2025-12-20T22:47",
+      "whisky_name": "Balmenach 巴门纳克 21年 The Old Malt Cask HL",
       "distillery": "Balmenach",
       "bottler": "Hunter Laing (HL)",
       "abv": 54.7,
@@ -8134,11 +8134,12 @@
       "distillation_year": 2001,
       "wb_id": 244180,
       "nose": "梨干，白花，黄色水果，奶油，木质调。二闻有脂粉味",
+      "aftertaste": "蜜霜，奶油，梅子，干花",
+      "notes": "酒体油润浓郁，酒精感比较强",
       "palate_score": 3.9,
       "body_score": 4.1,
       "finish_score": 3.8,
-      "aftertaste": "蜜霜，奶油，梅子，干花",
-      "notes": "酒体油润浓郁，酒精感比较强"
+      "images": []
     },
     {
       "id": "20251219-291",
