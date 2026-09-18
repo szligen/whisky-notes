@@ -7052,8 +7052,8 @@
     },
     {
       "id": "20260114-227",
-      "date": "2026-01-14T17:11:00",
-      "whisky_name": "Ardmore 阿德摩尔 31年 Old & Rare - A Platinum Selection 白金",
+      "date": "2026-01-14T17:11",
+      "whisky_name": "Ardmore 阿德摩尔 31年 Old & Rare - A Platinum Selection 白金 HL",
       "distillery": "Ardmore",
       "bottler": "Hunter Laing (HL)",
       "abv": 50.2,
@@ -7061,11 +7061,12 @@
       "distillation_year": 1988,
       "wb_id": 143167,
       "nose": "黄桃，奶油，尾巴一点药水",
+      "aftertaste": "尾段有老酒味",
+      "notes": "",
       "palate_score": 4,
       "body_score": 4,
       "finish_score": 4,
-      "aftertaste": "尾段有老酒味",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260114-228",
