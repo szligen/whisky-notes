@@ -4049,8 +4049,8 @@
     },
     {
       "id": "20260424-051",
-      "date": "2026-04-24T20:42:00",
-      "whisky_name": "Bunnahabhain 布纳哈本 30年 The Kinship",
+      "date": "2026-04-24T20:42",
+      "whisky_name": "Bunnahabhain 布纳哈本 30年 The Kinship HL",
       "distillery": "Bunnahabhain",
       "bottler": "Hunter Laing (HL)",
       "abv": 52.8,
@@ -4058,11 +4058,12 @@
       "distillation_year": null,
       "wb_id": 113370,
       "nose": "甜雪莉，雅文邑，木桶",
+      "aftertaste": "雪莉，红枣，根茎，柴火",
+      "notes": "",
       "palate_score": 3.9,
       "body_score": 3.8,
       "finish_score": 3.7,
-      "aftertaste": "雪莉，红枣，根茎，柴火",
-      "notes": ""
+      "images": []
     },
     {
       "id": "20260424-052",
