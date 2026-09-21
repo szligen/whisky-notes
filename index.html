@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-09-21-20:35 -->
+<!-- VERSION: 2026-09-22-02:10 -->
 <html lang="zh-CN" data-page-node-id="5V8n3FPUyt2IVBjzFhiMOg">
 <head data-page-node-id="vs6T1NiFVt4ZSlPDLilNse">
 <meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
@@ -16,9 +16,10 @@
     --border-light: #eff1e7;
     --text: #1a1614;
     --text-muted: #6b6057;
-    --text-light: #7a6f65;
+    --text-light: #6f6459;        /* 4.45 → 5.2（surface2 底），小字必须过 AA */
     --accent: #8b4513;
     --accent-light: #c06030;
+    --on-accent: #ffffff;         /* 强调色填充块上的字色（暗色主题必须反过来用深色） */
     --accent-bg: #fdf0e8;
     --gold: #c9952a;
     --gold-light: #fef7e6;
@@ -42,10 +43,19 @@
     --danger-border: #f0c8c0;
     --toast-bg: #1a1614;
     --toast-text: #ffffff;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
-    --radius: 8px;
-    --radius-sm: 5px;
+    --shadow: 0 0 0 0 rgba(0,0,0,0);
+    --shadow-md: 0 0 0 0 rgba(0,0,0,0);
+    /* ===== 仪表台账层 Instrument / Ledger =====
+       排版制度 = D2「仪表 · 等宽数字」：0 圆角 + 硬框 + 等宽读数 + 单强调色
+       分工： 2px 硬框 → 只给「数据容器」（统计带 / 卡片 / 列表 / 面板 / 弹窗）
+              1px 细线 → 给「内部细分隔」（表头、单元格、表单外框）
+       层次不靠阴影，靠框线 + 色块分区。                        */
+    --mono: Consolas, "Cascadia Mono", "SFMono-Regular", ui-monospace, monospace;
+    --frame: #241e18;                                  /* 2px 结构框：墨色 */
+    --zebra: #f6f4ea;                                  /* 列表斑马纹 */
+    --hardshadow: 6px 6px 0 rgba(36,30,24,0.14);        /* 硬投影：浮层专用 */
+    --radius: 0px;
+    --radius-sm: 0px;
   }
 
   /* ===== Dark Theme ===== */
@@ -56,10 +66,11 @@
     --border: #3a3d34;
     --border-light: #33362e;
     --text: #ede8e4;
-    --text-muted: #9a8f88;
-    --text-light: #8a8079;
+    --text-muted: #a29a93;        /* 5.0（surface2 底） */
+    --text-light: #9c928a;        /* 4.53（surface2 底） */
     --accent: #d4943a;
     --accent-light: #e6a854;
+    --on-accent: #1a1614;         /* 亮琥珀底上用墨色：6.9，白字只有 2.6 */
     --accent-bg: #3a2e24;
     --gold: #e6b84a;
     --gold-light: #3a3224;
@@ -81,8 +92,11 @@
     --danger-border: #552d28;
     --toast-bg: #222420;
     --toast-text: #ede8e4;
-    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --shadow: 0 0 0 0 rgba(0,0,0,0);
+    --shadow-md: 0 0 0 0 rgba(0,0,0,0);
+    --frame: #77807f;
+    --zebra: #1e2018;
+    --hardshadow: 6px 6px 0 rgba(0,0,0,0.55);
   }
   [data-theme="dark"] header { background: var(--surface); border-bottom-color: var(--border); }
   [data-theme="dark"] .modal-content, [data-theme="dark"] .detail-content,
@@ -94,11 +108,11 @@
   [data-theme="dark"] .empty-state { color: var(--text-light); }
   [data-theme="dark"] .loading-spinner { border-color: var(--border); border-top-color: var(--accent); }
   [data-theme="dark"] .score-display { color: var(--text-muted); }
-  [data-theme="dark"] .version-badge { background: var(--surface2); }
+  [data-theme="dark"] .version-badge { background: transparent; }
 
   /* Theme toggle button */
   .btn-theme {
-    background: none; border: 1px solid var(--border); border-radius: 50%;
+    background: none; border: 1px solid var(--border); border-radius: 0;
     width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
     cursor: pointer; font-size: 16px; transition: all 0.2s; color: var(--text-muted);
   }
@@ -108,6 +122,12 @@
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
     background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
   }
+  /* 读数一律等宽 + tabular：卡片、列表、统计三处的数字才能跨行对齐 */
+  .num, .stat-num, .stat-sub, .score-val, .score-display, .page-jump, .page-total,
+  .card-date, .version-badge, .lv-abv, .lv-avg, .nc-cell b, .nc-date,
+  .detail-score-val, .detail-avg-val, .wsc, .wfreq, .wdelta {
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum";
+  }
 
   /* ===== Focus & Active states (a11y) ===== */
   :focus { outline: none; }
@@ -116,6 +136,11 @@
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
+  /* 正文链接必须显式给色：浏览器默认蓝在暗色主题下只有 1.47:1，等于隐形 */
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--accent-light); }
+  code { font-family: var(--mono); font-size: 12px; background: var(--surface2); padding: 1px 5px; }
+
   /* 按下反馈：轻微下沉 + 亮度压暗，让点击有实感 */
   button:not(:disabled):active,
   .btn-header:active, .page-btn:not(:disabled):active, .sort-btn:active,
@@ -136,28 +161,33 @@
 
   /* ===== Header ===== */
   header {
-    background: var(--surface); border-bottom: 1px solid var(--border);
-    padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow);
+    background: var(--surface); border-bottom: 2px solid var(--frame);
+    padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
   }
   .logo { display: flex; align-items: center; gap: 10px; }
-  .logo-icon { font-size: 26px; }
-  .logo h1 { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
-  .logo span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
-  .version-badge { font-size:12px; color: var(--text-light); background: var(--surface2); padding: 2px 7px; border-radius: 10px; margin-left: 8px; }
-  .header-right { display:flex; gap:10px; align-items:center; }
+  /* 品牌标记改成一根硬色条（原 🥃 emoji 是 UI 图标里的禁用项） */
+  .logo-mark { width: 4px; height: 22px; background: var(--accent); flex: none; }
+  .logo h1 { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; }
+  .logo span { font-size: 11.5px; color: var(--text-muted); font-weight: 400; }
+  .version-badge {
+    font-size: 11px; color: var(--text-light); background: transparent;
+    border: 1px solid var(--border); padding: 1px 6px; border-radius: 0; margin-left: 8px;
+  }
+  .header-right { display:flex; gap:8px; align-items:center; }
 
   #btn-add {
-    background: var(--accent); color: white; border: none;
-    padding: 9px 18px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+    background: var(--accent); color: var(--on-accent); border: none;
+    padding: 0 16px; height: 34px; border-radius: 0; font-size: 13.5px; font-weight: 600;
+    letter-spacing: 0.04em;
     cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s;
   }
   #btn-add:hover { background: var(--accent-light); }
 
   .btn-header {
-    padding: 7px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 0 12px; height: 34px; border: 1px solid var(--border); border-radius: 0;
     font-size:13px; background: var(--surface); color: var(--text-muted);
-    cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.15s;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s;
   }
   .btn-header:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -199,46 +229,53 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   /* ===== Stats Bar ===== */
-  .stats-bar { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-  .stat-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 14px 20px; min-width: 120px; flex: 1; text-align: center; box-shadow: var(--shadow);
+  /* 统计区 = 一条硬框仪表带：5 格用 1px 竖线分隔，不再各自成卡 */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    margin-bottom: 16px; border: 2px solid var(--frame); background: var(--surface);
   }
-  .stat-num { font-size: 26px; font-weight: 700; color: var(--accent); }
-  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .stat-sub { font-size: 12px; color: var(--text-light); margin-top: 3px; }
+  .stat-card {
+    background: transparent; border: none; border-left: 1px solid var(--border);
+    border-radius: 0; padding: 9px 14px 10px; min-width: 0; text-align: left; box-shadow: none;
+  }
+  .stat-card:first-child { border-left: none; }
+  .stat-num { font-size: 23px; font-weight: 650; color: var(--accent); line-height: 1.15; }
+  .stat-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-muted); margin-top: 3px; }
+  .stat-sub { font-size: 11.5px; color: var(--text-light); margin-top: 1px; }
   /* 只有「值得回购」与激活态用 accent，其余数字保持中性以维持层次 */
   .stat-card:not(.primary):not(.active) .stat-num { color: var(--text); }
-  .stat-card.clickable { cursor: pointer; transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease, background .12s ease; }
-  .stat-card.clickable:hover { border-color: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-  .stat-card.clickable:active { transform: translateY(1px); box-shadow: var(--shadow); }
-  .stat-card.active { border-color: var(--accent); background: var(--accent-bg); }
+  .stat-card.clickable { cursor: pointer; transition: background .12s ease; }
+  .stat-card.clickable:hover { background: var(--surface2); }
+  .stat-card.clickable:active { background: var(--accent-bg); }
+  .stat-card.active { background: var(--accent-bg); }
+  .stat-card.active .stat-num { color: var(--accent); }
   .stat-card.active .stat-label { color: var(--accent); font-weight: 600; }
-  .stat-card.active .stat-sub { color: var(--accent-light); }
+  .stat-card.active .stat-sub { color: var(--accent); }
 
   /* ===== Toolbar ===== */
   .toolbar {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 16px 18px; margin-bottom: 20px; box-shadow: var(--shadow);
+    background: var(--surface); border: 2px solid var(--frame); border-radius: 0;
+    padding: 13px 15px; margin-bottom: 14px;
   }
   .search-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
   .search-wrap { position: relative; flex: 1; }
   .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
   #search-input {
-    width: 100%; padding: 9px 12px 9px 38px; border: 1px solid var(--border);
-    border-radius: var(--radius-sm); font-size: 14px; background: var(--bg);
-    color: var(--text); outline: none; transition: border-color 0.15s;
+    width: 100%; height: 34px; padding: 0 12px 0 38px; border: 1px solid var(--border);
+    border-radius: 0; font-size: 14px; background: var(--bg);
+    color: var(--text); outline: none; transition: border-color 0.15s, background 0.15s;
   }
+  #search-input:focus { background: var(--surface); }
   #search-input:focus { border-color: var(--accent); }
   .filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   .filter-row select, .filter-row input[type="number"] {
-    padding: 7px 10px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 0 10px; height: 32px; border: 1px solid var(--border); border-radius: 0;
     font-size: 13px; background: var(--bg); color: var(--text); outline: none; cursor: pointer; min-width: 110px;
   }
   .filter-row select:focus, .filter-row input:focus { border-color: var(--accent); }
   .sort-btns { display: flex; gap: 6px; margin-left: auto; }
   .sort-btn {
-    padding: 6px 12px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 0 12px; height: 32px; border: 1px solid var(--border); border-radius: 0;
     font-size: 13px; line-height: 1.3; background: var(--bg); color: var(--text-muted);
     cursor: pointer; transition: all 0.15s;
   }
@@ -246,8 +283,8 @@
   .sort-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
   .sort-btn.active:hover { border-color: var(--accent); }
   #btn-clear-filter {
-    padding: 7px 12px; height: 31px; border: none; border-radius: var(--radius-sm);
-    font-size: 13px; background: var(--accent); color: #fff; cursor: pointer;
+    padding: 0 12px; height: 32px; border: none; border-radius: 0;
+    font-size: 13px; background: var(--accent); color: var(--on-accent); cursor: pointer;
     font-weight: 500; transition: background 0.15s;
   }
   #btn-clear-filter:hover { background: var(--accent-light); }
@@ -256,7 +293,7 @@
   /* 与 .sort-btn 完全同规格：同底色/同字号/同等高，只额外带图标与箭头 */
   .date-btn {
     display: inline-flex; align-items: center; gap: 5px;
-    padding: 6px 12px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 0 12px; height: 32px; border: 1px solid var(--border); border-radius: 0;
     background: var(--bg); color: var(--text-muted); font-size: 13px; cursor: pointer;
     font-weight: 400; line-height: 1.3;
     transition: border-color .15s, background .15s, color .15s;
@@ -268,9 +305,9 @@
   }
   .date-caret { font-size: 9px; opacity: .7; }
   .date-pop {
-    position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    box-shadow: var(--shadow-md); padding: 12px; min-width: 238px;
+    position: absolute; top: calc(100% + 7px); right: 0; z-index: 60;
+    background: var(--surface); border: 2px solid var(--frame); border-radius: 0;
+    box-shadow: var(--hardshadow); padding: 12px; min-width: 238px;
   }
   .date-pop-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .date-pop-row label { font-size: 13px; color: var(--text-muted); width: 34px; flex: none; }
@@ -283,12 +320,12 @@
     display: flex; justify-content: space-between; gap: 8px;
     border-top: 1px solid var(--border-light); padding-top: 10px;
   }
-  .wbtn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .wbtn-primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); font-weight: 600; }
   .wbtn-primary:hover { background: var(--accent-light); border-color: var(--accent-light); }
   /* ===== Page Jump ===== */
   .page-jump-wrap { display: inline-flex; align-items: center; gap: 5px; margin: 0 4px; }
   .page-jump {
-    width: 58px; padding: 5px 4px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    width: 58px; height: 30px; padding: 0 4px; border: 1px solid var(--border); border-radius: 0;
     background: var(--surface); color: var(--text); font-size: 13px; text-align: center;
     font-variant-numeric: tabular-nums;
   }
@@ -298,56 +335,85 @@
   .page-total { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
 
   /* ===== View Toggle ===== */
-  .view-toggle { display: flex; gap: 4px; background: var(--surface2); border-radius: var(--radius-sm); padding: 3px; }
-  .view-btn {
-    padding: 5px 10px; border: none; border-radius: 4px; background: transparent;
-    cursor: pointer; font-size: 14px; color: var(--text-muted); transition: all 0.15s;
+  .view-toggle {
+    display: flex; gap: 0; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 0; padding: 0; flex: none;
   }
-  .view-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow); }
+  .view-btn {
+    width: 36px; height: 32px; padding: 0; border: none; border-left: 1px solid var(--border);
+    border-radius: 0; background: transparent; cursor: pointer; color: var(--text-muted);
+    transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .view-btn:first-child { border-left: none; }
+  .view-btn:hover { background: var(--surface2); color: var(--text); }
+  .view-btn.active { background: var(--accent-bg); color: var(--accent); }
 
   /* ===== Results Info ===== */
-  .results-info { font-size:14px; color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+  .results-info {
+    font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.04em;
+    display: flex; align-items: center; justify-content: space-between;
+  }
 
-  /* ===== Cards Grid ===== */
-  #cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-  #cards-grid.list-view { grid-template-columns: 1fr; }
+  /* ===== Cards Grid —— D2「仪表」卡片 =====
+     卡片 = 数据容器 → 2px 硬框 + 0 圆角 + 无阴影。
+     内部六段：标题带 / 酒厂行 / 规格格 / 评分格 / 描述区 / 操作条，
+     段间只用 1px 细线，评分区上下用 2px 收口，强调底只给「均分」。 */
+  #cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(336px, 1fr)); gap: 14px; align-items: stretch; }
+  #cards-grid.list-view { display: block; border: 2px solid var(--frame); background: var(--surface); }
 
   .note-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 18px 20px; box-shadow: var(--shadow); transition: box-shadow 0.15s, transform 0.1s;
-    cursor: pointer; position: relative; overflow: hidden;
+    background: var(--surface); border: 2px solid var(--frame); border-radius: 0;
+    padding: 0; box-shadow: none; cursor: pointer; position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: border-color .12s ease, background .12s ease;
   }
-  .note-card::before {
-    content:''; position: absolute; left:0; top:0; bottom:0; width: 3px;
-    background: var(--gold); border-radius: 3px 0 0 3px;
+  .note-card:hover { box-shadow: none; transform: none; border-color: var(--accent); }
+  .note-card:focus-within { border-color: var(--accent); }
+
+  /* --- 标题带：名 + 日期，右肩等宽日期 --- */
+  .nc-head { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px 9px; border-bottom: 2px solid var(--frame); }
+  .nc-title {
+    flex: 1; min-width: 0; font-size: 15px; font-weight: 650; line-height: 1.35; color: var(--text);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .note-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .nc-date { flex: none; font-size: 11.5px; color: var(--text-light); padding-top: 2px; }
 
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 10px; }
-  .card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; flex: 1; background: var(--accent-bg); padding: 4px 10px; border-radius: var(--radius-sm); display: inline-block; }
-  .card-distillery { font-size:14px; color: var(--accent); font-weight: 600; }
-  .card-date { font-size:12px; color: var(--text-light); white-space: nowrap; }
+  /* --- 酒厂行 --- */
+  .nc-dist {
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em;
+    color: var(--accent); border-bottom: 1px solid var(--border);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nc-dist em { font-style: normal; font-weight: 500; letter-spacing: 0; color: var(--text-light); }
 
-  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .tag { padding: 2px 8px; border-radius: 20px; font-size:12px; font-weight: 600; letter-spacing: 0.3px; }
-  .tag-age { background: var(--gold-light); color: var(--gold); }
-  .tag-abv { background: var(--accent-bg); color: var(--accent); }
-  .tag-wb { background: var(--olive-bg); color: var(--olive); }
-  .tag-year { background: var(--success-bg); color: var(--success); }
+  /* --- 规格格 / 评分格：同一套单元格，标签上、读数下 --- */
+  .nc-spec, .nc-scores { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .nc-spec { border-bottom: 1px solid var(--border); }
+  .nc-scores { border-bottom: 2px solid var(--frame); }
+  .nc-cell {
+    min-width: 0; display: flex; flex-direction: column; gap: 2px;
+    padding: 6px 9px 7px; border-left: 1px solid var(--border); background: var(--surface2);
+  }
+  .nc-cell:first-child { border-left: none; }
+  .nc-cell i { font-style: normal; font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--text-muted); }
+  .nc-cell b { font-size: 15px; font-weight: 600; line-height: 1.2; color: var(--text); }
+  .nc-cell b span { font-size: 11px; color: var(--text-muted); margin-left: 1px; }
+  .nc-scores .nc-cell { background: transparent; padding: 7px 9px 8px; }
+  .nc-scores .nc-cell b { font-size: 20px; font-weight: 650; }
+  .nc-cell.hi { background: var(--accent-bg); }
+  .nc-cell.hi i { color: var(--accent); }
+  .nc-cell.hi b { color: var(--accent); font-size: 22px; }
 
-  .card-scores { display: flex; gap: 16px; background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 10px; }
-  .score-item { text-align: center; flex: 1; }
-  .score-val { font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1; }
-  .score-lbl { font-size:12px; color: var(--text-muted); margin-top: 2px; }
+  /* --- 描述区：标签 11.5px 宽字距 + 单行截断 --- */
+  .nc-body { flex: 1; padding: 9px 12px 10px; display: flex; flex-direction: column; gap: 5px; }
+  .nc-line { display: flex; gap: 7px; font-size: 13.5px; line-height: 1.55; color: var(--text-muted); }
+  .nc-line strong { flex: none; font-size: 11.5px; font-weight: 600; letter-spacing: 0.09em; color: var(--text-light); padding-top: 2px; }
+  .nc-line span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  .card-nose { font-size:14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
-  .card-nose strong { color: var(--text); font-size:12px; letter-spacing: 0.5px; }
-  .card-aftertaste { font-size:14px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
-  .card-aftertaste strong { color: var(--text); font-size:12px; }
-
+  /* --- 操作条 --- */
   .card-actions {
-    display: flex; gap: 8px; margin-top: 12px; padding-top: 12px;
-    border-top: 1px solid var(--border-light); opacity: 1; transition: opacity 0.15s;
+    display: flex; gap: 6px; margin: 0; padding: 7px 12px;
+    border-top: 1px solid var(--border); opacity: 1; transition: opacity 0.15s;
   }
   /* 默认常显；仅在支持精确 hover 的设备上才做 hover 显隐，
      避免触屏设备（无 hover）上编辑/删除按钮永久不可见 */
@@ -357,42 +423,58 @@
     .note-card:focus-within .card-actions { opacity: 1; }
   }
   .btn-edit, .btn-delete {
-    padding: 5px 14px; border-radius: var(--radius-sm); font-size:13px; font-weight: 600;
-    cursor: pointer; border: 1px solid; transition: all 0.15s;
+    height: 28px; padding: 0 12px; border-radius: 0; font-size: 12.5px; font-weight: 600;
+    cursor: pointer; border: 1px solid; transition: all 0.15s; font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
   }
   .btn-edit { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
-  .btn-edit:hover { background: var(--accent); color: white; }
+  .btn-edit:hover { background: var(--accent); color: var(--on-accent); }
   .btn-delete { background: transparent; border-color: var(--border); color: var(--text-muted); margin-left: auto; }
   .btn-delete:hover { background: var(--danger-bg); border-color: var(--red); color: var(--red); }
 
-/* List view overrides */
-#cards-grid.list-view .note-card {
-  display: flex; flex-direction: row; align-items: center;
-  padding: 5px 16px; gap: 8px;
-}
-.list-name {
-  flex: 1; min-width: 0; font-size:14px; font-weight: normal;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  color: var(--text);
-}
-#cards-grid.list-view .card-title { font-size:14px; background: none; padding: 0; border-radius: 0; }
-#cards-grid.list-view .card-actions {
-  margin-top: 0; padding-top: 0; border-top: none; opacity: 1;
-  gap: 4px; flex-shrink: 0; background: transparent;
-}
-#cards-grid.list-view .btn-edit,
-#cards-grid.list-view .btn-delete {
-  width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 1px solid var(--border);
-  font-size: 14px; line-height: 1; display: inline-flex; align-items: center; justify-content: center;
-}
-#cards-grid.list-view .btn-edit { background: transparent; border-color: var(--accent); }
-#cards-grid.list-view .btn-delete { background: transparent; border-color: var(--border); margin-left: 0; }
+  /* ===== List view —— L3 密排行（去行号、去酒厂列）=====
+     整个列表读成「一张表」：容器给 2px 硬框，行只用斑马纹 + 1px 底线，
+     列 = 酒款 / 酒精度 / 均分 / 操作；数字右对齐等宽，均分用强调色做可比列。 */
+  .lv-head {
+    display: grid; grid-template-columns: minmax(0,1fr) 96px 82px 92px; align-items: center;
+    height: 28px; border-bottom: 2px solid var(--frame); background: var(--surface2);
+  }
+  .lv-head span { padding: 0 12px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; color: var(--text-muted); }
+  .lv-head span.r { text-align: right; }
+
+  #cards-grid.list-view .note-card {
+    display: grid; grid-template-columns: minmax(0,1fr) 96px 82px 92px;
+    align-items: center; height: 34px; padding: 0; gap: 0; overflow: visible;
+    border: none; border-bottom: 1px solid var(--border); background: transparent;
+  }
+  #cards-grid.list-view .note-card:nth-child(even) { background: var(--zebra); }
+  #cards-grid.list-view .note-card:last-child { border-bottom: none; }
+  #cards-grid.list-view .note-card:hover { background: var(--accent-bg); border-color: var(--border); }
+  .lv-name { padding: 0 12px; font-size: 13.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lv-abv { padding: 0 12px; text-align: right; font-size: 13px; color: var(--text-muted); }
+  .lv-avg { padding: 0 12px; text-align: right; font-size: 14px; font-weight: 650; color: var(--accent); }
+  #cards-grid.list-view .card-actions {
+    margin: 0; padding: 0 10px 0 0; border-top: none; opacity: 1; gap: 4px; justify-content: flex-end;
+  }
+  #cards-grid.list-view .btn-edit,
+  #cards-grid.list-view .btn-delete {
+    width: 26px; height: 26px; padding: 0; border-radius: 0; margin: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  /* 列表里每行两个按钮若都用强调色，一屏 24 行会变成一片强调色噪声 —— 默认中性，hover 才亮 */
+  #cards-grid.list-view .btn-edit { background: transparent; border-color: var(--border); color: var(--text-muted); }
+  #cards-grid.list-view .btn-delete { background: transparent; border-color: var(--border); color: var(--text-muted); }
+  #cards-grid.list-view .btn-edit:hover { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+  #cards-grid.list-view .btn-delete:hover { background: var(--danger-bg); border-color: var(--red); color: var(--red); }
 
   /* ===== Empty State ===== */
-  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); grid-column: 1/-1; }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-  .empty-sub { font-size:14px; }
+  .empty-state { text-align: center; padding: 54px 20px; color: var(--text-muted); grid-column: 1/-1; }
+  .empty-mark {
+    width: 40px; height: 40px; margin: 0 auto 14px; border: 2px solid var(--frame);
+    display: flex; align-items: center; justify-content: center; color: var(--text-light);
+  }
+  .empty-title { font-size: 15px; font-weight: 650; margin-bottom: 6px; letter-spacing: 0.04em; }
+  .empty-sub { font-size: 13px; }
 
   /* ===== Modal ===== */
   .modal-overlay {
@@ -401,8 +483,8 @@
   }
   .modal-overlay.hidden { display: none; }
   .modal {
-    background: var(--surface); border-radius: 12px; width: 100%;
-    max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    background: var(--surface); border: 2px solid var(--frame); border-radius: 0; width: 100%;
+    max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: var(--hardshadow);
   }
   .modal-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -412,17 +494,18 @@
   .modal-title { font-size: 16px; font-weight: 700; color: var(--accent); }
   .modal-close {
     background: none; border: none; font-size: 22px; cursor: pointer;
-    color: var(--text-muted); padding: 2px 6px; border-radius: 4px; line-height: 1;
+    color: var(--text-muted); padding: 2px 6px; border-radius: 0; line-height: 1;
   }
   .modal-close:hover { background: var(--surface2); color: var(--text); }
   .modal-body { padding: 20px 24px 24px; }
 
   /* Form */
   .form-section {
-    background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 0;
+    padding: 14px 16px; margin-bottom: 16px;
   }
   .form-section-title {
-    font-size:12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em;
     color: var(--text-muted); margin-bottom: 12px;
   }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -440,7 +523,7 @@
   .form-group textarea { resize: vertical; min-height: 60px; }
 
   .score-inputs { display: flex; gap: 10px; align-items: center; }
-  .score-inputs input[type="number"] { width: 90px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; background: var(--bg); color: var(--text); }
+  .score-inputs input[type="number"] { width: 90px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 0; font-size: 14px; background: var(--bg); color: var(--text); }
   .score-display { min-width: 30px; text-align: center; font-weight: 700; color: var(--accent); }
 
   /* Input length hint */
@@ -458,7 +541,7 @@
   }
   .btn-cancel { background: transparent; border-color: var(--border); color: var(--text-muted); }
   .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
-  .btn-save { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn-save { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .btn-save:hover { background: var(--accent-light); }
   .btn-save.saving { opacity: 0.7; pointer-events: none; }
 
@@ -469,10 +552,11 @@
   }
   .confirm-overlay.hidden { display: none; }
   .confirm-box {
-    background: var(--surface); border-radius: 10px; padding: 24px 28px;
-    max-width: 360px; width: 100%; box-shadow: var(--shadow-md); text-align: center;
+    background: var(--surface); border: 2px solid var(--frame); border-radius: 0; padding: 24px 28px;
+    max-width: 360px; width: 100%; box-shadow: var(--hardshadow); text-align: center;
   }
-  .confirm-icon { font-size: 36px; margin-bottom: 10px; }
+  .confirm-icon { display:flex; align-items:center; justify-content:center; width:44px; height:44px;
+    margin: 0 auto 12px; border: 2px solid var(--red); color: var(--red); }
   .confirm-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
   .confirm-msg { font-size:14px; color: var(--text-muted); margin-bottom: 20px; }
   .confirm-actions { display: flex; gap: 10px; justify-content: center; }
@@ -487,10 +571,11 @@
 
   /* ===== Detail View ===== */
   .detail-section {
-    background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 0;
+    padding: 14px 16px; margin-bottom: 14px;
   }
   .detail-section-title {
-    font-size:12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em;
     color: var(--text-muted); margin-bottom: 10px;
   }
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
@@ -499,9 +584,16 @@
   .detail-label { font-size:12px; color: var(--text-muted); font-weight: 600; }
   .detail-value { font-size:14px; color: var(--text); word-break: break-word; }
   .detail-value.empty { color: var(--text-light); font-style: italic; }
-  .detail-scores { display: flex; gap: 16px; }
-  .detail-score-item { text-align: center; flex: 1; background: var(--surface); border-radius: var(--radius-sm); padding: 10px 8px; }
-  .detail-score-val { font-size: 20px; font-weight: 700; color: var(--accent); }
+  /* 详情评分 = 同一套硬格：4 格竖线分隔，均分格给强调底 */
+  .detail-scores { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); }
+  .detail-score-item {
+    text-align: center; background: var(--surface); border-radius: 0;
+    padding: 10px 6px; border-left: 1px solid var(--border);
+  }
+  .detail-score-item:first-child { border-left: none; }
+  .detail-score-item.hi { background: var(--accent-bg); }
+  .detail-score-val { font-size: 20px; font-weight: 650; color: var(--text); }
+  .detail-score-item.hi .detail-score-val { color: var(--accent); }
   .detail-score-lbl { font-size:12px; color: var(--text-muted); }
   .detail-avg { text-align: center; margin-top: 8px; font-size:14px; color: var(--text-muted); }
   .detail-avg-val { font-size: 16px; font-weight: 700; color: var(--gold); }
@@ -558,7 +650,7 @@
     display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px);
   }
   .img-lightbox.show { display: flex; }
-  .img-lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 8px; box-shadow: 0 12px 48px rgba(0,0,0,0.45); }
+  .img-lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 0; box-shadow: 0 12px 48px rgba(0,0,0,0.45); }
   .img-lightbox-close {
     position: absolute; top: 16px; right: 24px; color: #fff; font-size: 36px;
     background: none; border: none; cursor: pointer; line-height: 1; opacity: 0.7;
@@ -567,7 +659,7 @@
 
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
-    background: var(--toast-bg); color: var(--toast-text); padding: 10px 20px; border-radius: 20px;
+    background: var(--toast-bg); color: var(--toast-text); padding: 10px 20px; border-radius: 0;
     font-size:14px; font-weight: 500; z-index: 2000; transition: transform 0.25s ease;
     pointer-events: none; white-space: nowrap;
   }
@@ -581,7 +673,7 @@
     font-size: 13px; cursor: pointer; color: var(--text-muted); transition: all 0.15s;
   }
   .page-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .page-btn.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 700; }
+  .page-btn.active { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
   .page-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
 
   /* ===== Syncing state (body-level) ===== */
@@ -604,22 +696,23 @@
     .logo span { font-size:12px; display: none; }          /* hide "697条记录" */
     .version-badge { display: none; }                       /* hide version badge */
 
-    #btn-add {
-      padding: 8px 12px; font-size:13px;
-    }
-    .btn-header {
-      padding: 7px 10px; font-size:13px;
-    }
-    .btn-header span, #btn-add span { display: none; }      /* hide text labels */
-    .btn-header::after { content: '⚙'; font-size: 16px; }
-    #btn-add::before { content: '＋'; margin-right: 0; }
+    /* 手机端三个按钮都收成纯图标（内联 SVG），文字标签隐藏 */
+    .btn-header, #btn-add { padding: 0 10px; gap: 0; }
+    .btn-theme { width: 32px; height: 32px; }
+    .btn-header span, #btn-add span { display: none; }
+    .logo-mark { height: 18px; width: 3px; }
 
     /* --- Container & Stats --- */
-    .container { padding: 14px 10px; }
-    .stats-bar { gap: 8px; margin-bottom: 14px; }
-    .stat-card { padding: 10px 12px; min-width: 0; }
-    .stat-num { font-size: 20px; }
-    .stat-label { font-size:12px; }
+    .container { padding: 12px 10px; }
+    /* 仪表带在手机折成 2 列（第 5 格通栏） */
+    .stats-bar { grid-template-columns: repeat(2, 1fr); margin-bottom: 12px; }
+    .stat-card { padding: 8px 10px 9px; }
+    .stat-card:nth-child(odd) { border-left: none; }
+    .stat-card:nth-child(n+3) { border-top: 1px solid var(--border); }
+    .stat-card:last-child { grid-column: 1 / -1; }
+    .stat-num { font-size: 19px; }
+    .stat-label { font-size: 11.5px; letter-spacing: 0.08em; }
+    .stat-sub { font-size: 11px; }
 
     /* --- Connection Banner --- */
     .conn-banner { padding: 8px 12px; font-size: 12px; flex-direction: column; gap: 4px; text-align: center; }
@@ -641,7 +734,7 @@
     .filter-row select,
     .filter-row input[type="number"] {
       width: 100% !important; max-width: none !important;
-      padding: 9px 10px; font-size: 14px;
+      padding: 0 10px; height: 38px; font-size: 14px;
       -webkit-appearance: none; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a6f65'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 10px center;
@@ -649,10 +742,10 @@
 
     /* Sort buttons wrap on mobile */
     .sort-btns { width: 100%; margin-left: 0 !important; flex-wrap: wrap; justify-content: center; }
-    .sort-btn { font-size:12px; padding: 6px 10px; flex: 1 1 auto; text-align: center; min-width: 0; }
+    .sort-btn { font-size:12px; padding: 0 10px; height: 34px; flex: 1 1 auto; text-align: center; min-width: 0; }
     #btn-clear-filter { width: 100%; text-align: center; margin-top: 4px; }
     .date-filter { width: 100%; }
-    .date-btn { width: 100%; justify-content: center; font-size: 12px; padding: 6px 10px; }
+    .date-btn { width: 100%; justify-content: center; font-size: 12px; padding: 0 10px; height: 34px; }
     .date-pop { left: 0; right: 0; min-width: 0; }
 
     /* Mobile filter toggle button */
@@ -660,7 +753,7 @@
       display: flex !important;   /* show only on mobile */
       align-items: center; justify-content: center; gap: 4px;
       width: 100%; padding: 9px; border: 1px solid var(--border);
-      border-radius: var(--radius-sm); background: var(--bg);
+      border-radius: 0; background: var(--bg);
       color: var(--text-muted); font-size:14px; cursor: pointer;
       margin-top: 8px; transition: all 0.15s;
     }
@@ -671,26 +764,33 @@
     /* --- Cards Grid: force single column --- */
     #cards-grid { grid-template-columns: 1fr !important; gap: 12px; }
 
-    /* Card typography smaller on mobile */
-    .note-card { padding: 14px 16px; }
-    .card-title { font-size: 14px; }
-    .card-distillery { font-size:12px; }
-    .card-date { font-size:12px; }
-    .tag { font-size:12px; padding: 2px 6px; }
-    .score-val { font-size: 16px; }
-    .score-lbl { font-size:12px; }
-    .card-nose, .card-aftertaste { font-size:14px; }
+    /* 卡片：字阶不降档，只收内边距 —— 手机端读数同样要能扫 */
+    .nc-head { padding: 9px 11px 8px; }
+    .nc-title { font-size: 14.5px; }
+    .nc-date { font-size: 11px; }
+    .nc-dist { padding: 6px 11px; font-size: 12px; letter-spacing: 0.04em; }
+    .nc-cell { padding: 6px 8px 7px; }
+    .nc-cell i { font-size: 11.5px; letter-spacing: 0.05em; }
+    .nc-cell b { font-size: 14px; }
+    .nc-scores .nc-cell b { font-size: 18px; }
+    .nc-cell.hi b { font-size: 19px; }
+    .nc-body { padding: 8px 11px 9px; }
+    .nc-line { font-size: 13.5px; }
+    .nc-line strong { font-size: 11.5px; letter-spacing: 0.05em; }
 
-    /* Card actions: always visible + icon-only on mobile */
-    .card-actions { opacity: 1 !important; margin-top: 10px; padding-top: 10px; gap: 6px; }
-    .btn-edit, .btn-delete { padding: 6px 12px; font-size:13px; }
-    .btn-edit::before { content: '✏️ '; font-size: 12px; }
-    .btn-delete::before { content: '🗑️ '; font-size: 12px; }
+    /* 操作按钮：手机端常显（无 hover），触控目标拉到 32px */
+    .card-actions { opacity: 1 !important; gap: 6px; padding: 7px 11px; }
+    .btn-edit, .btn-delete { height: 32px; padding: 0 12px; font-size: 12.5px; }
 
-    /* List view mobile tweaks */
-    #cards-grid.list-view .note-card { padding: 4px 12px; gap: 6px; }
+    /* 列表视图：行高 34 → 44px 保证触控，列头隐藏省一行 */
+    #cards-grid.list-view .note-card { grid-template-columns: minmax(0,1fr) 62px 58px 76px; height: 44px; }
+    .lv-head { display: none; }
+    #cards-grid.list-view .lv-name { padding: 0 11px; font-size: 13.5px; }
+    #cards-grid.list-view .lv-abv { padding: 0 8px; font-size: 12.5px; }
+    #cards-grid.list-view .lv-avg { padding: 0 8px; font-size: 13.5px; }
+    #cards-grid.list-view .card-actions { padding: 0 9px 0 0; }
     #cards-grid.list-view .btn-edit,
-    #cards-grid.list-view .btn-delete { width: 26px; height: 26px; font-size:13px; }
+    #cards-grid.list-view .btn-delete { width: 32px; height: 32px; }
 
     /* --- Results info --- */
     .results-info { font-size:14px; flex-wrap: wrap; gap: 4px; }
@@ -702,7 +802,7 @@
     .page-btn:not(:first-child):not(:last-child) { display: none; }
 
     /* --- Modal: near-full-screen on mobile --- */
-    .modal { max-height: 95vh; border-radius: 12px 12px 0 0; margin: 0 auto; width: 100%; max-width: none; }
+    .modal { max-height: 95vh; border-radius: 0; margin: 0 auto; width: 100%; max-width: none; }
     .modal-overlay { padding: 0; align-items: flex-end; }
     .modal-header { padding: 16px 20px 12px; }
     .modal-body { padding: 16px 20px 20px; }
@@ -730,7 +830,15 @@
   .mobile-filter-toggle { display: none; }
 
   /* ===== Small phones (≤400px) extra tweaks ===== */
+  /* ===== 小屏加档：规格格折成 2×2（4 格挤到 80px 以下会开始读不动）===== */
   @media (max-width: 400px) {
+    .nc-spec { grid-template-columns: repeat(2, 1fr); }
+    .nc-spec .nc-cell:nth-child(3) { border-left: none; }
+    .nc-spec .nc-cell:nth-child(n+3) { border-top: 1px solid var(--border); }
+    .nc-scores .nc-cell { padding: 6px 5px 7px; }
+    .nc-scores .nc-cell i { font-size: 11px; letter-spacing: 0.02em; }
+    .nc-scores .nc-cell b { font-size: 17px; }
+    .nc-cell.hi b { font-size: 18px; }
     .stat-card { padding: 8px 10px; }
     .stat-num { font-size: 18px; }
     .header-right { gap: 6px; }
@@ -740,7 +848,7 @@
 
   /* Detail View mobile tweaks */
   @media (max-width: 768px) {
-    #detail-modal { max-height: 95vh; border-radius: 12px 12px 0 0; margin: 0 auto; width: 100%; max-width: none; }
+    #detail-modal { max-height: 95vh; border-radius: 0; margin: 0 auto; width: 100%; max-width: none; }
     #detail-overlay { padding: 0; align-items: flex-end; }
     .detail-section { padding: 10px 12px; margin-bottom: 10px; }
     .detail-grid { grid-template-columns: 1fr !important; gap: 6px 12px; }
@@ -754,7 +862,7 @@
 
   /* ===== Flavor Wheel ===== */
   .hidden { display: none !important; }
-  .wheel-wrap { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding:16px; }
+  .wheel-wrap { background: var(--surface); border:2px solid var(--frame); border-radius:0; padding:16px; }
   .wheel-grid { display:grid; grid-template-columns: 360px 1fr; gap:20px; align-items:start; }
   @media (max-width:900px){ .wheel-grid{ grid-template-columns:1fr; } }
   .wheel-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
@@ -765,9 +873,9 @@
   .wseg:hover { opacity:.84; }
   .wseg.on { stroke:var(--text); stroke-width:3; }
   .wlegend { display:flex; flex-wrap:wrap; gap:4px 8px; margin-top:12px; }
-  .wlg { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-muted); cursor:pointer; padding:3px 6px; border-radius:5px; }
+  .wlg { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-muted); cursor:pointer; padding:3px 6px; border-radius:0; }
   .wlg:hover { background:var(--surface2); }
-  .wlg i { width:10px; height:10px; border-radius:3px; display:inline-block; flex:none; }
+  .wlg i { width:10px; height:10px; border-radius:0; display:inline-block; flex:none; }
   .wlg b { color:var(--text); font-weight:600; }
   .wlg.on { color:var(--text); background:var(--surface2); font-weight:600; }
   .wcrumb { font-size:13px; color:var(--text-muted); margin-bottom:10px; }
@@ -775,7 +883,7 @@
   .wcrumb a:hover { text-decoration:underline; }
   .wtip { background:var(--surface2); border-left:3px solid var(--olive); border-radius:var(--radius-sm); padding:9px 12px; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.6; }
   .wtip b { color:var(--text); }
-  .wrow { display:flex; align-items:baseline; gap:8px; padding:7px 8px; border-radius:6px; cursor:pointer; font-size:14px; }
+  .wrow { display:flex; align-items:baseline; gap:8px; padding:7px 8px; border-radius:0; cursor:pointer; font-size:14px; }
   .wrow:hover { background:var(--surface2); }
   .wname { font-weight:600; min-width:88px; }
   .wfreq { color:var(--text-muted); font-size:12px; font-variant-numeric:tabular-nums; }
@@ -790,14 +898,14 @@
   .wnm { font-weight:600; }
   .wmeta { color:var(--text-muted); font-size:12px; }
   .wsc { font-weight:700; font-variant-numeric:tabular-nums; }
-  .wchip { display:inline-block; background:var(--surface2); border:1px solid var(--border); border-radius:999px; padding:2px 10px; margin:2px 5px 2px 0; font-size:12px; }
+  .wchip { display:inline-block; background:var(--surface2); border:1px solid var(--border); border-radius:0; padding:2px 10px; margin:2px 5px 2px 0; font-size:12px; }
   .wchip b { color:var(--text); }
   .wchip span { color:var(--text-muted); }
   .wunknown { margin-top:16px; border-top:1px solid var(--border); padding-top:12px; }
   .wunknown > summary { cursor:pointer; font-size:13px; color:var(--text-muted); }
   .wunknown > summary:hover { color:var(--text); }
   .wun-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-  .wun { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 8px; font-size:12px; color:var(--text-muted); }
+  .wun { background:var(--surface2); border:1px solid var(--border); border-radius:0; padding:3px 8px; font-size:12px; color:var(--text-muted); }
   .wun b { color:var(--text); font-variant-numeric:tabular-nums; }
   /* 待校准词条的交互态（网页内归类） */
   .wun-tap { cursor:pointer; font-family:inherit; transition:border-color .15s, color .15s; }
@@ -815,17 +923,17 @@
   .wun-x:hover { opacity:1; }
   .wun-editor {
     flex-basis:100%; background:var(--surface2); border:1px solid var(--accent);
-    border-radius:6px; padding:9px 11px;
+    border-radius:0; padding:9px 11px;
   }
   .wun-editor-w { font-weight:600; font-size:13px; }
   .wcat-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
   .wcat {
     display:inline-flex; align-items:center; gap:4px; padding:5px 10px;
-    border:1px solid var(--border); border-radius:999px; background:var(--surface);
+    border:1px solid var(--border); border-radius:0; background:var(--surface);
     color:var(--text); font-size:12px; cursor:pointer; font-family:inherit;
   }
   .wcat:hover { background:var(--accent-bg); }
-  .wcat i { width:8px; height:8px; border-radius:2px; display:inline-block; flex:none; }
+  .wcat i { width:8px; height:8px; border-radius:0; display:inline-block; flex:none; }
   .wcat-exc { color:var(--text-muted); }
   .wcat-cancel { padding:5px 9px; color:var(--text-muted); }
   .wmy {
@@ -854,23 +962,30 @@
   .wbtn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:4px 10px; font-size:12px; cursor:pointer; }
   .wbtn:hover { border-color:var(--accent-light); }
   .scrollbox { max-height:520px; overflow:auto; }
-  .wtag { font-size:11px; padding:1px 6px; border-radius:3px; background:var(--olive-bg); color:var(--olive); border:1px solid var(--olive-border); margin-left:6px; }
+  .wtag { font-size:11px; padding:1px 6px; border-radius:0; background:var(--olive-bg); color:var(--olive); border:1px solid var(--olive-border); margin-left:6px; }
   </style>
 </head>
 <body data-page-node-id="rYVRabBDNZoVIpfMyZ580D">
 
 <!-- Header -->
 <header data-page-node-id="Z0YRmt33Qp6fxhvuQ1285O">
-  <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
-    <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
-    <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:35</span>
+  <div class="logo">
+    <span class="logo-mark" aria-hidden="true"></span>
+    <h1>Whisky Notes</h1>
+    <span id="header-count">loading...</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-02:10</span>
   </div>
-  <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
-    <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
-    <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式" data-page-node-id="653FMve3jRKMJSEcBthOKn">🌙</button>
-    <button class="btn-header" id="btn-settings" title="GitHub 设置" data-page-node-id="qUpUqv27hC1f45MsT9YkR1">⚙️ 设置</button>
-    <button id="btn-add" data-page-node-id="8s4MpME8JRsLPBlI1jd9x4">＋ 添加记录</button>
+  <div class="header-right">
+    <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
+    <button class="btn-theme" id="btn-theme" title="切换到暗黑模式" aria-label="切换主题"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg></button>
+    <button class="btn-header" id="btn-settings" title="GitHub 设置">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M18 7h2M4 17h5M14 17h6"/><circle cx="15.5" cy="7" r="2.1"/><circle cx="11.5" cy="17" r="2.1"/></svg>
+      <span>设置</span>
+    </button>
+    <button id="btn-add" title="添加记录">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      <span>添加记录</span>
+    </button>
   </div>
 </header>
 
@@ -903,10 +1018,10 @@
         </svg>
         <input type="text" id="search-input" placeholder="搜索酒款名、酒厂、装瓶商、香气描述..." autocomplete="off" data-page-node-id="BnqfPiyzavRsoPXm92sWxt">
       </div>
-      <div class="view-toggle" data-page-node-id="hNpuh4aPR5ddj2Lm2LdgNU">
-        <button class="view-btn active" id="view-grid" title="卡片视图" data-page-node-id="HY1TQb6FegZk8nTeua6w9Q">⊞</button>
-        <button class="view-btn" id="view-list" title="列表视图" data-page-node-id="gHkMZemkVKipuyYonDsU5j">≡</button>
-        <button class="view-btn" id="view-wheel" title="风味轮视图" data-page-node-id="Ww33FlavorWheelBtn01">◍</button>
+      <div class="view-toggle" role="group" aria-label="视图切换">
+        <button class="view-btn active" id="view-grid" title="卡片视图" aria-label="卡片视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg></button>
+        <button class="view-btn" id="view-list" title="列表视图" aria-label="列表视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
+        <button class="view-btn" id="view-wheel" title="风味轮视图" aria-label="风味轮视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4v17.2M3.4 12h17.2"/></svg></button>
       </div>
     </div>
     <div class="filter-row" id="filter-row" data-page-node-id="tXW4NCIpCvEp2kPzd2w4yA">
@@ -945,7 +1060,7 @@
       <button id="btn-clear-filter" data-page-node-id="4WNRokteTvAXKlSK7vzljW">清除筛选</button>
     </div>
     <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()" data-page-node-id="3aNqbcvZlpMF7zKsNyaGG4">
-      <span data-page-node-id="OVT7ZMNYGYd57pGdSkfisW">🔍 筛选 / 排序</span><span class="arrow" data-page-node-id="W1axiC9wQ8FREOhDhOLjpC">▾</span>
+      <span>筛选 / 排序</span><span class="arrow" data-page-node-id="W1axiC9wQ8FREOhDhOLjpC">▾</span>
     </button>
   </div>
 
@@ -966,7 +1081,7 @@
 <div class="modal-overlay hidden" id="settings-overlay" data-page-node-id="oFEOo9y4umVSP3xaaAOmWc">
   <div class="modal" style="max-width:520px;" data-page-node-id="JntJWgpNQXyUHLyCyukXzF">
     <div class="modal-header" data-page-node-id="Gw4xqFjZVJUjWPAAhqscYX">
-      <span class="modal-title" data-page-node-id="dxExGicdZ5OAL3E79Qwqx7">🔑 GitHub 连接设置</span>
+      <span class="modal-title">GitHub 连接设置</span>
       <button class="modal-close" onclick="closeSettings()" data-page-node-id="m2nPCbxGNOJiiuVtT7ifUX">×</button>
     </div>
     <div class="modal-body" data-page-node-id="kRDHiqmETUMsovaAyI0Zul">
@@ -1014,7 +1129,7 @@
     <div class="modal-body" data-page-node-id="gcDqZHWMeaO7xY9rm2FEvn">
       <!-- 基本信息 -->
       <div class="form-section" data-page-node-id="6F4w8KXTFLwlhjvpXGcLA3">
-        <div class="form-section-title" data-page-node-id="BC8cV0KXwxCg82m6GD2AI9">📋 基本信息</div>
+        <div class="form-section-title">基本信息</div>
         <div class="form-grid" data-page-node-id="IPWZdBi69jHcUoG7eHx9Zy">
           <div class="form-group full" data-page-node-id="WLxhF4bV0csAEISbyojDnP">
             <label data-page-node-id="qDbqSst322VkFjQgwZtgEB">酒款名称 *</label>
@@ -1041,7 +1156,7 @@
       </div>
       <!-- 酒款规格 -->
       <div class="form-section" data-page-node-id="5c0krR4aEdH2JwFq99hVFp">
-        <div class="form-section-title" data-page-node-id="xt7zcBKMIoRXSafXMGrjAp">🔬 酒款规格</div>
+        <div class="form-section-title">酒款规格</div>
         <div class="form-grid cols-4" data-page-node-id="BUjF9KoTBQYDvMWhzU98p1">
           <div class="form-group" data-page-node-id="BwHTDMNTuy9lZKN4XSH7mA"><label data-page-node-id="Zktj8FfiFAqtDwPh9ultPi">酒精度% (ABV)</label><input type="number" id="f-abv" placeholder="54.1" step="0.1" min="0" max="100" data-page-node-id="n0Nlmbp7c5p4KjoBetOtNR"></div>
           <div class="form-group" data-page-node-id="vOvtjNaeNE8qoaNPEuO8Xg"><label data-page-node-id="80b3E9XkEyoW6gJNFIu85P">酒龄 (Vintage Age)</label><input type="number" id="f-vintage-age" placeholder="31" step="0.5" min="0" max="150" data-page-node-id="FCDXmW5P8pP9VXVKbG7eCk"></div>
@@ -1051,7 +1166,7 @@
       </div>
       <!-- 品鉴笔记 -->
       <div class="form-section" data-page-node-id="Hfd321KQCg2BPY0luizzLY">
-        <div class="form-section-title" data-page-node-id="lFErz31TA2jB9gEIsG2Q8a">📝 品鉴笔记</div>
+        <div class="form-section-title">品鉴笔记</div>
         <div class="form-grid" data-page-node-id="7Efntat5IQgVGkgkmmZuHI">
           <div class="form-group full" data-page-node-id="vGhnbqCPiVbfSnYSF3aue9">
             <label data-page-node-id="RwBGEll0oHQQmvg4UNEkgy">闻香描述 (Nose)</label>
@@ -1074,7 +1189,7 @@
       <div class="form-section" data-page-node-id="0fHscrUddKoNyA4II7jRan">
         <div class="img-upload-section" data-page-node-id="TeMtDRgKGwwZ3hkp1hB4HD">
           <div class="img-upload-header" data-page-node-id="xmvwgASJ7wjVqIqTTnzHGp">
-            <span class="img-upload-title" data-page-node-id="uMBT9QTX2HlwD8IKgupAAG">📸 图片（可选）</span>
+            <span class="img-upload-title">图片（可选）</span>
             <span class="img-upload-hint" data-page-node-id="rJRDVA2jIEmDwx6oY7KZpn">最夕5张，自动压缩后上传到 GitHub album/</span>
           </div>
           <label class="img-upload-btn" id="label-add-image" data-page-node-id="AdT9QP7xdXPfzGGOkQ11gN">
@@ -1086,7 +1201,7 @@
       </div>
       <!-- 评分 -->
       <div class="form-section" data-page-node-id="zIrrXYaCLnoSE3pCMVuW4C">
-        <div class="form-section-title" data-page-node-id="CcgYWZ0EjsNRyHPUX68Ne7">⭐ 评分</div>
+        <div class="form-section-title">评分</div>
         <div class="form-grid" data-page-node-id="x524xew30dlhK5c9eRAtEt">
           <div class="form-group" data-page-node-id="TKnfG2P8oI6J93BCknV0Ym"><label data-page-node-id="0ucc9NXVe7gl4tp6frbgCK">入口 (Palate) /5</label>
             <div class="score-inputs" data-page-node-id="1P9MXP62eupJznmgWepdng"><input type="number" id="f-palate" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('palate',this.value)" data-page-node-id="cxNz0OK7HVBBoQUVOslNSa"><span class="score-display" id="disp-palate" data-page-node-id="yCGWV90lyFByWsHKAwnRxn">—</span></div></div>
@@ -1107,7 +1222,7 @@
 <!-- Delete Confirm -->
 <div class="confirm-overlay hidden" id="confirm-overlay" data-page-node-id="ZTj1FKKWs6hgUOmrodHuhV">
   <div class="confirm-box" data-page-node-id="fdo2ttrnIq4it8pbPE3cUH">
-    <div class="confirm-icon" data-page-node-id="II4h8RkYwZ6gkSvifSwWIU">🗑️</div>
+    <div class="confirm-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.8h5V7"/><path d="M6.6 7l.9 13h9l.9-13"/></svg></div>
     <div class="confirm-title" data-page-node-id="bIk3J1loVEShf9pz4DiE0j">确认删除？</div>
     <div class="confirm-msg" id="confirm-msg" data-page-node-id="V5phMz4nXC3FoEY4QHrtwB">此操作不可撤销</div>
     <div class="confirm-actions" data-page-node-id="WX5PXYKbxGGCSWleevhRtP">
@@ -1121,14 +1236,14 @@
 <div class="modal-overlay hidden" id="detail-overlay" data-page-node-id="WWbBIyntrNNHnGcLYDGUT9">
   <div class="modal" id="detail-modal" data-page-node-id="jmGCxsFvJD48qSOZe9AtRX">
     <div class="modal-header" data-page-node-id="EcnGjLlPEAA5Kq8GaxABjx">
-      <span class="modal-title" id="detail-title" data-page-node-id="MYjrAoCyVFsJO6R6YpuBKC">🥃 品酒详情</span>
+      <span class="modal-title" id="detail-title">品酒详情</span>
       <button class="modal-close" id="detail-close" data-page-node-id="XRjyNjN9Bs9nOHH0HrPZsY">×</button>
     </div>
     <div class="modal-body" id="detail-body" data-page-node-id="A55nHD7iJUQRZQWFZoUMOs"></div>
     <div class="modal-footer" data-page-node-id="7vBuDrsaQ3SKMGBgS33Bg0">
       <button class="btn-cancel" id="btn-detail-close" data-page-node-id="LrSb8Zf3nH7CdFuY4KADlN">关闭</button>
-      <button class="btn-save" id="btn-detail-edit" style="background:var(--accent);border-color:var(--accent);" data-page-node-id="CrcyabYIN27sgGSAmxubSB">✏️ 编辑</button>
-      <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);" data-page-node-id="DDi0s3IBnAeEVL2ZwPrzPL">🗑️ 删除</button>
+      <button class="btn-save" id="btn-detail-edit" style="background:var(--accent);border-color:var(--accent);">编辑</button>
+      <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.8h5V7"/><path d="M6.6 7l.9 13h9l.9-13"/></svg> 删除</button>
     </div>
   </div>
 </div>
@@ -1145,22 +1260,33 @@
 <script>
 
 // ===== Theme (light/dark) =====
+/* 图标一律内联 SVG（24 网格 / 1.75px 描边 / 随 currentColor），不用 emoji */
+var SVG_MOON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>';
+var SVG_SUN  = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M18.7 5.3l-1.5 1.5M6.8 17.2l-1.5 1.5"/></svg>';
+function setThemeIcon(isDark){
+  var b = document.getElementById('btn-theme'); if(!b) return;
+  b.innerHTML = isDark ? SVG_SUN : SVG_MOON;
+  b.title = isDark ? '切换到明亮模式' : '切换到暗黑模式';
+  b.setAttribute('aria-label', b.title);
+}
 function initTheme(){
   const saved = localStorage.getItem('wn-theme');
   if(saved==='dark' || (!saved && window.matchMedia('(prefers-color-scheme:dark)').matches)){
     document.documentElement.setAttribute('data-theme','dark');
-    document.getElementById('btn-theme').textContent = '☀️';
+    setThemeIcon(true);
+  } else {
+    setThemeIcon(false);
   }
 }
 function toggleTheme(){
   const isDark = document.documentElement.getAttribute('data-theme')==='dark';
   if(isDark){
     document.documentElement.removeAttribute('data-theme');
-    document.getElementById('btn-theme').textContent = '🌙';
+    setThemeIcon(false);
     localStorage.setItem('wn-theme','light');
   } else {
     document.documentElement.setAttribute('data-theme','dark');
-    document.getElementById('btn-theme').textContent = '☀️';
+    setThemeIcon(true);
     localStorage.setItem('wn-theme','dark');
   }
 }
@@ -1413,7 +1539,7 @@ async function runSync(){
 
   isSyncing = true;
   document.body.classList.add('syncing');
-  setStatus('syncing', '⏳ 正在同步到 GitHub...');
+  setStatus('syncing', '正在同步到 GitHub…');
 
   try {
     const snap = await fetchServerSnapshot();
@@ -1495,7 +1621,7 @@ async function reconcileOnLoad(){
   // 服务器拉不到 → 用本地（离线可用）
   if (serverErr) {
     if (hasLocal) {
-      setStatus('error', '⚠ 离线：使用本地数据（' + db.notes.length + ' 条）' + (syncMeta.dirty ? ' · 有未同步修改' : ''));
+      setStatus('error', '离线：使用本地数据（' + db.notes.length + ' 条）' + (syncMeta.dirty ? ' · 有未同步修改' : ''));
     } else {
       setStatus('error', '✕ 加载失败: ' + serverErr.message.slice(0, 100));
     }
@@ -1519,7 +1645,7 @@ async function reconcileOnLoad(){
   const recoveredCount = merged.length - snap.notes.length + syncMeta.pendingDeletes.length;
   db.notes = merged;
   await Store.set(LS_DB, db);
-  setStatus('syncing', '⏳ 检测到未同步修改，正在合并并同步...');
+  setStatus('syncing', '检测到未同步修改，正在合并并同步…');
   refresh(); updateSyncBadge();
   const ok = await runSync();
   if (ok) toast('✓ 已恢复并同步未同步的修改（' + Math.max(recoveredCount, 1) + ' 处）');
@@ -1542,7 +1668,7 @@ async function init() {
 
   if (!hasConfig()) {
     setStatus('disconnected',
-      '⚠ 未配置 GitHub 连接 — 请点击右上角「⚙️ 设置」输入 Token 和仓库信息');
+      '未配置 GitHub 连接 — 请点击右上角「设置」输入 Token 和仓库信息');
     refresh();
     return;
   }
@@ -2268,43 +2394,74 @@ function renderCards(){
 
   if(!filtered.length){
     g.innerHTML='<div class="empty-state">'+
-      '<div class="empty-icon">🍶</div>'+
+      '<div class="empty-mark"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16v13H4z"/><path d="M4 11h16"/><path d="M9.5 4h5"/></svg></div>'+
       '<div class="empty-title">'+(db.notes.length ? '\u6ca1\u6709\u5339\u914d\u7684\u8bb0\u5f55' : '\u8fd8\u6ca1\u6709\u54c1\u9152\u8bb0\u5f55')+'</div>'+
       '<div class="empty-sub">'+(db.notes.length ? '\u5c1d\u8bd7\u4fee\u6539\u641c\u7d22\u6761\u4ef6' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb')+'</div></div>';
     return;
   }
-  g.innerHTML=p.map(n=>cardHTML(n,viewMode==='list')).join('');
+  g.innerHTML=(viewMode==='list'?LV_HEAD:'')+p.map(n=>cardHTML(n,viewMode==='list')).join('');
   g.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.id);}));
   g.querySelectorAll('.btn-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDelete(b.dataset.id);}));
   g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openDetail(c.dataset.id)));
 }
 
-function cardHTML(n,isL){
-  const scores=[{lbl:'\u5165\u53e3',val:n.palate_score},{lbl:'\u6c14\u97f5',val:n.body_score},{lbl:'\u5589\u611f',val:n.finish_score}].filter(s=>s.val!=null);
-  const sHTML=scores.length?'<div class="card-scores">'+scores.map(s=>'<div class="score-item"><div class="score-val">'+s.val+'</div><div class="score-lbl">'+s.lbl+'</div></div>').join('')+'</div>':'';
-  const tags=[];
-  if(n.vintage_age) tags.push('<span class="tag tag-age">'+n.vintage_age+'\u5e74</span>');
-  if(n.abv) tags.push('<span class="tag tag-abv">'+n.abv+'%</span>');
-  if(n.distillation_year) tags.push('<span class="tag tag-year">'+n.distillation_year+'</span>');
-  if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
+/* 操作按钮图标：铅笔 / 垃圾桶（内联 SVG，替代原来的 ✏ 🗑 emoji） */
+var SVG_PEN = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L20 8l-4-4L4 16v4z"/><path d="M14.4 5.6l4 4"/></svg>';
+var SVG_BIN = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.8h5V7"/><path d="M6.6 7l.9 13h9l.9-13"/></svg>';
+/* 列表列头：与行同一套 grid 列宽 */
+var LV_HEAD = '<div class="lv-head"><span>酒款</span><span class="r">酒精度</span><span class="r">均分</span><span class="r">操作</span></div>';
 
-  if(isL) {
-    // List view — compact: only show whisky name
-    return '<div class="note-card" data-id="'+n.id+'">'+
-      '<span class="card-title list-name">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</span>'+
-      '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'" title="\u7f16\u8f91">\u270F</button>'+
-      '<button class="btn-delete" data-id="'+n.id+'" title="\u5220\u9664">\uD83D\uDDD1</button></div></div>';
+function escQ(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+/* 单元格：缺值统一 —（不能让空值落进 <b> 里塌成 0） */
+function ncell(lbl, val, unit, hi){
+  var v = (val==null || val==='') ? '\u2014' : (String(val) + (unit ? '<span>'+unit+'</span>' : ''));
+  return '<div class="nc-cell'+(hi?' hi':'')+'"><i>'+lbl+'</i><b>'+v+'</b></div>';
+}
+function sc1(v){ return (v==null||v==='') ? '\u2014' : (+v).toFixed(1); }
+
+function cardHTML(n,isL){
+  const name = esc(n.whisky_name || '\u672a\u547d\u540d');
+  const dstr = (fmtDate(n.date)||'').slice(0,10);
+  const a = avgScore(n);
+  const avgTxt = a>0 ? a.toFixed(2) : '\u2014';
+  const abvTxt = (n.abv==null||n.abv==='') ? '\u2014' : (+n.abv)+'%';
+  const bot = (n.bottler||'').trim();
+  const botShow = (bot && bot.toUpperCase()!=='OB') ? bot : '';
+  /* 酒厂列已从列表移除 → 信息不丢，挂在整行 title 上，hover 可查 */
+  const meta = [n.distillery||'', botShow, dstr].filter(Boolean).join(' \u00b7 ');
+  const actions = '<div class="card-actions">'+
+    '<button class="btn-edit" data-id="'+n.id+'" title="\u7f16\u8f91" aria-label="\u7f16\u8f91">'+SVG_PEN+'</button>'+
+    '<button class="btn-delete" data-id="'+n.id+'" title="\u5220\u9664" aria-label="\u5220\u9664">'+SVG_BIN+'</button></div>';
+
+  /* 列表行：一屏能扫的行数优先。列 = 酒款 / 酒精度 / 均分 / 操作（去掉了行号与酒厂列） */
+  if(isL){
+    return '<div class="note-card lv-row" data-id="'+n.id+'" title="'+escQ(meta)+'">'+
+      '<span class="lv-name">'+name+'</span>'+
+      '<span class="lv-abv num">'+abvTxt+'</span>'+
+      '<span class="lv-avg num">'+avgTxt+'</span>'+
+      actions+'</div>';
   }
 
   return '<div class="note-card" data-id="'+n.id+'">'+
-    '<div class="card-header"><div><div class="card-title">'+esc(n.whisky_name||'(\u672a\u547d\u540d)')+'</div>'+
-    '<div class="card-distillery">'+esc(n.distillery||'')+'</div></div>'+
-    '<div class="card-date">'+fmtDate(n.date)+'</div></div>'+
-    '<div class="card-meta">'+tags.join('')+'</div>'+sHTML+
-    (n.nose?'<div class="card-nose"><strong>\u95fb\u9999\t</strong>'+esc(n.nose)+'</div>':'')+
-    (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5\t</strong>'+esc(n.aftertaste)+'</div>':'')+
-    '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
-    '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div>';
+    '<div class="nc-head"><div class="nc-title">'+name+'</div><div class="nc-date num">'+dstr+'</div></div>'+
+    '<div class="nc-dist">'+esc(n.distillery||'\u2014')+(botShow?'<em> \u00b7 '+esc(botShow)+'</em>':'')+'</div>'+
+    '<div class="nc-spec">'+
+      ncell('\u9152\u9f84', n.vintage_age, '\u5e74')+
+      ncell('\u9152\u7cbe\u5ea6', (n.abv==null||n.abv==='')?'':(+n.abv), '%')+
+      ncell('\u84b8\u998f\u5e74', n.distillation_year)+
+      ncell('WB', n.wb_id)+
+    '</div>'+
+    '<div class="nc-scores">'+
+      ncell('\u5165\u53e3', sc1(n.palate_score))+
+      ncell('\u6c14\u97f5', sc1(n.body_score))+
+      ncell('\u5589\u611f', sc1(n.finish_score))+
+      ncell('\u5747\u5206', a>0 ? a.toFixed(2) : '', '', true)+
+    '</div>'+
+    '<div class="nc-body">'+
+      (n.nose ? '<div class="nc-line"><strong>\u95fb\u9999</strong><span>'+esc(n.nose)+'</span></div>' : '')+
+      (n.aftertaste ? '<div class="nc-line"><strong>\u4f59\u97f5</strong><span>'+esc(n.aftertaste)+'</span></div>' : '')+
+    '</div>'+
+    actions+'</div>';
 }
 
 function renderPagination(){
@@ -3063,7 +3220,7 @@ function openDetail(id){
   const n = db.notes.find(x=>x.id===id);
   if(!n) return;
   detailId = id;
-  document.getElementById('detail-title').textContent = '🥃 ' + esc(n.whisky_name||'(未命名)');
+  document.getElementById('detail-title').textContent = esc(n.whisky_name||'(未命名)');
   document.getElementById('detail-body').innerHTML = renderDetailContent(n);
   document.getElementById('detail-overlay').classList.remove('hidden');
 }
@@ -3075,7 +3232,7 @@ function renderDetailContent(n){
 
   // Image gallery
   if (Array.isArray(n.images) && n.images.length > 0) {
-    h += '<div class="detail-section"><div class="detail-section-title">📸 图片 (' + n.images.length + ' 张)</div>';
+    h += '<div class="detail-section"><div class="detail-section-title">图片 (' + n.images.length + ' 张)</div>';
     h += '<div class="detail-images">';
     n.images.forEach(function(filename) {
       var url = getImageUrl(filename);
@@ -3084,14 +3241,14 @@ function renderDetailContent(n){
     h += '</div></div>';
   }
 
-  h += '<div class="detail-section"><div class="detail-section-title">📋 基本信息</div>';
+  h += '<div class="detail-section"><div class="detail-section-title">基本信息</div>';
   h += '<div class="detail-grid">';
   h += '<div class="detail-field"><span class="detail-label">酒款名称</span><span class="detail-value">'+(esc(n.whisky_name)||'<span class="empty">未填</span>')+'</span></div>';
   h += '<div class="detail-field"><span class="detail-label">酒厂</span><span class="detail-value">'+(esc(n.distillery)||'<span class="empty">未填</span>')+'</span></div>';
   h += '<div class="detail-field"><span class="detail-label">装瓶商</span><span class="detail-value">'+(esc(n.bottler)||'<span class="empty">未填</span>')+'</span></div>';
   h += '<div class="detail-field"><span class="detail-label">品鉴时间</span><span class="detail-value">'+(fmtDate(n.date)||'<span class="empty">未填</span>')+'</span></div>';
   h += '</div></div>';
-  h += '<div class="detail-section"><div class="detail-section-title">🔬 酒款规格</div>';
+  h += '<div class="detail-section"><div class="detail-section-title">酒款规格</div>';
   h += '<div class="detail-grid">';
   h += '<div class="detail-field"><span class="detail-label">酒精度 (ABV)</span><span class="detail-value">'+(n.abv!=null?n.abv+'%':'<span class="empty">未填</span>')+'</span></div>';
   h += '<div class="detail-field"><span class="detail-label">酒龄 (Vintage Age)</span><span class="detail-value">'+(n.vintage_age!=null?n.vintage_age+'年':'<span class="empty">未填</span>')+'</span></div>';
@@ -3105,18 +3262,19 @@ function renderDetailContent(n){
   if(n.wb_id) tags.push('<span class="tag tag-wb">WB#'+n.wb_id+'</span>');
   if(tags.length) h += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">'+tags.join('')+'</div>';
   if(hasScore){
-    h += '<div class="detail-section"><div class="detail-section-title">⭐ 评分</div>';
+    const dv = v => (v==null||v==='') ? '\u2014' : (+v).toFixed(1);
+    h += '<div class="detail-section"><div class="detail-section-title">\u8bc4\u5206</div>';
     h += '<div class="detail-scores">';
-    if(n.palate_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.palate_score).toFixed(1)+'</div><div class="detail-score-lbl">入口</div></div>';
-    if(n.body_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.body_score).toFixed(1)+'</div><div class="detail-score-lbl">气韵</div></div>';
-    if(n.finish_score!=null) h += '<div class="detail-score-item"><div class="detail-score-val">'+(+n.finish_score).toFixed(1)+'</div><div class="detail-score-lbl">喉感</div></div>';
+    h += '<div class="detail-score-item"><div class="detail-score-val">'+dv(n.palate_score)+'</div><div class="detail-score-lbl">\u5165\u53e3</div></div>';
+    h += '<div class="detail-score-item"><div class="detail-score-val">'+dv(n.body_score)+'</div><div class="detail-score-lbl">\u6c14\u97f5</div></div>';
+    h += '<div class="detail-score-item"><div class="detail-score-val">'+dv(n.finish_score)+'</div><div class="detail-score-lbl">\u5589\u611f</div></div>';
+    h += '<div class="detail-score-item hi"><div class="detail-score-val">'+(avg>0?avg.toFixed(2):'\u2014')+'</div><div class="detail-score-lbl">\u5747\u5206</div></div>';
     h += '</div>';
-    if(avg>0) h += '<div class="detail-avg">平均分: <span class="detail-avg-val">'+avg.toFixed(2)+'</span></div>';
     h += '</div>';
   }
-  if(n.nose) h += '<div class="detail-section"><div class="detail-section-title">👃 闻香 (Nose)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.nose))+'</span></div></div>';
-  if(n.aftertaste) h += '<div class="detail-section"><div class="detail-section-title">👄 余韵 (Aftertaste)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.aftertaste))+'</span></div></div>';
-  if(n.notes) h += '<div class="detail-section"><div class="detail-section-title">📝 备注</div><div class="detail-field full"><span class="detail-value">'+(esc(n.notes))+'</span></div></div>';
+  if(n.nose) h += '<div class="detail-section"><div class="detail-section-title">闻香 (Nose)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.nose))+'</span></div></div>';
+  if(n.aftertaste) h += '<div class="detail-section"><div class="detail-section-title">余韵 (Aftertaste)</div><div class="detail-field full"><span class="detail-value">'+(esc(n.aftertaste))+'</span></div></div>';
+  if(n.notes) h += '<div class="detail-section"><div class="detail-section-title">备注</div><div class="detail-field full"><span class="detail-value">'+(esc(n.notes))+'</span></div></div>';
   return h;
 }
 
