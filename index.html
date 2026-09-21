@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-06-29-13:55 -->
+<!-- VERSION: 2026-09-21-14:20 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -129,6 +129,12 @@
     animation: pulse 2s infinite;
   }
   .conn-dot.connected { background: var(--green); animation:none; }
+  .sync-badge {
+    font-size: 11px; padding: 3px 9px; border-radius: 10px; cursor: pointer;
+    border: 1px solid var(--border); white-space: nowrap; user-select: none;
+  }
+  .sync-badge.dirty { background: var(--gold-light); color: var(--gold); border-color: var(--gold); }
+  .sync-badge.clean { background: var(--surface2); color: var(--text-muted); }
   .conn-dot.disconnected { background: #f59e0b; }
   .conn-dot.error { background: var(--red); }
   .conn-dot.syncing { background: #3b82f6; animation: pulse 1s infinite; }
@@ -631,9 +637,10 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.06.29-14:05</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-14:20</span>
   </div>
   <div class="header-right">
+    <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
     <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式">🌙</button>
     <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
     <button id="btn-add">＋ 添加记录</button>
@@ -951,6 +958,119 @@ function fmtDate(isoStr) {
 }
 
 // ============================================================
+// Local-First Storage — localStorage 作为本地数据库，GitHub 降级为备份/同步目标
+// 设计要点：加载 = 对账合并（不是服务器覆盖），彻底消灭数据丢失
+// ============================================================
+const LS_DB    = 'wn_db';      // 数据快照
+const LS_SYNC  = 'wn_sync';    // 同步元数据
+const LS_DRAFT = 'wn_draft';   // 表单草稿
+
+let syncMeta = { baseSha: null, dirty: false, lastSyncAt: null, pendingDeletes: [] };
+let syncTimer = null;
+let pendingAgain = false;      // 修复"连续保存静默丢弃"
+const SYNC_DEBOUNCE = 12000;   // 12 秒防抖：批量录入合并成一次 commit
+
+// ---------- Store：异步存储抽象，localStorage 优先，超配额自动切 IndexedDB ----------
+let _idbPromise = null;
+function openIDB(){
+  if (_idbPromise) return _idbPromise;
+  _idbPromise = new Promise((resolve, reject) => {
+    try {
+      const req = indexedDB.open('whisky_notes_store', 1);
+      req.onupgradeneeded = () => { try { req.result.createObjectStore('kv'); } catch(e){} };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    } catch(e) { reject(e); }
+  });
+  return _idbPromise;
+}
+async function idbSet(k, v){
+  const h = await openIDB();
+  return new Promise((res, rej) => {
+    const tx = h.transaction('kv', 'readwrite');
+    tx.objectStore('kv').put(v, k);
+    tx.oncomplete = () => res(true);
+    tx.onerror = () => rej(tx.error);
+  });
+}
+async function idbGet(k){
+  const h = await openIDB();
+  return new Promise((res, rej) => {
+    const tx = h.transaction('kv', 'readonly');
+    const r = tx.objectStore('kv').get(k);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+const Store = {
+  async get(key){
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw !== null) return JSON.parse(raw);
+    } catch(e){}
+    try { const v = await idbGet(key); return (v === undefined) ? null : v; } catch(e){}
+    return null;
+  },
+  async set(key, val){
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch(e){
+      // 配额超限（约 5MB）→ 自动切 IndexedDB
+      try { await idbSet(key, val); return true; }
+      catch(e2){ console.error('[Store] 写入失败', e2); return false; }
+    }
+  },
+  async del(key){
+    try { localStorage.removeItem(key); } catch(e){}
+    try {
+      const h = await openIDB();
+      const tx = h.transaction('kv','readwrite');
+      tx.objectStore('kv').delete(key);
+    } catch(e){}
+  }
+};
+
+// ---------- 本地读写 ----------
+async function persistLocal(){
+  syncMeta.dirty = true;
+  await Store.set(LS_DB, db);
+  await Store.set(LS_SYNC, syncMeta);
+  updateSyncBadge();
+}
+
+async function loadLocal(){
+  const snap = await Store.get(LS_DB);
+  const meta = await Store.get(LS_SYNC);
+  if (meta && typeof meta === 'object') {
+    syncMeta = Object.assign({ baseSha:null, dirty:false, lastSyncAt:null, pendingDeletes:[] }, meta);
+    if (!Array.isArray(syncMeta.pendingDeletes)) syncMeta.pendingDeletes = [];
+  }
+  if (snap && Array.isArray(snap.notes)) { db = snap; return true; }
+  return false;
+}
+
+// ---------- 合并算法（纯函数，便于单独测试）----------
+// 策略：以服务器为底 + 本地优先覆盖 + 删除墓碑剔除 + 追加本地独有
+function mergeLocalWithServer(serverRecords, localRecords, pendingDeletes){
+  const delSet = new Set(pendingDeletes || []);
+  const localMap = new Map();
+  (localRecords || []).forEach(r => { if (r && r.id) localMap.set(r.id, r); });
+
+  const out = [];
+  const seen = new Set();
+  (serverRecords || []).forEach(r => {
+    if (!r || !r.id) return;
+    if (delSet.has(r.id)) return;                                  // 墓碑：服务器侧删除，防止复活
+    if (localMap.has(r.id)) { out.push(localMap.get(r.id)); seen.add(r.id); }  // 同 id：本地优先
+    else out.push(r);
+  });
+  (localRecords || []).forEach(r => {                              // 本地独有（未同步新增）
+    if (!r || !r.id) return;
+    if (!seen.has(r.id) && !delSet.has(r.id)) { out.push(r); seen.add(r.id); }
+  });
+  return out;
+}
+
+// ============================================================
 // GitHub API — read & write
 // ============================================================
 
@@ -988,57 +1108,173 @@ async function loadFromGitHub() {
   refresh();
 }
 
-/** Write current db to GitHub Contents API (auto-commit) */
-async function pushToGitHub(actionLabel) {
+/** 拉取服务器最新快照（内容 + SHA），不改动 db */
+async function fetchServerSnapshot(){
+  const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json?ref=${ghCfg.branch}`;
+  const res = await fetch(url, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+  if (res.status === 404) return { notes: [], sha: null, missing: true };
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  const info = await res.json();
+  const binaryStr = atob(info.content.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(binaryStr, c => c.charCodeAt(0));
+  const json = new TextDecoder('utf-8').decode(bytes);
+  const data = JSON.parse(json);
+  if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
+  return { notes: data.notes, sha: info.sha, missing: false };
+}
+
+/** 整文件 PUT（去缩进省约 30% 体积）；冲突抛出 conflict 标记 */
+async function putServerSnapshot(notes, sha){
+  const jsonStr = JSON.stringify({ version: (db && db.version) || "1.0", notes: notes });
+  const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+  const payload = { message: commitMessage('更新'), content: b64, branch: ghCfg.branch };
+  if (sha) payload.sha = sha;
+
+  const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + ghCfg.token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (res.status === 409 || res.status === 422) { const e = new Error('SHA 冲突'); e.conflict = true; throw e; }
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(`HTTP ${res.status}: ${(errBody.message || res.statusText).slice(0, 120)}`);
+  }
+  const result = await res.json();
+  return result.content.sha;
+}
+
+/** 防抖调度：12 秒内的多次修改合并成一次 commit */
+function scheduleSync(){
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => { runSync(); }, SYNC_DEBOUNCE);
+}
+
+/** 真正同步：拉最新 → 合并（若本地脏）→ PUT → 冲突重试（指数退避） */
+async function runSync(){
   if (!hasConfig()) return false;
-  if (isSyncing) return false;
+  if (isSyncing) { pendingAgain = true; return false; }   // 修复：不再静默丢弃
 
   isSyncing = true;
-  setStatus('syncing', `⏳ 正在同步${actionLabel}到 GitHub...`);
   document.body.classList.add('syncing');
+  setStatus('syncing', '⏳ 正在同步到 GitHub...');
 
   try {
-    const jsonStr = JSON.stringify(db, null, 2);
-    const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+    const snap = await fetchServerSnapshot();
 
-    const payload = {
-      message: commitMessage(actionLabel),
-      content: b64,
-      branch: ghCfg.branch
-    };
-    if (ghCfg.fileSha) payload.sha = ghCfg.fileSha;
-
-    const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json`;
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': 'Bearer ' + ghCfg.token,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) {
-      const errBody = await res.json().catch(() => ({}));
-      throw new Error(`HTTP ${res.status}: ${(errBody.message || res.statusText).slice(0, 120)}`);
+    // 本地干净 → 服务器为准，无需推送
+    if (!syncMeta.dirty) {
+      db.notes = snap.notes;
+      syncMeta.baseSha = snap.sha;
+      await Store.set(LS_DB, db);
+      await Store.set(LS_SYNC, syncMeta);
+      setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo} · ${db.notes.length} 条记录`);
+      refresh(); updateSyncBadge();
+      isSyncing = false; document.body.classList.remove('syncing');
+      return true;
     }
 
-    const result = await res.json();
-    ghCfg.fileSha = result.content.sha;
-    localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
+    // 本地脏 → 合并后推送
+    let notesToPush = mergeLocalWithServer(snap.notes, db.notes, syncMeta.pendingDeletes);
+    let shaToUse = snap.sha;
+    let attempt = 0, delay = 2000, lastErr = null, ok = false;
 
-    setStatus('connected', `✓ 已同步到 GitHub · ${db.notes.length} 条记录`);
-    toast('✓ 已保存到 GitHub');
-    return true;
-  } catch(e) {
-    setStatus('error', '✕ 同步失败: ' + e.message.slice(0, 80));
-    toast('✕ 同步失败: ' + e.message.slice(0, 60));
-    return false;
-  } finally {
+    while (attempt < 4 && !ok) {
+      try {
+        const newSha = await putServerSnapshot(notesToPush, shaToUse);
+        db.notes = notesToPush;
+        syncMeta.baseSha = newSha;
+        syncMeta.dirty = false;
+        syncMeta.lastSyncAt = new Date().toISOString();
+        syncMeta.pendingDeletes = [];
+        await Store.set(LS_DB, db);
+        await Store.set(LS_SYNC, syncMeta);
+        if (ghCfg) { ghCfg.fileSha = newSha; try { localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg)); } catch(e){} }
+        setStatus('connected', `✓ 已同步到 GitHub · ${db.notes.length} 条记录`);
+        toast('✓ 已保存到 GitHub');
+        ok = true;
+      } catch(e){
+        lastErr = e;
+        attempt++;
+        if (attempt < 4) {
+          // 冲突 → 重新拉取最新 SHA/内容再合并
+          try {
+            const s2 = await fetchServerSnapshot();
+            notesToPush = mergeLocalWithServer(s2.notes, db.notes, syncMeta.pendingDeletes);
+            shaToUse = s2.sha;
+          } catch(_){}
+          await new Promise(r => setTimeout(r, delay));
+          delay = Math.min(delay * 2, 60000);
+        }
+      }
+    }
+
     isSyncing = false;
     document.body.classList.remove('syncing');
+    refresh(); updateSyncBadge();
+
+    if (!ok) {
+      setStatus('error', '✕ 同步失败: ' + (lastErr ? lastErr.message.slice(0, 80) : '未知错误'));
+      toast('✕ 同步失败，数据已保存在本地');
+      return false;
+    }
+    if (pendingAgain) { pendingAgain = false; scheduleSync(); }
+    return true;
+  } catch(e){
+    isSyncing = false;
+    document.body.classList.remove('syncing');
+    setStatus('error', '✕ 同步失败: ' + e.message.slice(0, 80));
+    toast('✕ 同步失败，数据已保存在本地');
+    updateSyncBadge();
+    return false;
   }
 }
+
+/** 页面加载对账合并（兜底保险）：本地脏则合并+推送，干净则用服务器版本 */
+async function reconcileOnLoad(){
+  const hasLocal = await loadLocal();
+  let snap = null, serverErr = null;
+  try { snap = await fetchServerSnapshot(); } catch(e){ serverErr = e; }
+
+  // 服务器拉不到 → 用本地（离线可用）
+  if (serverErr) {
+    if (hasLocal) {
+      setStatus('error', '⚠ 离线：使用本地数据（' + db.notes.length + ' 条）' + (syncMeta.dirty ? ' · 有未同步修改' : ''));
+    } else {
+      setStatus('error', '✕ 加载失败: ' + serverErr.message.slice(0, 100));
+    }
+    refresh(); updateSyncBadge();
+    return;
+  }
+
+  // 本地干净 → 服务器为准
+  if (!syncMeta.dirty) {
+    db.notes = snap.notes;
+    syncMeta.baseSha = snap.sha;
+    await Store.set(LS_DB, db);
+    await Store.set(LS_SYNC, syncMeta);
+    setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo} · ${db.notes.length} 条记录`);
+    refresh(); updateSyncBadge();
+    return;
+  }
+
+  // 本地有未同步修改 → 合并 + 推送 + 提示
+  const merged = mergeLocalWithServer(snap.notes, db.notes, syncMeta.pendingDeletes);
+  const recoveredCount = merged.length - snap.notes.length + syncMeta.pendingDeletes.length;
+  db.notes = merged;
+  await Store.set(LS_DB, db);
+  setStatus('syncing', '⏳ 检测到未同步修改，正在合并并同步...');
+  refresh(); updateSyncBadge();
+  const ok = await runSync();
+  if (ok) toast('✓ 已恢复并同步未同步的修改（' + Math.max(recoveredCount, 1) + ' 处）');
+}
+
+/** 兼容旧调用：等价于 runSync */
+async function pushToGitHub(actionLabel){ return await runSync(); }
 
 function commitMessage(label) {
   const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -1059,7 +1295,7 @@ async function init() {
   }
 
   try {
-    await loadFromGitHub();
+    await reconcileOnLoad();
   } catch(e) {
     setStatus('error', '✕ 加载失败: ' + e.message.slice(0, 100));
     refresh();
@@ -1232,6 +1468,7 @@ function openAdd(){
   const localISO = new Date(now - offsetMs).toISOString().slice(0,16);
   document.getElementById('f-date').value = localISO;
   openModal();
+  checkDraftRestore();
 }
 
 function openEdit(id){
@@ -1351,15 +1588,17 @@ async function saveNote(){
     db.notes.unshift(note);
   }
 
+  // ★ 先落本地盘：永不丢失（网络失败也不影响）
+  await persistLocal();
+  clearDraft();
+
   closeModal();
   currentPage=1;
   refresh();
+  toast('✓ 已保存到本地');
 
-  // Auto-push JSON to GitHub first
-  const jsonOk = await pushToGitHub(editingId ? '\u66f4\u65b0' : '\u6dfb\u52a0');
-
-  // Then upload new images (if any)
-  if (jsonOk && pendingImageFiles.length > 0) {
+  // 图片：上传成功后更新记录并再次落盘
+  if (pendingImageFiles.length > 0) {
     setStatus('syncing', '\u2b07 \u6b63\u5728\u4e0a\u4f20\u56fe\u7247... (' + pendingImageFiles.length + ' \u5f20)');
     var uploadedNames = [];
     try {
@@ -1367,19 +1606,20 @@ async function saveNote(){
         var fname = await uploadImageToGitHub(pendingImageFiles[pi], note.id, pi + 1);
         uploadedNames.push(fname);
       }
-      // Update note with uploaded filenames
       var ni = db.notes.findIndex(function(x){ return x.id === note.id; });
       if (ni >= 0) {
         db.notes[ni].images = existingImages.concat(uploadedNames);
       }
-      // Re-push JSON to save image filenames
-      await pushToGitHub('\u6dfb\u52a0\u56fe\u7247');
+      await persistLocal();
       toast('\u2705 ' + uploadedNames.length + ' \u5f20\u56fe\u7247\u5df2\u4e0a\u4f20');
     } catch(imgErr) {
       setStatus('error', '\u2715 \u56fe\u7247\u4e0a\u4f20\u5931\u8d25: ' + imgErr.message.slice(0, 60));
       toast('\u2715 \u56fe\u7247\u4e0a\u4f20\u5931\u8d25\uff0c\u8bb0\u5f55\u5df2\u4fdd\u5b58');
     }
   }
+
+  // 防抖推送：12 秒内的多次修改合并成一次 commit
+  scheduleSync();
 
   btn.classList.remove('saving');
   btn.disabled = false;
@@ -1406,12 +1646,18 @@ async function confirmDelete(){
     }
   }
 
-  db.notes=db.notes.filter(n=>n.id!==deletingId);
+  const deletedId = deletingId;
+  db.notes=db.notes.filter(n=>n.id!==deletedId);
+  // 墓碑：记录待删除 id，防止合并时从服务器"复活"
+  if (deletedId && syncMeta.pendingDeletes.indexOf(deletedId) < 0) {
+    syncMeta.pendingDeletes.push(deletedId);
+  }
   deletingId=null;
   document.getElementById('confirm-overlay').classList.add('hidden');
   toast('\u5df2\u5220\u9664');
   refresh();
-  await pushToGitHub('\u5220\u9664 ' + name);
+  await persistLocal();
+  scheduleSync();
 }
 
 // ============================================================
@@ -1447,7 +1693,7 @@ async function saveSettingsAndTest() {
   toast('\u6d4b\u8bd5\u8fde\u63a5\u4e2d...');
 
   try {
-    await loadFromGitHub();
+    await reconcileOnLoad();
   } catch(e) {
     setStatus('error', '\u2715 \u8fde\u63a5\u5931\u8d25: ' + e.message.slice(0, 100));
   }
@@ -1471,15 +1717,66 @@ function toggleMobileFilter() {
 // Utilities
 // ============================================================
 function genId(){
-  // Generate YYYYMMDD-NNN to match imported data pattern
+  // YYYYMMDD-NNN，取当天"最大序号+1"（不用条数，避免删除后 id 复用冲突）
   const now = new Date();
   const d = String(now.getFullYear()) +
             String(now.getMonth()+1).padStart(2,'0') +
             String(now.getDate()).padStart(2,'0');
-  const sameDay = db.notes.filter(n => n.id && n.id.startsWith(d));
-  const next = String(sameDay.length + 1).padStart(3, '0');
-  return `${d}-${next}`;
+  let max = 0;
+  db.notes.forEach(n => {
+    if (!n.id || !String(n.id).startsWith(d + '-')) return;
+    const suf = parseInt(String(n.id).split('-')[1], 10);
+    if (!isNaN(suf) && suf > max) max = suf;
+  });
+  return `${d}-${String(max + 1).padStart(3, '0')}`;
 }
+
+// ============================================================
+// 表单草稿 — 输入防抖 500ms 写入 localStorage，刷新/关闭后可恢复
+// ============================================================
+const DRAFT_FIELDS = ['f-name','f-distillery','f-bottler','f-date','f-abv',
+  'f-vintage-age','f-distillation-year','f-wb-id','f-nose','f-aftertaste','f-notes',
+  'f-palate','f-body','f-finish'];
+let draftTimer = null;
+
+function saveDraft(){
+  if (editingId) return;                    // 编辑已有记录不存草稿
+  const fields = {};
+  let hasContent = false;
+  DRAFT_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    fields[id] = el.value;
+    if (el.value && String(el.value).trim() !== '') hasContent = true;
+  });
+  if (!hasContent) { Store.del(LS_DRAFT); return; }
+  Store.set(LS_DRAFT, { id: null, fields: fields, savedAt: new Date().toISOString() });
+}
+
+function scheduleDraft(){
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(saveDraft, 500);
+}
+
+function clearDraft(){
+  clearTimeout(draftTimer);
+  Store.del(LS_DRAFT);
+}
+
+/** 打开新增表单时，若有草稿则询问恢复 */
+async function checkDraftRestore(){
+  const draft = await Store.get(LS_DRAFT);
+  if (!draft || !draft.fields) return;
+  const ok = confirm('检测到上次未完成的编辑草稿，是否恢复？\n（选择"取消"则丢弃草稿）');
+  if (!ok) { clearDraft(); return; }
+  DRAFT_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && draft.fields[id] !== undefined && draft.fields[id] !== null) el.value = draft.fields[id];
+  });
+  updateAllHints();
+  if (typeof renderImagePreviews === 'function') renderImagePreviews();
+}
+
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 let toastTimer;
 function toast(m){
@@ -1492,6 +1789,10 @@ function toast(m){
 // ============================================================
 // Event Bindings
 // ============================================================
+DRAFT_FIELDS.forEach(function(id){
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', scheduleDraft);
+});
 document.getElementById('btn-add').addEventListener('click', openAdd);
 document.getElementById('btn-save-note').addEventListener('click', saveNote);
 document.getElementById('btn-cancel').addEventListener('click', closeModal);
@@ -1504,7 +1805,35 @@ document.getElementById('confirm-cancel').addEventListener('click', ()=>{
   document.getElementById('confirm-overlay').classList.add('hidden');
 });
 document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+
+// ============================================================
+// 同步状态条 + 多路触发（不赌定时器：手机锁屏会挂起 JS 定时器）
+// ============================================================
+function updateSyncBadge(){
+  const el = document.getElementById('sync-badge');
+  if (!el) return;
+  if (syncMeta.dirty) {
+    el.textContent = '● 未同步';
+    el.className = 'sync-badge dirty';
+  } else {
+    el.textContent = '✓ 已同步';
+    el.className = 'sync-badge clean';
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && syncMeta.dirty) runSync();
+});
+window.addEventListener('pagehide', () => {
+  if (syncMeta.dirty) { try { runSync(); } catch(e){} }   // 尽力而为
+});
+window.addEventListener('storage', (e) => {
+  // 多标签页：其他标签页写入时刷新视图
+  if (e && (e.key === LS_DB)) { loadLocal().then(() => { refresh(); updateSyncBadge(); }); }
+});
+
 document.getElementById('btn-theme').addEventListener('click', toggleTheme);
+document.getElementById('sync-badge').addEventListener('click', () => { if (syncMeta.dirty) runSync(); else toast('✓ 已是最新，无需同步'); });
 document.getElementById('btn-settings').addEventListener('click', openSettings);
 document.getElementById('btn-save-settings').addEventListener('click', saveSettingsAndTest);
 
