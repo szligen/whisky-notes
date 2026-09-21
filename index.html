@@ -783,14 +783,24 @@
     .btn-edit, .btn-delete { height: 32px; padding: 0 12px; font-size: 12.5px; }
 
     /* 列表视图：行高 34 → 44px 保证触控，列头隐藏省一行 */
-    #cards-grid.list-view .note-card { grid-template-columns: minmax(0,1fr) 62px 58px 76px; height: 44px; }
+    /* 手机无 hover：行内两个按钮既容易误触、又白吃 76px 宽度 —— 编辑/删除交给详情弹窗承载
+       （点行即开，底部就是编辑/删除），整列宽度让给酒款名。
+       实测：改前 390px 截断 22/24 行、360px 24/24；长名再允许折 2 行兜底。 */
+    #cards-grid.list-view .note-card {
+      grid-template-columns: minmax(0,1fr) 62px 58px;
+      height: auto; min-height: 44px; padding: 6px 0;
+    }
+    #cards-grid.list-view .card-actions { display: none; }
+    /* 操作列已移除 → 用点按反馈代替 hover 反馈 */
+    #cards-grid.list-view .note-card:active { background: var(--accent-bg); }
     .lv-head { display: none; }
-    #cards-grid.list-view .lv-name { padding: 0 11px; font-size: 13.5px; }
+    #cards-grid.list-view .lv-name {
+      padding: 0 11px; font-size: 13.5px; line-height: 1.38;
+      white-space: normal; overflow: hidden;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    }
     #cards-grid.list-view .lv-abv { padding: 0 8px; font-size: 12.5px; }
     #cards-grid.list-view .lv-avg { padding: 0 8px; font-size: 13.5px; }
-    #cards-grid.list-view .card-actions { padding: 0 9px 0 0; }
-    #cards-grid.list-view .btn-edit,
-    #cards-grid.list-view .btn-delete { width: 32px; height: 32px; }
 
     /* --- Results info --- */
     .results-info { font-size:14px; flex-wrap: wrap; gap: 4px; }
