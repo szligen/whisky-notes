@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-09-21-19:15 -->
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- VERSION: 2026-09-21-20:35 -->
+<html lang="zh-CN" data-page-node-id="5V8n3FPUyt2IVBjzFhiMOg">
+<head data-page-node-id="vs6T1NiFVt4ZSlPDLilNse">
+<meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="H860oRPmoyWmLSXfzvHpxA">
 <title>Whisky Notes</title>
 <style>
   /* ===== Reset & Base ===== */
@@ -206,6 +206,15 @@
   }
   .stat-num { font-size: 26px; font-weight: 700; color: var(--accent); }
   .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .stat-sub { font-size: 12px; color: var(--text-light); margin-top: 3px; }
+  /* 只有「值得回购」与激活态用 accent，其余数字保持中性以维持层次 */
+  .stat-card:not(.primary):not(.active) .stat-num { color: var(--text); }
+  .stat-card.clickable { cursor: pointer; transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease, background .12s ease; }
+  .stat-card.clickable:hover { border-color: var(--accent-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .stat-card.clickable:active { transform: translateY(1px); box-shadow: var(--shadow); }
+  .stat-card.active { border-color: var(--accent); background: var(--accent-bg); }
+  .stat-card.active .stat-label { color: var(--accent); font-weight: 600; }
+  .stat-card.active .stat-sub { color: var(--accent-light); }
 
   /* ===== Toolbar ===== */
   .toolbar {
@@ -693,265 +702,265 @@
   }
   </style>
 </head>
-<body>
+<body data-page-node-id="rYVRabBDNZoVIpfMyZ580D">
 
 <!-- Header -->
-<header>
-  <div class="logo">
-    <span class="logo-icon">🥃</span>
-    <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-19:15</span>
+<header data-page-node-id="Z0YRmt33Qp6fxhvuQ1285O">
+  <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
+    <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
+    <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-20:35</span>
   </div>
-  <div class="header-right">
-    <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
-    <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式">🌙</button>
-    <button class="btn-header" id="btn-settings" title="GitHub 设置">⚙️ 设置</button>
-    <button id="btn-add">＋ 添加记录</button>
+  <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
+    <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
+    <button class="btn-theme" id="btn-theme" title="切换明亮/暗黑模式" data-page-node-id="653FMve3jRKMJSEcBthOKn">🌙</button>
+    <button class="btn-header" id="btn-settings" title="GitHub 设置" data-page-node-id="qUpUqv27hC1f45MsT9YkR1">⚙️ 设置</button>
+    <button id="btn-add" data-page-node-id="8s4MpME8JRsLPBlI1jd9x4">＋ 添加记录</button>
   </div>
 </header>
 
 <!-- Main -->
-<main class="container">
+<main class="container" data-page-node-id="KqOrkFz0TCutJ6rMKBEGgK">
 
   <!-- Connection Status -->
-  <div class="conn-banner disconnected" id="conn-banner">
-    <span>
-      <span class="conn-dot disconnected" id="conn-dot"></span>
-      <span id="conn-msg">正在加载...</span>
+  <div class="conn-banner disconnected" id="conn-banner" data-page-node-id="y4IbJf8NO63sAbtWDFAoyA">
+    <span data-page-node-id="aYn6Sny0c0lG7EQK5RECc0">
+      <span class="conn-dot disconnected" id="conn-dot" data-page-node-id="bPjU3xsutWG8GD5CseRiZq"></span>
+      <span id="conn-msg" data-page-node-id="LTySxAgV6y2MDYSt1hFXk0">正在加载...</span>
     </span>
   </div>
 
   <!-- Stats -->
-  <div class="stats-bar" id="stats-bar">
-    <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">总记录</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-distilleries">—</div><div class="stat-label">酒厂数</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-avg-palate">—</div><div class="stat-label">平均入口</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-avg-body">—</div><div class="stat-label">平均气韵</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-avg-finish">—</div><div class="stat-label">平均喉感</div></div>
+  <div class="stats-bar" id="stats-bar" data-page-node-id="KPJmPhSY0QN4O7M5wnmuBZ">
+    <div class="stat-card clickable primary" data-stat="repurchase" title="筛出均分 4.0 分以上的酒款"><div class="stat-num" id="stat-repurchase">—</div><div class="stat-label">值得回购</div><div class="stat-sub" id="stat-repurchase-sub">—</div></div>
+    <div class="stat-card clickable" data-stat="cask" title="筛出 ABV ≥50% 的桶强酒款"><div class="stat-num" id="stat-cask">—</div><div class="stat-label">桶强占比</div><div class="stat-sub" id="stat-cask-sub">—</div></div>
+    <div class="stat-card clickable" data-stat="ib" title="筛出独立装瓶（IB）酒款"><div class="stat-num" id="stat-ib">—</div><div class="stat-label">独立装瓶</div><div class="stat-sub" id="stat-ib-sub">—</div></div>
+    <div class="stat-card clickable" data-stat="age" title="按酒龄从高到低排序"><div class="stat-num" id="stat-age">—</div><div class="stat-label">平均酒龄</div><div class="stat-sub" id="stat-age-sub">—</div></div>
+    <div class="stat-card clickable" data-stat="all" title="清除所有筛选，回到全部记录"><div class="stat-num" id="stat-total">—</div><div class="stat-label">总记录</div><div class="stat-sub" id="stat-total-sub">—</div></div>
   </div>
 
   <!-- Toolbar -->
-  <div class="toolbar">
-    <div class="search-row">
-      <div class="search-wrap">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+  <div class="toolbar" data-page-node-id="ACZNtlnaElMvVDvX7K5ZCa">
+    <div class="search-row" data-page-node-id="9oiZLAmoVCoYYuGtAQUthi">
+      <div class="search-wrap" data-page-node-id="OyLwGP0MgGVW621G4POrk1">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" data-page-node-id="84CkX8AfFb24cu9uWhZktK">
+          <circle cx="11" cy="11" r="8" data-page-node-id="7heLbpxQBnMZ6kxlquXYoI"/><path d="m21 21-4.35-4.35" data-page-node-id="lHCwpxOJhx5d8eK3uFVRvE"/>
         </svg>
-        <input type="text" id="search-input" placeholder="搜索酒款名、酒厂、装瓶商、香气描述..." autocomplete="off">
+        <input type="text" id="search-input" placeholder="搜索酒款名、酒厂、装瓶商、香气描述..." autocomplete="off" data-page-node-id="BnqfPiyzavRsoPXm92sWxt">
       </div>
-      <div class="view-toggle">
-        <button class="view-btn active" id="view-grid" title="卡片视图">⊞</button>
-        <button class="view-btn" id="view-list" title="列表视图">≡</button>
+      <div class="view-toggle" data-page-node-id="hNpuh4aPR5ddj2Lm2LdgNU">
+        <button class="view-btn active" id="view-grid" title="卡片视图" data-page-node-id="HY1TQb6FegZk8nTeua6w9Q">⊞</button>
+        <button class="view-btn" id="view-list" title="列表视图" data-page-node-id="gHkMZemkVKipuyYonDsU5j">≡</button>
       </div>
     </div>
-    <div class="filter-row" id="filter-row">
-      <select id="filter-distillery"><option value="">所有酒厂</option></select>
-      <select id="filter-bottler"><option value="">所有装瓶商</option></select>
-      <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;">
-      <input type="number" id="filter-year-to" placeholder="年份 ≤" min="1900" max="2100" style="max-width:90px;">
-      <input type="number" id="filter-vintage-age-min" placeholder="酒龄 ≥" min="0" max="100" style="max-width:90px;">
-      <div class="sort-btns">
-        <button class="sort-btn active" data-sort="date-desc">最新优先</button>
-        <button class="sort-btn" data-sort="score-desc">评分最高</button>
-        <button class="sort-btn" data-sort="age-desc">年份最老</button>
-        <button class="sort-btn" data-sort="distillery-asc">酒厂名称 A-Z</button>
+    <div class="filter-row" id="filter-row" data-page-node-id="tXW4NCIpCvEp2kPzd2w4yA">
+      <select id="filter-distillery" data-page-node-id="5bErddXDLuJ9vA6FhrGHdO"><option value="" data-page-node-id="KaD3jAsTtdnb0t0y4KCV8o">所有酒厂</option></select>
+      <select id="filter-bottler" data-page-node-id="vGOXqmzZ2DHCTXS6fogXIR"><option value="" data-page-node-id="CNFQZJk1Xyo5iQoY216HDq">所有装瓶商</option></select>
+      <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;" data-page-node-id="4m1NX9ukG2rW6n04hMCq5Q">
+      <input type="number" id="filter-year-to" placeholder="年份 ≤" min="1900" max="2100" style="max-width:90px;" data-page-node-id="Jila7kJXDWSw7EhKU9VC06">
+      <input type="number" id="filter-vintage-age-min" placeholder="酒龄 ≥" min="0" max="100" style="max-width:90px;" data-page-node-id="aUe7L3EZByJ5gmRKfIwQNr">
+      <div class="sort-btns" data-page-node-id="IZ2NW75HLhAnK9WlzJwi7N">
+        <button class="sort-btn active" data-sort="date-desc" data-page-node-id="vHSi62BpLD38PYC7lYuTky">最新优先</button>
+        <button class="sort-btn" data-sort="score-desc" data-page-node-id="0zMyBm6HXe9HVDXlnd8rN7">评分最高</button>
+        <button class="sort-btn" data-sort="age-desc" data-page-node-id="AGSBPZrSlCFHb9zrktEopf">年份最老</button>
+        <button class="sort-btn" data-sort="distillery-asc" data-page-node-id="K224UsyBxFJGEyfKHV0rtX">酒厂名称 A-Z</button>
       </div>
-      <button id="btn-clear-filter">清除筛选</button>
+      <button id="btn-clear-filter" data-page-node-id="4WNRokteTvAXKlSK7vzljW">清除筛选</button>
     </div>
-    <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()">
-      <span>🔍 筛选 / 排序</span><span class="arrow">▾</span>
+    <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()" data-page-node-id="3aNqbcvZlpMF7zKsNyaGG4">
+      <span data-page-node-id="OVT7ZMNYGYd57pGdSkfisW">🔍 筛选 / 排序</span><span class="arrow" data-page-node-id="W1axiC9wQ8FREOhDhOLjpC">▾</span>
     </button>
   </div>
 
   <!-- Results Info -->
-  <div class="results-info"><span id="results-info-text"></span></div>
+  <div class="results-info" data-page-node-id="xPF1CJdOhhnY6YWQRmfXAg"><span id="results-info-text" data-page-node-id="emSSDB2X4Lf8BKSVa14wZH"></span></div>
 
   <!-- Cards -->
-  <div id="cards-grid"></div>
+  <div id="cards-grid" data-page-node-id="hO7IZkgJkOUbVKnYQChcJw"></div>
 
   <!-- Pagination -->
-  <div class="pagination" id="pagination"></div>
+  <div class="pagination" id="pagination" data-page-node-id="yRCQBuDAw4PjAnbG8j3DWG"></div>
 </main>
 
 <!-- Settings Modal (GitHub config) -->
-<div class="modal-overlay hidden" id="settings-overlay">
-  <div class="modal" style="max-width:520px;">
-    <div class="modal-header">
-      <span class="modal-title">🔑 GitHub 连接设置</span>
-      <button class="modal-close" onclick="closeSettings()">×</button>
+<div class="modal-overlay hidden" id="settings-overlay" data-page-node-id="oFEOo9y4umVSP3xaaAOmWc">
+  <div class="modal" style="max-width:520px;" data-page-node-id="JntJWgpNQXyUHLyCyukXzF">
+    <div class="modal-header" data-page-node-id="Gw4xqFjZVJUjWPAAhqscYX">
+      <span class="modal-title" data-page-node-id="dxExGicdZ5OAL3E79Qwqx7">🔑 GitHub 连接设置</span>
+      <button class="modal-close" onclick="closeSettings()" data-page-node-id="m2nPCbxGNOJiiuVtT7ifUX">×</button>
     </div>
-    <div class="modal-body">
-      <div class="form-section">
-        <div style="font-size:14px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;">
-          页面通过 GitHub API 直接读写仓库中的 <code>whisky_notes.json</code>。
+    <div class="modal-body" data-page-node-id="kRDHiqmETUMsovaAyI0Zul">
+      <div class="form-section" data-page-node-id="YSsvjhc6KBx05MvE0CLVLm">
+        <div style="font-size:14px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;" data-page-node-id="AXXg4Bk0cjkHdj1lGaVpKy">
+          页面通过 GitHub API 直接读写仓库中的 <code data-page-node-id="s9xMqCuHbw74KuT1YG4A6a">whisky_notes.json</code>。
           Token 仅保存在当前浏览器的 localStorage 中，不会提交到仓库。
         </div>
-        <div class="form-grid" style="grid-template-columns:1fr;">
-          <div class="form-group full">
-            <label>Personal Access Token (PAT)</label>
+        <div class="form-grid" style="grid-template-columns:1fr;" data-page-node-id="YPX6N8ELYYqX0Ukpl7tMvS">
+          <div class="form-group full" data-page-node-id="AbIy8iKWXIq5hHQf7weWX1">
+            <label data-page-node-id="FIBPEUibaHYXFRezuLcbMA">Personal Access Token (PAT)</label>
             <input type="password" id="set-token" placeholder="ghp_xxxxxxxxxxxx"
-              style="font-family:monospace;font-size:12px;">
-            <span style="font-size:12px;color:var(--text-light);margin-top:2px;">
-              需要 <code>repo</code> 权限。<a href="https://github.com/settings/tokens/new?scopes=repo&description=whisky-notes" target="_blank" rel="noopener">点此生成 →</a>
+              style="font-family:monospace;font-size:12px;" data-page-node-id="mHerH7Du2kq9M6YuB6Jk83">
+            <span style="font-size:12px;color:var(--text-light);margin-top:2px;" data-page-node-id="60Z1LsT6qlLKcswLTyPUIf">
+              需要 <code data-page-node-id="aT42bbhjfMCx4d5o6KGbrn">repo</code> 权限。<a href="https://github.com/settings/tokens/new?scopes=repo&description=whisky-notes" target="_blank" rel="noopener" data-page-node-id="BwESwoQfPDiYT7YCUMGEYH">点此生成 →</a>
             </span>
           </div>
-          <div class="form-group full">
-            <label>仓库地址</label>
-            <input type="text" id="set-repo" placeholder="szligen/whisky-notes">
-            <span style="font-size:12px;color:var(--text-light);margin-top:2px;">格式：owner/repo-name</span>
+          <div class="form-group full" data-page-node-id="jPwsq0PpFMDWZb3doY11zX">
+            <label data-page-node-id="PeuEuOft0j8qW0ejzupTg9">仓库地址</label>
+            <input type="text" id="set-repo" placeholder="szligen/whisky-notes" data-page-node-id="zMaV8CaiDSNECnyExMCrwF">
+            <span style="font-size:12px;color:var(--text-light);margin-top:2px;" data-page-node-id="lPz56SCjWtUQxnLfp9zw9J">格式：owner/repo-name</span>
           </div>
-          <div class="form-group full">
-            <label>分支 (默认 main)</label>
-            <input type="text" id="set-branch" placeholder="main">
+          <div class="form-group full" data-page-node-id="9l4ch4hQA7MQzZufBr97Ev">
+            <label data-page-node-id="WveXfCa2nNYuPCjc5MAgCi">分支 (默认 main)</label>
+            <input type="text" id="set-branch" placeholder="main" data-page-node-id="2hkmgxdHUvZAfjz1GvUm7D">
           </div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px;">
-        <button class="btn-cancel" style="flex:1" onclick="closeSettings()">取消</button>
-        <button class="btn-save" id="btn-save-settings" style="flex:1;background:var(--green);border-color:var(--green);">保存并测试连接</button>
+      <div style="display:flex;gap:8px;margin-top:8px;" data-page-node-id="r7Yyc6KYQNglRFPu7R7dAw">
+        <button class="btn-cancel" style="flex:1" onclick="closeSettings()" data-page-node-id="BvPeoWNI49kVp3jP0YHsu9">取消</button>
+        <button class="btn-save" id="btn-save-settings" style="flex:1;background:var(--green);border-color:var(--green);" data-page-node-id="Q0k0QGf5a12RtVHKBN49ZX">保存并测试连接</button>
       </div>
-      <div id="settings-test-result" style="margin-top:12px;font-size:12px;"></div>
+      <div id="settings-test-result" style="margin-top:12px;font-size:12px;" data-page-node-id="7fqpaIoXEwW5yUpaXwZpvY"></div>
     </div>
   </div>
 </div>
 
 <!-- Add/Edit Modal -->
-<div class="modal-overlay hidden" id="modal-overlay">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title">添加品酒记录</span>
-      <button class="modal-close" id="modal-close">×</button>
+<div class="modal-overlay hidden" id="modal-overlay" data-page-node-id="0ZDLTUG1RjSP56ZpbQ9lSF">
+  <div class="modal" id="modal" data-page-node-id="guFVbeEHQtZOlXB5HMgdtT">
+    <div class="modal-header" data-page-node-id="SAG9p4OD9Cct8nZadvevbh">
+      <span class="modal-title" id="modal-title" data-page-node-id="PI7xcvWnsvVqZophBHgjg1">添加品酒记录</span>
+      <button class="modal-close" id="modal-close" data-page-node-id="HU9pZmeF67cDIvOLN88Ld0">×</button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" data-page-node-id="gcDqZHWMeaO7xY9rm2FEvn">
       <!-- 基本信息 -->
-      <div class="form-section">
-        <div class="form-section-title">📋 基本信息</div>
-        <div class="form-grid">
-          <div class="form-group full">
-            <label>酒款名称 *</label>
-            <input type="text" id="f-name" maxlength="100" placeholder="e.g. Longmorn 朗摩 31年 3R 三河" required>
-            <span class="input-hint"><span id="hint-name-len">0</span>/100</span>
+      <div class="form-section" data-page-node-id="6F4w8KXTFLwlhjvpXGcLA3">
+        <div class="form-section-title" data-page-node-id="BC8cV0KXwxCg82m6GD2AI9">📋 基本信息</div>
+        <div class="form-grid" data-page-node-id="IPWZdBi69jHcUoG7eHx9Zy">
+          <div class="form-group full" data-page-node-id="WLxhF4bV0csAEISbyojDnP">
+            <label data-page-node-id="qDbqSst322VkFjQgwZtgEB">酒款名称 *</label>
+            <input type="text" id="f-name" maxlength="100" placeholder="e.g. Longmorn 朗摩 31年 3R 三河" required data-page-node-id="3H41GBbgsZZsnMSY1mJiky">
+            <span class="input-hint" data-page-node-id="vKw7lMlI3pedQRSujmBOcj"><span id="hint-name-len" data-page-node-id="cWEAFWH31eCPkcECvNutaq">0</span>/100</span>
           </div>
-          <div class="form-group">
-            <label>酒厂名称 *</label>
-            <input type="text" id="f-distillery" maxlength="80" placeholder="e.g. Longmorn" required list="dl-distilleries">
-            <datalist id="dl-distilleries"></datalist>
-            <span class="input-hint"><span id="hint-distillery-len">0</span>/80</span>
+          <div class="form-group" data-page-node-id="4JE1j3Yx1VbGVtdz34kga9">
+            <label data-page-node-id="5DycFgI4NNkvDxZ4Em7Q8K">酒厂名称 *</label>
+            <input type="text" id="f-distillery" maxlength="80" placeholder="e.g. Longmorn" required list="dl-distilleries" data-page-node-id="0tfAHyozyL4o3x1ILHbu7C">
+            <datalist id="dl-distilleries" data-page-node-id="p7yOs5ObyRSrTWFQLqCpVJ"></datalist>
+            <span class="input-hint" data-page-node-id="ZlUqzkSUCuluMz4Wb3Naw0"><span id="hint-distillery-len" data-page-node-id="sfIngFoMtSS3Hck9aU4BbE">0</span>/80</span>
           </div>
-          <div class="form-group">
-            <label>装瓶商</label>
-            <input type="text" id="f-bottler" maxlength="100" placeholder="e.g. Three Rivers Tokyo (3R)" list="dl-bottlers">
-            <datalist id="dl-bottlers"></datalist>
-            <span class="input-hint"><span id="hint-bottler-len">0</span>/100</span>
+          <div class="form-group" data-page-node-id="rYiV4mfFtEw8OtEgIi6w4O">
+            <label data-page-node-id="Hyru1srjyiruW3gqDrxD7b">装瓶商</label>
+            <input type="text" id="f-bottler" maxlength="100" placeholder="e.g. Three Rivers Tokyo (3R)" list="dl-bottlers" data-page-node-id="wNs2ZgPeEBpteGW6uPTF3o">
+            <datalist id="dl-bottlers" data-page-node-id="ImcffHlgF0YrbofPoD6PCk"></datalist>
+            <span class="input-hint" data-page-node-id="6NXBylS3Yi2lb0aewBWIjo"><span id="hint-bottler-len" data-page-node-id="vx9TmlIfKkLIaqmulqdLhZ">0</span>/100</span>
           </div>
-          <div class="form-group full">
-            <label>品鉴时间</label>
-            <input type="datetime-local" id="f-date">
+          <div class="form-group full" data-page-node-id="hroMHz2VxKNt3mc7yLV90q">
+            <label data-page-node-id="Hi0gf55AnB2lTQuJDQW5eH">品鉴时间</label>
+            <input type="datetime-local" id="f-date" data-page-node-id="PwyldkKu5duGg7AP70e3v4">
           </div>
         </div>
       </div>
       <!-- 酒款规格 -->
-      <div class="form-section">
-        <div class="form-section-title">🔬 酒款规格</div>
-        <div class="form-grid cols-4">
-          <div class="form-group"><label>酒精度% (ABV)</label><input type="number" id="f-abv" placeholder="54.1" step="0.1" min="0" max="100"></div>
-          <div class="form-group"><label>酒龄 (Vintage Age)</label><input type="number" id="f-vintage-age" placeholder="31" step="0.5" min="0" max="150"></div>
-          <div class="form-group"><label>蒸馏年份</label><input type="number" id="f-distillation-year" placeholder="1975" min="1800" max="2100"></div>
-          <div class="form-group"><label>WB号</label><input type="number" id="f-wb-id" placeholder="6348" min="0"></div>
+      <div class="form-section" data-page-node-id="5c0krR4aEdH2JwFq99hVFp">
+        <div class="form-section-title" data-page-node-id="xt7zcBKMIoRXSafXMGrjAp">🔬 酒款规格</div>
+        <div class="form-grid cols-4" data-page-node-id="BUjF9KoTBQYDvMWhzU98p1">
+          <div class="form-group" data-page-node-id="BwHTDMNTuy9lZKN4XSH7mA"><label data-page-node-id="Zktj8FfiFAqtDwPh9ultPi">酒精度% (ABV)</label><input type="number" id="f-abv" placeholder="54.1" step="0.1" min="0" max="100" data-page-node-id="n0Nlmbp7c5p4KjoBetOtNR"></div>
+          <div class="form-group" data-page-node-id="vOvtjNaeNE8qoaNPEuO8Xg"><label data-page-node-id="80b3E9XkEyoW6gJNFIu85P">酒龄 (Vintage Age)</label><input type="number" id="f-vintage-age" placeholder="31" step="0.5" min="0" max="150" data-page-node-id="FCDXmW5P8pP9VXVKbG7eCk"></div>
+          <div class="form-group" data-page-node-id="C5OnkPsG5BG9Ur94NOfqM9"><label data-page-node-id="MKwoP1e2Eldac8giz3n1gQ">蒸馏年份</label><input type="number" id="f-distillation-year" placeholder="1975" min="1800" max="2100" data-page-node-id="kCKqURQcPN9lTTM2p8mG63"></div>
+          <div class="form-group" data-page-node-id="3POB0sQvknRhtbYUxB2enE"><label data-page-node-id="V9w6eEv8vczMHZNnlj4Wjo">WB号</label><input type="number" id="f-wb-id" placeholder="6348" min="0" data-page-node-id="ahRPPS5DLvb1x2ELKH18Xm"></div>
         </div>
       </div>
       <!-- 品鉴笔记 -->
-      <div class="form-section">
-        <div class="form-section-title">📝 品鉴笔记</div>
-        <div class="form-grid">
-          <div class="form-group full">
-            <label>闻香描述 (Nose)</label>
+      <div class="form-section" data-page-node-id="Hfd321KQCg2BPY0luizzLY">
+        <div class="form-section-title" data-page-node-id="lFErz31TA2jB9gEIsG2Q8a">📝 品鉴笔记</div>
+        <div class="form-grid" data-page-node-id="7Efntat5IQgVGkgkmmZuHI">
+          <div class="form-group full" data-page-node-id="vGhnbqCPiVbfSnYSF3aue9">
+            <label data-page-node-id="RwBGEll0oHQQmvg4UNEkgy">闻香描述 (Nose)</label>
             <textarea id="f-nose" maxlength="500" placeholder="黄色水果，黄桃，黄色糖果汽水"></textarea>
-            <span class="input-hint"><span id="hint-nose-len">0</span>/500</span>
+            <span class="input-hint" data-page-node-id="z0HsQEzAS2eXaDsfvFWtNC"><span id="hint-nose-len" data-page-node-id="abdOfhWdKMgA8TWfQQ129Q">0</span>/500</span>
           </div>
-          <div class="form-group full">
-            <label>余韵 (Aftertaste)</label>
+          <div class="form-group full" data-page-node-id="0EIIzfN54QdzUhGzzQ2lP6">
+            <label data-page-node-id="pAQC59Y6BGXVq0854w3jHp">余韵 (Aftertaste)</label>
             <textarea id="f-aftertaste" maxlength="500" placeholder="桃，奶油，脂粉"></textarea>
-            <span class="input-hint"><span id="hint-aftertaste-len">0</span>/500</span>
+            <span class="input-hint" data-page-node-id="TH0D1KKU1RqjtFYtC1Ff0G"><span id="hint-aftertaste-len" data-page-node-id="WSrwJUNyXwZvjmAA7I92Pa">0</span>/500</span>
           </div>
-          <div class="form-group full">
-            <label>备注</label>
+          <div class="form-group full" data-page-node-id="zIAZg0KoWXJEDmKQoeLmZZ">
+            <label data-page-node-id="wtWaEp4LC0WQBSURwfG1I4">备注</label>
             <textarea id="f-notes" maxlength="1000" placeholder="其他感受、场合、搭配..."></textarea>
-            <span class="input-hint"><span id="hint-notes-len">0</span>/1000</span>
+            <span class="input-hint" data-page-node-id="euNw9E7bvgBo82ycthyygG"><span id="hint-notes-len" data-page-node-id="fpzaIEHOuLses7kED95hpM">0</span>/1000</span>
           </div>
         </div>
       </div>
       <!-- 图片上传（可选） -->
-      <div class="form-section">
-        <div class="img-upload-section">
-          <div class="img-upload-header">
-            <span class="img-upload-title">📸 图片（可选）</span>
-            <span class="img-upload-hint">最夕5张，自动压缩后上传到 GitHub album/</span>
+      <div class="form-section" data-page-node-id="0fHscrUddKoNyA4II7jRan">
+        <div class="img-upload-section" data-page-node-id="TeMtDRgKGwwZ3hkp1hB4HD">
+          <div class="img-upload-header" data-page-node-id="xmvwgASJ7wjVqIqTTnzHGp">
+            <span class="img-upload-title" data-page-node-id="uMBT9QTX2HlwD8IKgupAAG">📸 图片（可选）</span>
+            <span class="img-upload-hint" data-page-node-id="rJRDVA2jIEmDwx6oY7KZpn">最夕5张，自动压缩后上传到 GitHub album/</span>
           </div>
-          <label class="img-upload-btn" id="label-add-image">
+          <label class="img-upload-btn" id="label-add-image" data-page-node-id="AdT9QP7xdXPfzGGOkQ11gN">
             &#65279;＋添加图片
-            <input type="file" id="f-images" accept="image/*" multiple>
+            <input type="file" id="f-images" accept="image/*" multiple data-page-node-id="m30vyuD3XRl4BLniQnWfLs">
           </label>
-          <div class="img-preview-grid" id="img-preview-grid"></div>
+          <div class="img-preview-grid" id="img-preview-grid" data-page-node-id="kR9INxEipBHWQmop2xLGWR"></div>
         </div>
       </div>
       <!-- 评分 -->
-      <div class="form-section">
-        <div class="form-section-title">⭐ 评分</div>
-        <div class="form-grid">
-          <div class="form-group"><label>入口 (Palate) /5</label>
-            <div class="score-inputs"><input type="number" id="f-palate" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('palate',this.value)"><span class="score-display" id="disp-palate">—</span></div></div>
-          <div class="form-group"><label>气韵 (Body) /5</label>
-            <div class="score-inputs"><input type="number" id="f-body" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('body',this.value)"><span class="score-display" id="disp-body">—</span></div></div>
-          <div class="form-group"><label>喉感 (Finish) /5</label>
-            <div class="score-inputs"><input type="number" id="f-finish" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('finish',this.value)"><span class="score-display" id="disp-finish">—</span></div></div>
+      <div class="form-section" data-page-node-id="zIrrXYaCLnoSE3pCMVuW4C">
+        <div class="form-section-title" data-page-node-id="CcgYWZ0EjsNRyHPUX68Ne7">⭐ 评分</div>
+        <div class="form-grid" data-page-node-id="x524xew30dlhK5c9eRAtEt">
+          <div class="form-group" data-page-node-id="TKnfG2P8oI6J93BCknV0Ym"><label data-page-node-id="0ucc9NXVe7gl4tp6frbgCK">入口 (Palate) /5</label>
+            <div class="score-inputs" data-page-node-id="1P9MXP62eupJznmgWepdng"><input type="number" id="f-palate" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('palate',this.value)" data-page-node-id="cxNz0OK7HVBBoQUVOslNSa"><span class="score-display" id="disp-palate" data-page-node-id="yCGWV90lyFByWsHKAwnRxn">—</span></div></div>
+          <div class="form-group" data-page-node-id="SPpqPFqvLhxaLSEJqC4AJE"><label data-page-node-id="XcgptGSoq1SUtZxjNTWbDz">气韵 (Body) /5</label>
+            <div class="score-inputs" data-page-node-id="ViziKzzRmOCOB63vt0RtSX"><input type="number" id="f-body" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('body',this.value)" data-page-node-id="eARk5A5u0EaDLSu1rtTdXD"><span class="score-display" id="disp-body" data-page-node-id="UdykfafV7UtNJHENwrcKKf">—</span></div></div>
+          <div class="form-group" data-page-node-id="bpDIlTDV8qzX32O2GtEB9Y"><label data-page-node-id="ZKxTjx5wnUIGChyw14t0ky">喉感 (Finish) /5</label>
+            <div class="score-inputs" data-page-node-id="w4VX1DdROzV2EX2BKdCtz7"><input type="number" id="f-finish" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('finish',this.value)" data-page-node-id="KWAO8DGagtflfhPISn28g4"><span class="score-display" id="disp-finish" data-page-node-id="Fs9DnT5CuGiZ58yboMiuDt">—</span></div></div>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" id="btn-cancel">取消</button>
-      <button class="btn-save" id="btn-save-note">保存记录 <span class="sync-spinner"></span></button>
+    <div class="modal-footer" data-page-node-id="dwv0yE8mgdSpPHKRA6G11N">
+      <button class="btn-cancel" id="btn-cancel" data-page-node-id="MBPr0WOLfEAxepYNT3c9mR">取消</button>
+      <button class="btn-save" id="btn-save-note" data-page-node-id="dKM6fNjnu2shGu0sh7k8T3">保存记录 <span class="sync-spinner" data-page-node-id="NCumwyZ9e05RDls48YDYgx"></span></button>
     </div>
   </div>
 </div>
 
 <!-- Delete Confirm -->
-<div class="confirm-overlay hidden" id="confirm-overlay">
-  <div class="confirm-box">
-    <div class="confirm-icon">🗑️</div>
-    <div class="confirm-title">确认删除？</div>
-    <div class="confirm-msg" id="confirm-msg">此操作不可撤销</div>
-    <div class="confirm-actions">
-      <button class="btn-confirm-cancel" id="confirm-cancel">取消</button>
-      <button class="btn-confirm-delete" id="confirm-delete">确认删除</button>
+<div class="confirm-overlay hidden" id="confirm-overlay" data-page-node-id="ZTj1FKKWs6hgUOmrodHuhV">
+  <div class="confirm-box" data-page-node-id="fdo2ttrnIq4it8pbPE3cUH">
+    <div class="confirm-icon" data-page-node-id="II4h8RkYwZ6gkSvifSwWIU">🗑️</div>
+    <div class="confirm-title" data-page-node-id="bIk3J1loVEShf9pz4DiE0j">确认删除？</div>
+    <div class="confirm-msg" id="confirm-msg" data-page-node-id="V5phMz4nXC3FoEY4QHrtwB">此操作不可撤销</div>
+    <div class="confirm-actions" data-page-node-id="WX5PXYKbxGGCSWleevhRtP">
+      <button class="btn-confirm-cancel" id="confirm-cancel" data-page-node-id="tDbGI7ZeqCrwv0MCOMOZDB">取消</button>
+      <button class="btn-confirm-delete" id="confirm-delete" data-page-node-id="GUmT6PTHL8mAiWHPrvXTCC">确认删除</button>
     </div>
   </div>
 </div>
 
 <!-- Detail View Modal -->
-<div class="modal-overlay hidden" id="detail-overlay">
-  <div class="modal" id="detail-modal">
-    <div class="modal-header">
-      <span class="modal-title" id="detail-title">🥃 品酒详情</span>
-      <button class="modal-close" id="detail-close">×</button>
+<div class="modal-overlay hidden" id="detail-overlay" data-page-node-id="WWbBIyntrNNHnGcLYDGUT9">
+  <div class="modal" id="detail-modal" data-page-node-id="jmGCxsFvJD48qSOZe9AtRX">
+    <div class="modal-header" data-page-node-id="EcnGjLlPEAA5Kq8GaxABjx">
+      <span class="modal-title" id="detail-title" data-page-node-id="MYjrAoCyVFsJO6R6YpuBKC">🥃 品酒详情</span>
+      <button class="modal-close" id="detail-close" data-page-node-id="XRjyNjN9Bs9nOHH0HrPZsY">×</button>
     </div>
-    <div class="modal-body" id="detail-body"></div>
-    <div class="modal-footer">
-      <button class="btn-cancel" id="btn-detail-close">关闭</button>
-      <button class="btn-save" id="btn-detail-edit" style="background:var(--accent);border-color:var(--accent);">✏️ 编辑</button>
-      <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);">🗑️ 删除</button>
+    <div class="modal-body" id="detail-body" data-page-node-id="A55nHD7iJUQRZQWFZoUMOs"></div>
+    <div class="modal-footer" data-page-node-id="7vBuDrsaQ3SKMGBgS33Bg0">
+      <button class="btn-cancel" id="btn-detail-close" data-page-node-id="LrSb8Zf3nH7CdFuY4KADlN">关闭</button>
+      <button class="btn-save" id="btn-detail-edit" style="background:var(--accent);border-color:var(--accent);" data-page-node-id="CrcyabYIN27sgGSAmxubSB">✏️ 编辑</button>
+      <button class="btn-save" id="btn-detail-delete" style="background:var(--red);border-color:var(--red);" data-page-node-id="DDi0s3IBnAeEVL2ZwPrzPL">🗑️ 删除</button>
     </div>
   </div>
 </div>
 
 <!-- Image Lightbox -->
-<div class="img-lightbox" id="img-lightbox">
-  <button class="img-lightbox-close" onclick="closeLightbox()">&times;</button>
-  <img src="" alt="" id="lightbox-img">
+<div class="img-lightbox" id="img-lightbox" data-page-node-id="CNwcIzkZwmDBm3LG0GKsq7">
+  <button class="img-lightbox-close" onclick="closeLightbox()" data-page-node-id="AM3ctTclk8vg0InzojUeTr">&times;</button>
+  <img src="" alt="" id="lightbox-img" data-page-node-id="DyWOo2jFpCPghHWTnK65AF">
 </div>
 
 <!-- Toast -->
-<div id="toast"></div>
+<div id="toast" data-page-node-id="karOuQJYXZ4WwXOO2pxmDu"></div>
 
 <script>
 
@@ -1368,7 +1377,7 @@ async function init() {
 // ============================================================
 // Search & Filter & Sort
 // ============================================================
-let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintageAgeMin:'' };
+let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintageAgeMin:'', minScore:0, caskStrength:false, ibOnly:false };
 
 function applyFiltersAndSort() {
   let notes = db.notes.slice();
@@ -1384,6 +1393,9 @@ function applyFiltersAndSort() {
   if (filters.yearFrom)   notes = notes.filter(n => (n.distillation_year||0) >= +filters.yearFrom);
   if (filters.yearTo)     notes = notes.filter(n => (n.distillation_year||0) <= +filters.yearTo);
   if (filters.vintageAgeMin) notes = notes.filter(n => (n.vintage_age||0) >= +filters.vintageAgeMin);
+  if (filters.minScore)     notes = notes.filter(n => avgScore(n) >= +filters.minScore);
+  if (filters.caskStrength) notes = notes.filter(n => parseFloat(n.abv) >= 50);
+  if (filters.ibOnly)       notes = notes.filter(n => isIB(n));
   notes.sort((a,b)=>{
     switch(currentSort) {
       case 'date-desc':  return (b.date||'').localeCompare(a.date||'');
@@ -1418,13 +1430,54 @@ function refresh(){
 
 function renderStats(){
   const N=db.notes;
-  document.getElementById('stat-total').textContent=N.length;
-  document.getElementById('stat-distilleries').textContent=new Set(N.map(n=>n.distillery).filter(Boolean)).size;
-  const avg=(arr,key)=>arr.length?(arr.reduce((s,n)=>s+(n[key]||0),0)/arr.length).toFixed(2):'\u2014';
-  document.getElementById('stat-avg-palate').textContent=avg(N.filter(n=>n.palate_score!=null),'palate_score');
-  document.getElementById('stat-avg-body').textContent  =avg(N.filter(n=>n.body_score!=null),  'body_score');
-  document.getElementById('stat-avg-finish').textContent=avg(N.filter(n=>n.finish_score!=null),'finish_score');
+  const setTxt=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+
+  // 值得回购：三项均分 >= 4.0
+  const repurchase=N.filter(n=>avgScore(n)>=4.0).length;
+  // 桶强：ABV >= 50
+  const cask=N.filter(n=>parseFloat(n.abv)>=50).length;
+  // 独立装瓶：bottler 非空且与 distillery 不同
+  const ibSet=new Set(); let ib=0;
+  N.forEach(n=>{ if(isIB(n)){ ib++; ibSet.add((n.bottler||'').trim()); } });
+  // 酒龄
+  const ages=N.map(n=>parseFloat(n.vintage_age)).filter(x=>!isNaN(x)&&x>0);
+  const avgAge=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length):0;
+  const maxAge=ages.length?Math.max.apply(null,ages):0;
+  // 近 30 天新增
+  const cutoff=Date.now()-30*864e5;
+  const recent=N.filter(n=>n.date&&new Date(n.date).getTime()>=cutoff).length;
+
+  const pct=v=>N.length?Math.round(v*100/N.length)+'%':'\u2014';
+  setTxt('stat-repurchase', repurchase||'\u2014');
+  setTxt('stat-repurchase-sub', '4.0 \u5206以上');
+  setTxt('stat-cask', pct(cask));
+  setTxt('stat-cask-sub', cask+' \u652f ≥50%');
+  setTxt('stat-ib', pct(ib));
+  setTxt('stat-ib-sub', ibSet.size+' \u5bb6装瓶商');
+  setTxt('stat-age', avgAge?avgAge.toFixed(1):'\u2014');
+  setTxt('stat-age-sub', maxAge?('\u6700高 '+maxAge+' \u5e74'):'\u2014');
+  setTxt('stat-total', N.length);
+  setTxt('stat-total-sub', recent?('\u8fd130\u5929 +'+recent):'\u8fd130\u5929 无新增');
+
+  // 激活态（统计区始终基于全量数据，作为导航入口）
+  const act=(k,on)=>{ const el=document.querySelector('[data-stat="'+k+'"]'); if(el) el.classList.toggle('active',!!on); };
+  act('repurchase', filters.minScore);
+  act('cask', filters.caskStrength);
+  act('ib', filters.ibOnly);
+  act('age', currentSort==='age-desc');
+  act('all', isFiltersClean());
+
   document.getElementById('header-count').textContent=N.length+' \u6761\u8bb0\u5f55';
+}
+/* 独立装瓶判定：官方装瓶在数据里明确标记为 'OB'，其余非空装瓶商即为 IB */
+function isIB(n){
+  const b=(n.bottler||'').trim();
+  return !!b && b.toUpperCase()!=='OB';
+}
+function isFiltersClean(){
+  return !filters.q && !filters.distillery && !filters.bottler && !filters.yearFrom
+      && !filters.yearTo && !filters.vintageAgeMin && !filters.minScore
+      && !filters.caskStrength && !filters.ibOnly;
 }
 
 function renderFilterOptions(){
@@ -1926,11 +1979,26 @@ document.getElementById('filter-year-from').addEventListener('input', function()
 document.getElementById('filter-year-to').addEventListener('input', function(){
   filters.yearTo=this.value; currentPage=1; refresh();
 });
+document.querySelectorAll('.stat-card.clickable').forEach(function(card){
+  card.addEventListener('click', function(){
+    const k=card.getAttribute('data-stat');
+    if(k==='all'){ const r=document.getElementById('btn-clear-filter'); if(r){ r.click(); return; } filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',minScore:0,caskStrength:false,ibOnly:false}; currentPage=1; refresh(); return; }
+    if(k==='age'){
+      const btn=document.querySelector('[data-sort="age-desc"]');
+      if(btn){ btn.click(); return; }
+      currentSort='age-desc'; currentPage=1; refresh(); return;
+    }
+    if(k==='repurchase') filters.minScore = filters.minScore ? 0 : 4.0;
+    else if(k==='cask')  filters.caskStrength = !filters.caskStrength;
+    else if(k==='ib')    filters.ibOnly = !filters.ibOnly;
+    currentPage=1; refresh();
+  });
+});
 document.getElementById('filter-vintage-age-min').addEventListener('input', function(){
   filters.vintageAgeMin=this.value; currentPage=1; refresh();
 });
 document.getElementById('btn-clear-filter').addEventListener('click', ()=>{
-  filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:''};
+  filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',minScore:0,caskStrength:false,ibOnly:false};
   document.getElementById('search-input').value='';
   ['filter-distillery','filter-bottler','filter-year-from','filter-year-to','filter-vintage-age-min'].forEach(i=>document.getElementById(i).value='');
   currentPage=1; refresh();
