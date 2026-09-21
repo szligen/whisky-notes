@@ -846,6 +846,11 @@
   .wstore-ok b { color:var(--success); }
   .wstore-warn b { color:var(--warn); }
   .wstore-idle b { color:var(--info); }
+  /* 词表未加载时的降级界面 */
+  .wempty { padding:22px 4px 26px; text-align:center; color:var(--text-muted); font-size:13px; line-height:1.9; }
+  .wempty p { margin-bottom:6px; }
+  .wempty code { background:var(--surface2); border:1px solid var(--border-light); border-radius:3px; padding:1px 5px; font-size:12px; }
+  .wempty-hint { font-size:12px; color:var(--text-light); max-width:470px; margin:0 auto 14px; }
   .wbtn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:4px 10px; font-size:12px; cursor:pointer; }
   .wbtn:hover { border-color:var(--accent-light); }
   .scrollbox { max-height:520px; overflow:auto; }
@@ -859,7 +864,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:25</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:35</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -1533,7 +1538,7 @@ function commitMessage(label) {
 // ============================================================
 async function init() {
   loadConfig();
-  fvUserLoad();   /* 先加载本机风味词表校准，立即可用 */
+  fvCacheLoad();   /* 先用本机缓存词表（有缓存则秒开，没有则等云端） */
 
   if (!hasConfig()) {
     setStatus('disconnected',
@@ -1542,9 +1547,12 @@ async function init() {
     return;
   }
 
-  /* 后台拉取云端词表校准（有变化且当前在风味轮视图则重渲染） */
-  fvFetchRemote().then(function(changed){
-    if (changed && viewMode === 'wheel') renderWheelView();
+  /* 拉取云端词表；有变化且正在看风味轮则重渲染 */
+  fvFetchWords().then(function(changed){
+    if (changed){
+      if (viewMode === 'wheel') renderWheelView();
+      fvRefreshStorageLine();
+    }
   });
 
   try {
@@ -1666,133 +1674,137 @@ function renderStats(){
 //   5) 以上都不中 → 进"待校准"清单，攒够一批用校准工具批量归类
 // 维护：新词直接加进 FV_WORDS（已校准）或 FV_ALIAS（未校准），刷新即生效。
 // ============================================================
-var FV_CATS = ["果香", "甜香", "雪莉干邑", "泥煤烟熏", "木质陈年", "花香", "高级风味", "谷物"];
-var FV_WORDS = {"奶油":"甜香","脂粉":"木质陈年","黄色水果":"木质陈年","雪莉":"雪莉干邑","酸水果":"木质陈年","黑巧":"雪莉干邑","蜜糖":"甜香","香料":"甜香","青苹果":"果香","老味":"高级风味","干邑":"雪莉干邑","杨桃":"果香","花果香":"花香","果核":"果香","脂粉味":"木质陈年","桃味":"果香","水果硬糖":"甜香","芒果":"果香","木质":"木质陈年","皂味":"高级风味","蜜香":"甜香","麦芽":"谷物","深色水果":"果香","熟苹果":"果香","深色果脯":"雪莉干邑","甜食":"甜香","奶油瓜子":"甜香","烟灰":"泥煤烟熏","花香":"花香","红枣":"雪莉干邑","梨":"果香","药水":"泥煤烟熏","油桃":"果香","糖霜":"甜香","果干":"雪莉干邑","红茶":"高级风味","焦糖":"甜香","菠萝":"果香","白花":"花香","酸雪莉":"雪莉干邑","葡萄皮":"雪莉干邑","烟熏":"泥煤烟熏","果脯":"雪莉干邑","红糖":"甜香","酸木头":"木质陈年","淡泥煤":"泥煤烟熏","花蜜":"甜香","根茎":"泥煤烟熏","红色水果":"果香","泥煤":"泥煤烟熏","桃":"果香","旧书":"高级风味","哈密瓜":"果香","百香果":"果香","热带水果":"果香","奶油蛋糕":"甜香","干花":"花香","奶粉":"甜香","水果软糖":"甜香","木质调":"木质陈年","蜜枣":"雪莉干邑","黄桃":"果香","烟":"泥煤烟熏","深色果皮":"雪莉干邑","瓜子":"甜香","酱香雪莉":"雪莉干邑","酸葡萄":"果香","干果":"雪莉干邑","柑橘":"果香","甜":"甜香","樱桃":"果香","葡萄干":"雪莉干邑","梨香":"果香","巧克力":"雪莉干邑","威化饼":"甜香","酸树枝":"木质陈年","酸梨":"果香","果香":"果香","话梅":"果香","香蕉":"果香","柠檬":"果香","白葡萄":"果香","烟尘":"泥煤烟熏","枣味":"雪莉干邑","蜜霜":"甜香","杏仁":"雪莉干邑","矿物质":"泥煤烟熏","雪莉味正":"雪莉干邑","盐渍柠檬":"果香","黄果":"果香","波子汽水":"甜香","椰子":"甜香","咸奶油":"甜香","酸苹果":"果香","水蜜桃":"果香","蜜饯":"雪莉干邑","朗姆":"甜香","琵琶":"果香","糖果":"甜香","粉":"甜香","酱味":"高级风味","葡萄":"果香","苹果":"果香","青味":"谷物","麝香":"高级风味","乳酸菌":"谷物","黄色酸水果":"果香","腊肉":"泥煤烟熏","酸浆果":"果香","奶油威化":"甜香","粉香":"甜香","甜水果":"甜香","高密香":"甜香","啤酒":"谷物","密瓜":"果香","茶味":"高级风味","灰烬":"泥煤烟熏","果味":"果香","柴火":"泥煤烟熏","花果":"花香","酱香":"高级风味","蜂蜜":"甜香","梅子":"果香","菊花蜜":"甜香","皮革":"高级风味","重雪莉":"雪莉干邑","火药":"泥煤烟熏","饭焦":"谷物","高蜜":"甜香","海洋":"泥煤烟熏","熟水果":"果香","杏":"果香","花果调":"花香","黄桃罐头":"果香","成熟水果":"果香","坚果":"雪莉干邑","洋梨":"果香","果":"果香","灰尘":"高级风味","谷物波本":"谷物","胡椒":"甜香","梨蜜":"果香","玫瑰花":"花香","深色葡萄":"果香","乌梅":"果香","杏干":"果香","药水泥煤":"泥煤烟熏","奶油饼干":"谷物","焦香泥煤":"泥煤烟熏","一点药水":"泥煤烟熏","果酱":"果香","干树枝":"木质陈年","老味泥煤":"高级风味","茶":"高级风味","菊花":"花香","饭焦味":"谷物","糖浆":"甜香","木头":"木质陈年","枣":"雪莉干邑","燕麦":"谷物","奶":"甜香","甜奶油":"甜香","淡雪莉":"雪莉干邑","植物根茎":"泥煤烟熏","陈味":"高级风味","皂":"高级风味","有桃味":"果香","巧克力威化":"雪莉干邑","胭脂":"木质陈年","雪莉味淡":"雪莉干邑","烟熏味":"泥煤烟熏","麦芽啤酒":"谷物","树莓":"果香","黑巧克力":"雪莉干邑","青草":"谷物","奶油蜜饯":"雪莉干邑","泥煤药水":"泥煤烟熏","肉桂":"甜香","西米露":"甜香","桶味":"雪莉干邑","轻微皂味":"高级风味","谷物":"谷物","酵母":"谷物","乳酸":"谷物","草本":"高级风味","草药":"高级风味","威化":"甜香"};
-var FV_EXC = ["酒精味","浓郁","新酒","复杂","酸","酒精","苦","杂","gas","平衡","柔和","顺滑","干净","圆润","淡颜色"];
-/* 别名表：常见但尚未校准的写法 → 自动归入类目（在界面上标"自动"） */
-var FV_ALIAS = {
-  "泥炭":"泥煤烟熏","泥炭味":"泥煤烟熏","碘酒":"泥煤烟熏","消毒水":"泥煤烟熏",
-  "绷带":"泥煤烟熏","医院":"泥煤烟熏","焦炭":"泥煤烟熏","灰":"泥煤烟熏",
-  "咸":"泥煤烟熏","咸味":"泥煤烟熏","海水":"泥煤烟熏","海盐":"泥煤烟熏","海风":"泥煤烟熏",
-  "黑加仑":"果香","黑醋栗":"果香","醋栗":"果香","蓝莓":"果香","草莓":"果香",
-  "蔓越莓":"果香","橙":"果香","橘子":"果香","柚子":"果香","西柚":"果香",
-  "青柠":"果香","荔枝":"果香","龙眼":"果香","柿":"果香","无花果":"果香",
-  "香草":"甜香","太妃糖":"甜香","布丁":"甜香","枫糖":"甜香","棉花糖":"甜香",
-  "黄油":"甜香","炼乳":"甜香","蛋糕":"甜香","姜":"甜香","丁香":"甜香",
-  "饼干":"谷物","苏打饼":"谷物","麦片":"谷物","玉米":"谷物","面包":"谷物",
-  "面团":"谷物","谷壳":"谷物","糠":"谷物","波本":"谷物","波本桶":"谷物",
-  "薄荷":"高级风味","桉树":"高级风味",
-  "绿茶":"高级风味","普洱":"高级风味","烟草":"高级风味","蘑菇":"高级风味",
-  "干树叶":"木质陈年","树叶":"木质陈年","树枝":"木质陈年","树皮":"木质陈年",
-  "纸箱":"木质陈年","报纸":"木质陈年","衣柜":"木质陈年","檀香":"木质陈年",
-  "玫瑰":"花香","茉莉":"花香","薰衣草":"花香","桂圆":"雪莉干邑","核桃":"雪莉干邑",
-  "栗子":"雪莉干邑","焦糖布丁":"甜香","糖":"甜香","白糖":"甜香","冰糖":"甜香"
-};
-var FV_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
-                 "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
+/* ===== 风味词表：运行时加载（页面不再内嵌词表数据）=====
+   唯一事实源 = 仓库根 flavor_words.json
+   本机 localStorage 仅作缓存：秒开 + 断网可用；云端为准
+   词表未就绪时 FV_READY=false，风味轮显示加载中 / 加载失败态         */
+var FV_FILE = 'flavor_words.json';
+var FV_CACHE_KEY = 'wn-flavor-words';
+var FV_LEGACY_KEY = 'wn-flavor-user';          /* 旧版分层校准，迁移后清掉 */
+var FV_CATS = [], FV_WORDS = {}, FV_EXC = [], FV_ALIAS = {}, FV_TOUCHED = {};
+var FV_SHA = null, FV_DIRTY = false, FV_READY = false, FV_UPDATED = '';
 var FV_SPLIT = /[、,，;；/|｜]+/;
 var FV_NEG  = /没有|不太|不够|缺乏|缺少|没啥|不|无|没/;
 var FV_LIST = [], FV_EXACT = {};
-/* ---- 网页内校准：用户自建词表（本机 localStorage + 云端 flavor_words.json）----
-   词表分两层：
-     FV_WORDS  基线（内嵌在页面里，来自 flavor_map.json）
-     FV_USER   本页新增/覆盖（用户在待校准清单里归类的词）
-   合并顺序：基线 → 删掉 removed → 覆盖 user.words → 别名只补空缺。
-   因此「在这里归类」= 立即生效 + 可撤销，不需要再回来改代码。            */
-var FV_USER_KEY = 'wn-flavor-user';
-var FV_FILE = 'flavor_words.json';
-var FV_USER = { version:1, words:{}, removed:[], sha:null, dirty:false };
+var FV_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
+                 "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
 var FV_EDITING = null;   /* 正在归类中的待校准词 */
 var FV_UNK_OPEN = false; /* 待校准区展开状态（跨重渲染保持，便于连续归类） */
 
-function fvUserLoad(){
+/* 把一份词表数据装进运行时变量 */
+function fvApply(d){
+  FV_CATS    = (d && d.categories) || [];
+  FV_WORDS   = (d && d.words) || {};
+  FV_EXC     = (d && d.excluded) || [];
+  FV_ALIAS   = (d && d.alias) || {};
+  FV_TOUCHED = (d && d.touched) || {};
+  FV_UPDATED = (d && d.updated) || '';
+  FV_READY   = (Object.keys(FV_WORDS).length + Object.keys(FV_ALIAS).length) > 0;
+  fvInit(true);
+  fvMergeLegacy();                 /* 词表就绪后再合并旧版增量，否则会被覆盖 */
+}
+/* 导出当前词表（推云端 / 下载） */
+function fvSnapshot(){
+  return { version:2, updated:new Date().toISOString(),
+           categories:FV_CATS, words:FV_WORDS, excluded:FV_EXC,
+           alias:FV_ALIAS, touched:FV_TOUCHED };
+}
+function fvCacheSave(){
   try{
-    var o = JSON.parse(localStorage.getItem(FV_USER_KEY));
-    if (o && typeof o === 'object'){
-      FV_USER = { version:1, words:o.words||{}, removed:o.removed||[], sha:o.sha||null, dirty:!!o.dirty };
-    }
+    var o = fvSnapshot(); o.sha = FV_SHA; o.dirty = FV_DIRTY;
+    localStorage.setItem(FV_CACHE_KEY, JSON.stringify(o));
   }catch(e){}
 }
-function fvUserSave(){
-  try{ localStorage.setItem(FV_USER_KEY, JSON.stringify(FV_USER)); }catch(e){}
+/* 兼容旧版两层校准（wn-flavor-user）：把增量并进词表后清掉旧键。
+   必须等词表就绪（fvApply 之后）再做——否则并入的词会被随后拉到的云端词表整体覆盖。 */
+function fvMergeLegacy(){
+  var raw = null;
+  try{ raw = JSON.parse(localStorage.getItem(FV_LEGACY_KEY)); }catch(e){}
+  if (!raw) return false;
+  var nw = Object.keys(raw.words || {}).length, nr = (raw.removed || []).length;
+  if (!nw && !nr){ try{ localStorage.removeItem(FV_LEGACY_KEY); }catch(e){} return false; }
+  var k; for (k in (raw.words || {})){ FV_WORDS[k] = raw.words[k]; if(!(k in FV_TOUCHED)) FV_TOUCHED[k] = null; }
+  (raw.removed || []).forEach(function(w){ if (FV_EXC.indexOf(w) < 0) FV_EXC.push(w); });
+  try{ localStorage.removeItem(FV_LEGACY_KEY); }catch(e){}
+  FV_DIRTY = true;                 /* 迁移出来的改动需要推回云端 */
+  FV_READY = FV_READY || (Object.keys(FV_WORDS).length + Object.keys(FV_ALIAS).length) > 0;
+  fvInit(true);
+  return true;
 }
-/* 生效词表：基线 + 用户覆盖 - 用户删除 */
-function fvEffective(){
-  var W = {}, k;
-  for (k in FV_WORDS) W[k] = FV_WORDS[k];
-  (FV_USER.removed||[]).forEach(function(w){ delete W[w]; });
-  for (k in (FV_USER.words||{})) W[k] = FV_USER.words[k];
-  return W;
+function fvCacheLoad(){
+  var ok = false;
+  try{
+    var o = JSON.parse(localStorage.getItem(FV_CACHE_KEY));
+    if (o && (o.words || o.alias)){
+      fvApply(o); FV_SHA = o.sha || null; FV_DIRTY = !!o.dirty; ok = true;
+    }
+  }catch(e){}
+  return ok;
 }
-function fvUserCount(){
-  return Object.keys(FV_USER.words||{}).length + (FV_USER.removed||[]).length;
-}
+function fvTouchedCount(){ return Object.keys(FV_TOUCHED || {}).length; }
+function fvWordCount(){ return Object.keys(FV_WORDS).length; }
 
 function fvInit(force){
   if (FV_LIST.length && !force) return;
   FV_LIST = []; FV_EXACT = {};
-  var W = fvEffective();
-  Object.keys(W).forEach(function(w){ FV_LIST.push({w:w,c:W[w],a:0}); });
+  Object.keys(FV_WORDS).forEach(function(w){ FV_LIST.push({w:w,c:FV_WORDS[w],a:0}); });
   Object.keys(FV_ALIAS).forEach(function(w){ FV_LIST.push({w:w,c:FV_ALIAS[w],a:1}); });
   FV_LIST.sort(function(a,b){ return b.w.length - a.w.length; });
   FV_LIST.forEach(function(it){ if(!FV_EXACT[it.w]) FV_EXACT[it.w]=it; });
 }
 
-/* ---- 云端同步（复用已配置的 GitHub 连接；未配置则只存本机） ---- */
-function fvRemoteUrl(){
+/* ---- 云端读写（复用已配置的 GitHub 连接；未配置则只留本机） ---- */
+function fvUrl(){
   return 'https://api.github.com/repos/'+ghCfg.owner+'/'+ghCfg.repo+'/contents/'+FV_FILE;
 }
-async function fvFetchRemote(){
-  if (!ghCfg) return false;
+async function fvFetchWords(){
+  if (!ghCfg || !ghCfg.token) return false;
   try{
-    var r = await fetch(fvRemoteUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
-    if (r.status === 404){ FV_USER.sha = null; return false; }
+    var r = await fetch(fvUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+    if (r.status === 404){ FV_SHA = null; return false; }
     if (!r.ok) return false;
     var info = await r.json();
     var txt = new TextDecoder('utf-8').decode(
       Uint8Array.from(atob(info.content.replace(/\n/g,'')), function(c){ return c.charCodeAt(0); }));
     var data = JSON.parse(txt);
-    FV_USER.sha = info.sha;
-    if (data && data.words && !FV_USER.dirty){        /* 本机没有未推送改动，才接受云端 */
-      FV_USER.words   = data.words || {};
-      FV_USER.removed = data.removed || [];
-      fvUserSave();
-      return true;
-    }
-    return false;
+    FV_SHA = info.sha;
+    if (FV_DIRTY) return false;                                   /* 本机有未推送改动，不被云端覆盖 */
+    if (data.updated && data.updated === FV_UPDATED) return false; /* 内容没变，不用重渲染 */
+    fvApply(data);
+    fvCacheSave();
+    return true;
   }catch(e){ return false; }
 }
-async function fvPushRemote(isRetry){
-  if (!ghCfg){ toast('已保存在本机（未连接 GitHub，无法同步云端）'); return false; }
+async function fvPushWords(isRetry){
+  if (!ghCfg || !ghCfg.token){ toast('词表已存在本机（未连接 GitHub，无法同步云端）'); return false; }
   try{
-    var payload = { version:1, words:FV_USER.words, removed:FV_USER.removed,
-                    updated:new Date().toISOString() };
-    var body = { message:'chore: 风味词表校准更新',
-                 content: btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 1)))),
+    var snap = fvSnapshot();
+    var body = { message:'chore: 风味词表更新',
+                 content: btoa(unescape(encodeURIComponent(JSON.stringify(snap, null, 1)))),
                  branch: ghCfg.branch };
-    if (FV_USER.sha) body.sha = FV_USER.sha;
-    var r = await fetch(fvRemoteUrl(), {
+    if (FV_SHA) body.sha = FV_SHA;
+    var r = await fetch(fvUrl(), {
       method:'PUT',
       headers:{ Authorization:'Bearer '+ghCfg.token, 'Content-Type':'application/json' },
       body: JSON.stringify(body)
     });
     if (r.status === 409 || r.status === 422){        /* sha 过期：取最新 sha 重试一次 */
       if (isRetry) throw new Error('SHA 冲突');
-      var g = await fetch(fvRemoteUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
-      FV_USER.sha = g.ok ? (await g.json()).sha : null;
-      return await fvPushRemote(true);
+      var g = await fetch(fvUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+      FV_SHA = g.ok ? (await g.json()).sha : null;
+      return await fvPushWords(true);
     }
     if (!r.ok){
       var eb = await r.json().catch(function(){ return {}; });
       throw new Error('HTTP '+r.status+': '+((eb.message||'').slice(0,80)));
     }
-    FV_USER.sha = (await r.json()).content.sha;
-    FV_USER.dirty = false;
-    fvUserSave();
+    FV_SHA = (await r.json()).content.sha;
+    FV_DIRTY = false; FV_UPDATED = snap.updated;
+    fvCacheSave();
     fvRefreshStorageLine();          /* 局部刷新存储状态，不打断当前钻取 */
     return true;
   }catch(e){
-    toast('云端同步失败：'+e.message+'（已保存在本机）');
+    toast('云端同步失败：'+e.message+'（已存在本机）');
     return false;
   }
 }
@@ -1805,32 +1817,38 @@ function fvRefreshStorageLine(){
   if (tmp.firstChild) el.parentNode.replaceChild(tmp.firstChild, el);
 }
 
-/* ---- 归类动作 ---- */
+/* ---- 归类动作：直接改运行时词表 → 存缓存 → 推云端 ---- */
+function fvMark(w){                       /* 首次改动某词时记下原值，供撤销还原 */
+  if (!(w in FV_TOUCHED)) FV_TOUCHED[w] = (w in FV_WORDS) ? FV_WORDS[w] : null;
+  FV_DIRTY = true;
+}
 function fvClassify(w, cat){
-  FV_USER.words[w] = cat;
-  FV_USER.removed = (FV_USER.removed||[]).filter(function(x){ return x !== w; });
-  FV_EDITING = null; FV_USER.dirty = true;
-  fvUserSave();
-  fvInit(true);                       /* 重建词表 → 该词立即参与匹配 */
-  renderWheelView();
+  fvMark(w);
+  FV_WORDS[w] = cat;
+  FV_EXC = FV_EXC.filter(function(x){ return x !== w; });
+  FV_EDITING = null;
+  fvCacheSave(); fvInit(true); renderWheelView();
   toast('「'+w+'」已归入 '+cat+'，立即生效');
-  fvPushRemote();                     /* 后台推云端，失败也不影响本机 */
+  fvPushWords();                     /* 后台推云端，失败也不影响本机 */
 }
 function fvExclude(w){
-  delete FV_USER.words[w];
-  if ((FV_USER.removed||[]).indexOf(w) < 0) FV_USER.removed.push(w);
-  FV_EDITING = null; FV_USER.dirty = true;
-  fvUserSave(); fvInit(true); renderWheelView();
+  fvMark(w);
+  delete FV_WORDS[w];
+  if (FV_EXC.indexOf(w) < 0) FV_EXC.push(w);
+  FV_EDITING = null;
+  fvCacheSave(); fvInit(true); renderWheelView();
   toast('「'+w+'」已标记为非风味词，不再追踪');
-  fvPushRemote();
+  fvPushWords();
 }
 function fvUndo(w){
-  delete FV_USER.words[w];
-  FV_USER.removed = (FV_USER.removed||[]).filter(function(x){ return x !== w; });
-  FV_USER.dirty = true;
-  fvUserSave(); fvInit(true); renderWheelView();
-  toast('已撤销「'+w+'」的校准');
-  fvPushRemote();
+  var prev = FV_TOUCHED[w];
+  if (prev){ FV_WORDS[w] = prev; } else { delete FV_WORDS[w]; }
+  FV_EXC = FV_EXC.filter(function(x){ return x !== w; });
+  delete FV_TOUCHED[w];
+  FV_DIRTY = true;
+  fvCacheSave(); fvInit(true); renderWheelView();
+  toast('已撤销「'+w+'」的改动');
+  fvPushWords();
 }
 function fvEditUnknown(w){
   FV_EDITING = (FV_EDITING === w) ? null : w;
@@ -1840,10 +1858,11 @@ function fvEditUnknown(w){
   if (box) box.open = true;
 }
 async function fvSyncNow(){
-  FV_USER.dirty = true;
-  var ok = await fvPushRemote();
+  FV_DIRTY = true;
+  var ok = await fvPushWords();
   if (ok){ toast('已同步到云端，其它设备打开即生效'); fvRefreshStorageLine(); }
 }
+
 /* 词前面 3 个字里出现否定词 → 不计（"不太甜"、"没有泥煤"） */
 function fvNegated(ph,i){
   var pre = ph.slice(Math.max(0,i-3), i);
@@ -1873,7 +1892,7 @@ var FV_DATA = null, FV_CUR = null, FV_CURW = null;
 
 function computeFlavor(){
   fvInit();
-  var W = fvEffective();          /* 生效词表 = 基线 + 本页校准；归类后即时反映 */
+  var W = FV_WORDS;               /* 词表已含全部校准，归类后即时反映 */
   var N = db.notes, n = N.length, j, k;
   var gsum=0, gcnt=0, dist={};
   for (j=0;j<n;j++){
@@ -1969,9 +1988,29 @@ function fvSeg(D){
   return out.join('');
 }
 
+/* 词表未加载成功时的降级界面（拆分后词表依赖外部文件，必须给出路） */
+function fvNotReadyHTML(){
+  return '<div class="wheel-wrap">'
+    + '<div class="wheel-head"><h2>风味轮</h2><span class="wheel-sub">词表尚未加载</span></div>'
+    + '<div class="wempty">'
+    + '<p>风味词表 <code>flavor_words.json</code> 还没加载成功，暂时无法统计风味。</p>'
+    + '<p class="wempty-hint">可能原因：网络不通、Token 失效，或仓库里还没有这个词表文件。'
+    + '词表就绪后本页会自动恢复，也可以点下面按钮重试。</p>'
+    + '<button class="wbtn wbtn-primary" onclick="fvReloadWords()">重新加载词表</button>'
+    + '</div></div>';
+}
+async function fvReloadWords(){
+  fvCacheLoad();
+  var remote = await fvFetchWords();
+  if (!FV_READY){ toast('词表仍不可用，请检查网络或 GitHub 配置'); renderWheelView(); return; }
+  toast(remote ? '词表已从云端更新' : '已使用本机缓存的词表');
+  renderWheelView();
+}
+
 function renderWheelView(){
-  var D = computeFlavor();
   var el = document.getElementById('wheel-view');
+  if (!FV_READY){ el.innerHTML = fvNotReadyHTML(); return; }
+  var D = computeFlavor();
   var legend = FV_CATS.map(function(c){
     return '<span class="wlg" data-cat="'+c+'"><i style="background:'+FV_COLORS[c]+'"></i>'
       +c+' <b>'+D.cats[c].words.length+'</b>词 <span>'+D.cats[c].notes+'</span>条</span>';
@@ -1979,8 +2018,8 @@ function renderWheelView(){
   el.innerHTML =
     '<div class="wheel-wrap">'
     + '<div class="wheel-head"><h2>风味轮</h2><span class="wheel-sub">'+D.tot+' 支品鉴记录 · '
-    + Object.keys(fvEffective()).length+' 个已校准词'
-    + (fvUserCount() ? '（其中本页校准 '+fvUserCount()+'）' : '')
+    + Object.keys(FV_WORDS).length+' 个已校准词'
+    + (fvTouchedCount() ? '（本机改动 '+fvTouchedCount()+'）' : '')
     + ' + '+Object.keys(FV_ALIAS).length+' 个别名 · '
     + '扇区按覆盖笔记数 · 全库均分 '+D.gavg+'</span></div>'
     + '<div class="wheel-grid">'
@@ -2006,48 +2045,49 @@ function renderWheelView(){
   fvShowHome();
 }
 
-/* 存储位置说明：基线词表 / 本机校准 / 云端副本，三层各在哪 */
+/* 存储位置说明：词表文件在哪、本机有没有缓存、云端是否同步 */
 function fvStorageLine(){
-  var nBase = Object.keys(FV_WORDS).length;
-  var nUser = Object.keys(FV_USER.words||{}).length + (FV_USER.removed||[]).length;
   var cfg = (typeof hasConfig === 'function') ? hasConfig() : (typeof ghCfg !== 'undefined' && !!ghCfg);
+  var cached = false;
+  try{ cached = !!localStorage.getItem(FV_CACHE_KEY); }catch(e){}
   var cloud, cls;
   if (!cfg){
-    cloud = '未连接 GitHub —— 校准只存在本机浏览器，换设备会丢'; cls = 'warn';
-  } else if (FV_USER.dirty){
-    cloud = '本地有改动待推送（每次归类已自动同步，稍候或点「同步到云端」立即推）'; cls = 'warn';
-  } else if (FV_USER.sha){
-    cloud = '已同步到仓库 <b>flavor_words.json</b>，多设备打开自动读取'; cls = 'ok';
+    cloud = '未连接 GitHub —— 改动只留本机浏览器，换设备会丢'; cls = 'warn';
+  } else if (FV_DIRTY){
+    cloud = '本机有改动待推送（归类时会自动推送，也可点「同步到云端」）'; cls = 'warn';
+  } else if (FV_SHA){
+    cloud = '已与仓库 <b>flavor_words.json</b> 同步，多设备打开自动读取'; cls = 'ok';
   } else {
     cloud = '仓库里还没有 flavor_words.json —— 归类任意一个词即自动创建'; cls = 'idle';
   }
   return '<div class="wstore">'
-    + '<span class="wstore-row"><b>基线词表</b>内嵌在 index.html 里（'+nBase+' 词，随代码版本走，离线也能用）</span>'
-    + '<span class="wstore-row"><b>本页校准</b>浏览器本地存储（'+nUser+' 项，仅此设备）</span>'
-    + '<span class="wstore-row wstore-'+cls+'"><b>云端副本</b>'+cloud+'</span>'
+    + '<span class="wstore-row"><b>词表文件</b>仓库根 <code>flavor_words.json</code>（'
+    + Object.keys(FV_WORDS).length + ' 词 + ' + Object.keys(FV_ALIAS).length + ' 别名）'
+    + (fvTouchedCount() ? '，其中 '+fvTouchedCount()+' 项为本机改动' : '') + '</span>'
+    + '<span class="wstore-row"><b>本机缓存</b>'
+    + (cached ? '浏览器本地存储（已缓存，断网也能打开风味轮）' : '尚无缓存，本次会写入') + '</span>'
+    + '<span class="wstore-row wstore-'+cls+'"><b>云端同步</b>'+cloud+'</span>'
     + '</div>';
 }
 
 function fvUnknownHTML(D){
-  var mine = fvUserCount();
+  var mine = fvTouchedCount();
   var mineHTML = '';
   if (mine){
-    var items = Object.keys(FV_USER.words).map(function(w){
-      return '<span class="wun wun-done">'+esc(w)+' <b>'+esc(FV_USER.words[w])+'</b>'
-        + '<button class="wun-x" title="撤销" onclick="event.stopPropagation();fvUndo(\''+esc(w).replace(/'/g,"\\'")+'\')">&times;</button></span>';
-    }).join('')
-    + (FV_USER.removed||[]).map(function(w){
-      return '<span class="wun wun-done wun-exc">'+esc(w)+' <b>非风味</b>'
-        + '<button class="wun-x" title="撤销" onclick="event.stopPropagation();fvUndo(\''+esc(w).replace(/'/g,"\\'")+'\')">&times;</button></span>';
+    var items = Object.keys(FV_TOUCHED).map(function(w){
+      var exc = (FV_EXC.indexOf(w) >= 0);
+      var label = exc ? '非风味' : (FV_WORDS[w] || '—');
+      return '<span class="wun wun-done'+(exc?' wun-exc':'')+'">'+esc(w)+' <b>'+esc(label)+'</b>'
+        + '<button class="wun-x" title="撤销，恢复原状" onclick="event.stopPropagation();fvUndo(\''+esc(w).replace(/'/g,"\\'")+'\')">&times;</button></span>';
     }).join('');
-    mineHTML = '<div class="wmy"><div class="wmy-head">本页已校准 <b>'+mine+'</b> 项'
+    mineHTML = '<div class="wmy"><div class="wmy-head">本机改动 <b>'+mine+'</b> 项'
       + '<span class="wmy-actions">'
       + '<button class="wbtn" onclick="fvDownloadWords()">导出词表</button>'
       + '<button class="wbtn wbtn-primary" onclick="fvSyncNow()">同步到云端</button>'
       + '</span></div>'
       + '<div class="wun-list">'+items+'</div>'
-      + '<div class="wun-foot">点「同步到云端」后，其它设备打开页面会自动读取这些校准；'
-      + '点「导出词表」可下载合并后的 flavor_map.json 覆盖项目里的同名文件，沉淀为基线。</div></div>';
+      + '<div class="wun-foot">这些是你改过的词，点 × 可还原成原样。改动会自动同步到仓库的 flavor_words.json，'
+      + '其它设备打开即自动读取；「导出词表」可下载完整词表文件。</div></div>';
   }
   if (!D.unknown.length && !mine) return fvStorageLine();
   var chips = D.unknown.slice(0,40).map(function(u){
@@ -2074,24 +2114,21 @@ function fvUnknownHTML(D){
     + fvStorageLine();
 }
 
-/* 导出合并后的完整词表（可覆盖项目里的 flavor_map.json 沉淀为基线） */
+/* 导出当前词表（可直接覆盖仓库里的 flavor_words.json 备份） */
 function fvDownloadWords(){
-  var M = { categories: FV_CATS, words: fvEffective(), excluded: FV_EXC,
-            alias: FV_ALIAS, pending: [] };
-  var txt = JSON.stringify(M, null, 2);
+  var M = fvSnapshot();
+  M.pending = [];
+  var txt = JSON.stringify(M, null, 1);
   try{
     var blob = new Blob([txt], { type:'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'flavor_map.json';
+    a.download = FV_FILE;
     document.body.appendChild(a); a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
-    toast('已导出 flavor_map.json（'+Object.keys(M.words).length+' 词）');
+    toast('已导出 '+FV_FILE+'（'+Object.keys(M.words).length+' 词）');
   }catch(e){
-    if (navigator.clipboard) navigator.clipboard.writeText(txt)
-      .then(function(){ toast('下载被拦截，已复制词表 JSON 到剪贴板'); })
-      .catch(function(){ toast('导出失败：'+e.message); });
-    else toast('导出失败：'+e.message);
+    toast('下载被浏览器拦截，请改用「同步到云端」');
   }
 }
 
