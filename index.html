@@ -244,10 +244,21 @@
   }
   .sort-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
   #btn-clear-filter {
-    padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 13px; background: transparent; color: var(--text-muted); cursor: pointer;
+    padding: 7px 12px; border: 1px solid var(--text); border-radius: var(--radius-sm);
+    font-size: 13px; background: var(--text); color: var(--surface); cursor: pointer; font-weight: 500;
   }
-  #btn-clear-filter:hover { color: var(--red); border-color: var(--red); }
+  #btn-clear-filter:hover { background: var(--red); border-color: var(--red); color: #fff; }
+  /* ===== Page Jump ===== */
+  .page-jump-wrap { display: inline-flex; align-items: center; gap: 5px; margin: 0 4px; }
+  .page-jump {
+    width: 58px; padding: 5px 4px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--surface); color: var(--text); font-size: 13px; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  .page-jump:focus { outline: none; border-color: var(--accent); }
+  .page-jump::-webkit-outer-spin-button, .page-jump::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .page-jump { -moz-appearance: textfield; appearance: textfield; }
+  .page-total { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
 
   /* ===== View Toggle ===== */
   .view-toggle { display: flex; gap: 4px; background: var(--surface2); border-radius: var(--radius-sm); padding: 3px; }
@@ -761,7 +772,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:25</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:50</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -818,6 +829,8 @@
         <button class="sort-btn" data-sort="age-desc" data-page-node-id="AGSBPZrSlCFHb9zrktEopf">年份最老</button>
         <button class="sort-btn" data-sort="distillery-asc" data-page-node-id="K224UsyBxFJGEyfKHV0rtX">酒厂名称 A-Z</button>
       </div>
+      <input type="date" id="filter-date-from" title="按录入日期筛选：起始日" style="max-width:150px;" aria-label="录入日期从">
+      <input type="date" id="filter-date-to" title="按录入日期筛选：截止日" style="max-width:150px;" aria-label="录入日期到">
       <button id="btn-clear-filter" data-page-node-id="4WNRokteTvAXKlSK7vzljW">清除筛选</button>
     </div>
     <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()" data-page-node-id="3aNqbcvZlpMF7zKsNyaGG4">
@@ -1433,7 +1446,7 @@ async function init() {
 // ============================================================
 // Search & Filter & Sort
 // ============================================================
-let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintageAgeMin:'', minScore:0, caskStrength:false, ibOnly:false };
+let filters = { q:'', distillery:'', bottler:'', yearFrom:'', yearTo:'', vintageAgeMin:'', dateFrom:'', dateTo:'', minScore:0, caskStrength:false, ibOnly:false };
 
 function applyFiltersAndSort() {
   let notes = db.notes.slice();
@@ -1449,6 +1462,8 @@ function applyFiltersAndSort() {
   if (filters.yearFrom)   notes = notes.filter(n => (n.distillation_year||0) >= +filters.yearFrom);
   if (filters.yearTo)     notes = notes.filter(n => (n.distillation_year||0) <= +filters.yearTo);
   if (filters.vintageAgeMin) notes = notes.filter(n => (n.vintage_age||0) >= +filters.vintageAgeMin);
+  if (filters.dateFrom) notes = notes.filter(n => (n.date||'').slice(0,10) >= filters.dateFrom);
+  if (filters.dateTo)   notes = notes.filter(n => (n.date||'').slice(0,10) <= filters.dateTo);
   if (filters.minScore)     notes = notes.filter(n => avgScore(n) >= +filters.minScore);
   if (filters.caskStrength) notes = notes.filter(n => parseFloat(n.abv) >= 50);
   if (filters.ibOnly)       notes = notes.filter(n => isIB(n));
@@ -1862,7 +1877,8 @@ function isIB(n){
 }
 function isFiltersClean(){
   return !filters.q && !filters.distillery && !filters.bottler && !filters.yearFrom
-      && !filters.yearTo && !filters.vintageAgeMin && !filters.minScore
+      && !filters.yearTo && !filters.vintageAgeMin && !filters.dateFrom && !filters.dateTo
+      && !filters.minScore
       && !filters.caskStrength && !filters.ibOnly;
 }
 
@@ -1922,7 +1938,7 @@ function cardHTML(n,isL){
     '<div class="card-distillery">'+esc(n.distillery||'')+'</div></div>'+
     '<div class="card-date">'+fmtDate(n.date)+'</div></div>'+
     '<div class="card-meta">'+tags.join('')+'</div>'+sHTML+
-    (n.nose?'<div class="card-nose"><strong>NOSE\t</strong>'+esc(n.nose)+'</div>':'')+
+    (n.nose?'<div class="card-nose"><strong>\u95fb\u9999\t</strong>'+esc(n.nose)+'</div>':'')+
     (n.aftertaste?'<div class="card-aftertaste"><strong>\u4f59\u97f5\t</strong>'+esc(n.aftertaste)+'</div>':'')+
     '<div class="card-actions"><button class="btn-edit" data-id="'+n.id+'">\u7f16\u8f91</button>'+
     '<button class="btn-delete" data-id="'+n.id+'">\u5220\u9664</button></div></div>';
@@ -1939,7 +1955,7 @@ function renderPagination(){
     var disNext = currentPage === p  ? ' disabled' : '';
     el.innerHTML =
       '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')"' + disPrev + '>\u2039</button>' +
-      '<span class="page-btn" style="pointer-events:none;font-weight:600;color:var(--accent);min-width:auto;padding:0 14px">' + currentPage + ' / ' + p + '</span>' +
+      '<span class="page-jump-wrap"><input type="number" class="page-jump" min="1" max="' + p + '" value="' + currentPage + '" aria-label="\u8df3\u8f6c\u9875\u7801"><span class="page-total">/ ' + p + '</span></span>' +
       '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')"' + disNext + '>\u203A</button>';
     return;
   }
@@ -1950,11 +1966,29 @@ function renderPagination(){
   var h = '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')"' + d1 + '>‹</button>';
   var range=pageRange(currentPage,p); var prev=null;
   for(var x of range){if(prev!==null&&x-prev>1)h+='<span class="page-btn" style="pointer-events:none">&hellip;</span>';var ac=x===currentPage?' active':'';h+='<button class="page-btn'+ac+'" onclick="goPage('+x+')">'+x+'</button>';prev=x;}
+  h += '<span class="page-jump-wrap"><input type="number" class="page-jump" min="1" max="' + p + '" value="' + currentPage + '" aria-label="\u8df3\u8f6c\u9875\u7801"><span class="page-total">/ ' + p + ' \u9875</span></span>';
   h += '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')"' + d2 + '>›</button>';
   el.innerHTML = h;
 }
 function pageRange(cur,t){if(t<=7)return Array.from({length:t},(_,i)=>i+1);return[...new Set([1,t,cur,cur-1,cur+1].filter(p=>p>=1&&p<=t))].sort((a,b)=>a-b);}
 function goPage(p){const pages=Math.ceil(filtered.length/PAGE_SIZE);if(p<1||p>pages)return;currentPage=p;renderCards();renderPagination();window.scrollTo({top:0,behavior:'smooth'});}
+/* 跳页输入框：超出范围自动收敛到边界 */
+function jumpToPage(inp){
+  const pages=Math.ceil(filtered.length/PAGE_SIZE);
+  let v=parseInt(inp.value,10);
+  if(isNaN(v)){ inp.value=currentPage; return; }
+  v=Math.min(Math.max(v,1),pages);
+  inp.value=v;
+  if(v===currentPage) return;
+  currentPage=v; renderCards(); renderPagination();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('pagination').addEventListener('keydown', e=>{
+  if(e.key==='Enter' && e.target.classList.contains('page-jump')){ e.target.blur(); jumpToPage(e.target); }
+});
+document.getElementById('pagination').addEventListener('change', e=>{
+  if(e.target.classList.contains('page-jump')) jumpToPage(e.target);
+});
 
 // ============================================================
 // CRUD — each action immediately pushes to GitHub
@@ -2368,7 +2402,7 @@ document.getElementById('filter-year-to').addEventListener('input', function(){
 document.querySelectorAll('.stat-card.clickable').forEach(function(card){
   card.addEventListener('click', function(){
     const k=card.getAttribute('data-stat');
-    if(k==='all'){ const r=document.getElementById('btn-clear-filter'); if(r){ r.click(); return; } filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',minScore:0,caskStrength:false,ibOnly:false}; currentPage=1; refresh(); return; }
+    if(k==='all'){ const r=document.getElementById('btn-clear-filter'); if(r){ r.click(); return; } filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',dateFrom:'',dateTo:'',minScore:0,caskStrength:false,ibOnly:false}; currentPage=1; refresh(); return; }
     if(k==='age'){
       const btn=document.querySelector('[data-sort="age-desc"]');
       if(btn){ btn.click(); return; }
@@ -2383,10 +2417,17 @@ document.querySelectorAll('.stat-card.clickable').forEach(function(card){
 document.getElementById('filter-vintage-age-min').addEventListener('input', function(){
   filters.vintageAgeMin=this.value; currentPage=1; refresh();
 });
+
+document.getElementById('filter-date-from').addEventListener('change', function(){
+  filters.dateFrom=this.value; currentPage=1; refresh();
+});
+document.getElementById('filter-date-to').addEventListener('change', function(){
+  filters.dateTo=this.value; currentPage=1; refresh();
+});
 document.getElementById('btn-clear-filter').addEventListener('click', ()=>{
-  filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',minScore:0,caskStrength:false,ibOnly:false};
+  filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',dateFrom:'',dateTo:'',minScore:0,caskStrength:false,ibOnly:false};
   document.getElementById('search-input').value='';
-  ['filter-distillery','filter-bottler','filter-year-from','filter-year-to','filter-vintage-age-min'].forEach(i=>document.getElementById(i).value='');
+  ['filter-distillery','filter-bottler','filter-year-from','filter-year-to','filter-vintage-age-min','filter-date-from','filter-date-to'].forEach(i=>document.getElementById(i).value='');
   currentPage=1; refresh();
 });
 
