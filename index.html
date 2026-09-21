@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-09-21-14:20 -->
+<!-- VERSION: 2026-09-21-18:55 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -15,8 +15,8 @@
     --border: #e8e2d9;
     --border-light: #f0ece5;
     --text: #1a1614;
-    --text-muted: #7a6f65;
-    --text-light: #b0a89e;
+    --text-muted: #6b6057;
+    --text-light: #7a6f65;
     --accent: #8b4513;
     --accent-light: #c06030;
     --accent-bg: #fdf0e8;
@@ -39,7 +39,7 @@
     --border-light: #332e32;
     --text: #ede8e4;
     --text-muted: #9a8f88;
-    --text-light: #6b6260;
+    --text-light: #8a8079;
     --accent: #d4943a;
     --accent-light: #e6a854;
     --accent-bg: #3a2e24;
@@ -58,7 +58,7 @@
   }
   [data-theme="dark"] .btn-cancel { background: #3a3538; color: #ede8e4; }
   [data-theme="dark"] .toast { background: #242024; color: #ede8e4; }
-  [data-theme="dark"] .empty-state { color: #6b6260; }
+  [data-theme="dark"] .empty-state { color: var(--text-light); }
   [data-theme="dark"] .loading-spinner { border-color: #3a3538; border-top-color: var(--accent); }
   [data-theme="dark"] .score-display { color: var(--text-muted); }
   [data-theme="dark"] .version-badge { background: var(--surface2); }
@@ -76,6 +76,31 @@
     background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
   }
 
+  /* ===== Focus & Active states (a11y) ===== */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  /* 按下反馈：轻微下沉 + 亮度压暗，让点击有实感 */
+  button:not(:disabled):active,
+  .btn-header:active, .page-btn:not(:disabled):active, .sort-btn:active,
+  .btn-edit:active, .btn-delete:active, .btn-theme:active, .sync-badge:active {
+    transform: translateY(1px);
+    filter: brightness(0.94);
+  }
+
+  /* ===== Reduced motion 降级 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* ===== Header ===== */
   header {
     background: var(--surface); border-bottom: 1px solid var(--border);
@@ -86,7 +111,7 @@
   .logo-icon { font-size: 26px; }
   .logo h1 { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 0.5px; }
   .logo span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
-  .version-badge { font-size: 11px; color: var(--text-light); background: var(--surface2); padding: 2px 7px; border-radius: 10px; margin-left: 8px; }
+  .version-badge { font-size:12px; color: var(--text-light); background: var(--surface2); padding: 2px 7px; border-radius: 10px; margin-left: 8px; }
   .header-right { display:flex; gap:10px; align-items:center; }
 
   #btn-add {
@@ -98,7 +123,7 @@
 
   .btn-header {
     padding: 7px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 12px; background: var(--surface); color: var(--text-muted);
+    font-size:13px; background: var(--surface); color: var(--text-muted);
     cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.15s;
   }
   .btn-header:hover { border-color: var(--accent); color: var(--accent); }
@@ -110,7 +135,7 @@
   .conn-banner {
     border: 1px solid; border-radius: var(--radius);
     padding: 10px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;
-    font-size: 13px;
+    font-size:14px;
   }
   .conn-banner.connected {
     background: linear-gradient(135deg,#f0fdf4,#f0fdf4); border-color: #bbf7d0; color: #166534;
@@ -130,7 +155,7 @@
   }
   .conn-dot.connected { background: var(--green); animation:none; }
   .sync-badge {
-    font-size: 11px; padding: 3px 9px; border-radius: 10px; cursor: pointer;
+    font-size:12px; padding: 3px 9px; border-radius: 10px; cursor: pointer;
     border: 1px solid var(--border); white-space: nowrap; user-select: none;
   }
   .sync-badge.dirty { background: var(--gold-light); color: var(--gold); border-color: var(--gold); }
@@ -191,7 +216,7 @@
   .view-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow); }
 
   /* ===== Results Info ===== */
-  .results-info { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+  .results-info { font-size:14px; color: var(--text-muted); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
 
   /* ===== Cards Grid ===== */
   #cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
@@ -210,11 +235,11 @@
 
   .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 10px; }
   .card-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.4; flex: 1; background: var(--accent-bg); padding: 4px 10px; border-radius: var(--radius-sm); display: inline-block; }
-  .card-distillery { font-size: 13px; color: var(--accent); font-weight: 600; }
-  .card-date { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+  .card-distillery { font-size:14px; color: var(--accent); font-weight: 600; }
+  .card-date { font-size:12px; color: var(--text-light); white-space: nowrap; }
 
   .card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .tag { padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .tag { padding: 2px 8px; border-radius: 20px; font-size:12px; font-weight: 600; letter-spacing: 0.3px; }
   .tag-age { background: var(--gold-light); color: var(--gold); }
   .tag-abv { background: var(--accent-bg); color: var(--accent); }
   .tag-wb { background: var(--surface2); color: var(--text-muted); }
@@ -223,20 +248,26 @@
   .card-scores { display: flex; gap: 16px; background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 10px; }
   .score-item { text-align: center; flex: 1; }
   .score-val { font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1; }
-  .score-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .score-lbl { font-size:12px; color: var(--text-muted); margin-top: 2px; }
 
-  .card-nose { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
-  .card-nose strong { color: var(--text); font-size: 11px; letter-spacing: 0.5px; }
-  .card-aftertaste { font-size: 12px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
-  .card-aftertaste strong { color: var(--text); font-size: 11px; }
+  .card-nose { font-size:14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
+  .card-nose strong { color: var(--text); font-size:12px; letter-spacing: 0.5px; }
+  .card-aftertaste { font-size:14px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-height: 36px; }
+  .card-aftertaste strong { color: var(--text); font-size:12px; }
 
   .card-actions {
     display: flex; gap: 8px; margin-top: 12px; padding-top: 12px;
-    border-top: 1px solid var(--border-light); opacity: 0; transition: opacity 0.15s;
+    border-top: 1px solid var(--border-light); opacity: 1; transition: opacity 0.15s;
   }
-  .note-card:hover .card-actions { opacity: 1; }
+  /* 默认常显；仅在支持精确 hover 的设备上才做 hover 显隐，
+     避免触屏设备（无 hover）上编辑/删除按钮永久不可见 */
+  @media (hover: hover) and (pointer: fine) {
+    .card-actions { opacity: 0; }
+    .note-card:hover .card-actions,
+    .note-card:focus-within .card-actions { opacity: 1; }
+  }
   .btn-edit, .btn-delete {
-    padding: 5px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+    padding: 5px 14px; border-radius: var(--radius-sm); font-size:13px; font-weight: 600;
     cursor: pointer; border: 1px solid; transition: all 0.15s;
   }
   .btn-edit { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
@@ -250,11 +281,11 @@
   padding: 5px 16px; gap: 8px;
 }
 .list-name {
-  flex: 1; min-width: 0; font-size: 13px; font-weight: normal;
+  flex: 1; min-width: 0; font-size:14px; font-weight: normal;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   color: var(--text);
 }
-#cards-grid.list-view .card-title { font-size: 13px; background: none; padding: 0; border-radius: 0; }
+#cards-grid.list-view .card-title { font-size:14px; background: none; padding: 0; border-radius: 0; }
 #cards-grid.list-view .card-actions {
   margin-top: 0; padding-top: 0; border-top: none; opacity: 1;
   gap: 4px; flex-shrink: 0; background: transparent;
@@ -266,13 +297,12 @@
 }
 #cards-grid.list-view .btn-edit { background: transparent; border-color: var(--accent); }
 #cards-grid.list-view .btn-delete { background: transparent; border-color: var(--border); margin-left: 0; }
-}
 
   /* ===== Empty State ===== */
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); grid-column: 1/-1; }
   .empty-icon { font-size: 48px; margin-bottom: 12px; }
   .empty-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-  .empty-sub { font-size: 13px; }
+  .empty-sub { font-size:14px; }
 
   /* ===== Modal ===== */
   .modal-overlay {
@@ -302,7 +332,7 @@
     background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px;
   }
   .form-section-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size:12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
     color: var(--text-muted); margin-bottom: 12px;
   }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -311,7 +341,7 @@
   .form-group label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
   .form-group input, .form-group textarea, .form-group select {
     padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 13px; color: var(--text); background: var(--surface);
+    font-size:14px; color: var(--text); background: var(--surface);
     outline: none; transition: border-color 0.15s; font-family: inherit;
   }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
@@ -324,7 +354,7 @@
   .score-display { min-width: 30px; text-align: center; font-weight: 700; color: var(--accent); }
 
   /* Input length hint */
-  .input-hint { font-size: 10px; color: var(--text-light); text-align: right; margin-top: 2px; }
+  .input-hint { font-size:12px; color: var(--text-light); text-align: right; margin-top: 2px; }
   .input-hint.warn { color: var(--red); }
 
   .modal-footer {
@@ -354,7 +384,7 @@
   }
   .confirm-icon { font-size: 36px; margin-bottom: 10px; }
   .confirm-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-  .confirm-msg { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .confirm-msg { font-size:14px; color: var(--text-muted); margin-bottom: 20px; }
   .confirm-actions { display: flex; gap: 10px; justify-content: center; }
   .btn-confirm-cancel {
     padding: 8px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -370,20 +400,20 @@
     background: var(--surface2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px;
   }
   .detail-section-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size:12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
     color: var(--text-muted); margin-bottom: 10px;
   }
   .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
   .detail-field { display: flex; flex-direction: column; gap: 2px; }
   .detail-field.full { grid-column: 1 / -1; }
-  .detail-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-  .detail-value { font-size: 13px; color: var(--text); word-break: break-word; }
+  .detail-label { font-size:12px; color: var(--text-muted); font-weight: 600; }
+  .detail-value { font-size:14px; color: var(--text); word-break: break-word; }
   .detail-value.empty { color: var(--text-light); font-style: italic; }
   .detail-scores { display: flex; gap: 16px; }
   .detail-score-item { text-align: center; flex: 1; background: var(--surface); border-radius: var(--radius-sm); padding: 10px 8px; }
   .detail-score-val { font-size: 20px; font-weight: 700; color: var(--accent); }
-  .detail-score-lbl { font-size: 11px; color: var(--text-muted); }
-  .detail-avg { text-align: center; margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+  .detail-score-lbl { font-size:12px; color: var(--text-muted); }
+  .detail-avg { text-align: center; margin-top: 8px; font-size:14px; color: var(--text-muted); }
   .detail-avg-val { font-size: 16px; font-weight: 700; color: var(--gold); }
 
   /* ===== Image Upload ===== */
@@ -392,15 +422,15 @@
     display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
   }
   .img-upload-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
     color: var(--text-muted);
   }
-  .img-upload-hint { font-size: 10px; color: var(--text-light); }
+  .img-upload-hint { font-size:12px; color: var(--text-light); }
   .img-upload-btn {
     display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px;
     border: 2px dashed var(--border); border-radius: var(--radius);
     background: var(--surface2); color: var(--text-muted);
-    font-size: 13px; cursor: pointer; transition: all 0.15s;
+    font-size:13px; cursor: pointer; transition: all 0.15s;
   }
   .img-upload-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
   #f-images { display: none; }
@@ -415,7 +445,7 @@
   .img-preview-remove {
     position: absolute; top: 2px; right: 2px; width: 20px; height: 20px;
     background: rgba(200,50,50,0.85); color: white; border: none; border-radius: 50%;
-    font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size:13px; cursor: pointer; display: flex; align-items: center; justify-content: center;
     line-height: 1; padding: 0;
   }
   .img-preview-remove:hover { background: var(--red); }
@@ -448,7 +478,7 @@
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
     background: #1a1614; color: white; padding: 10px 20px; border-radius: 20px;
-    font-size: 13px; font-weight: 500; z-index: 2000; transition: transform 0.25s ease;
+    font-size:14px; font-weight: 500; z-index: 2000; transition: transform 0.25s ease;
     pointer-events: none; white-space: nowrap;
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
@@ -481,14 +511,14 @@
     header { padding: 10px 14px; gap: 6px; flex-wrap: wrap; }
     .logo { gap: 6px; }
     .logo h1 { font-size: 15px; }
-    .logo span { font-size: 11px; display: none; }          /* hide "697条记录" */
+    .logo span { font-size:12px; display: none; }          /* hide "697条记录" */
     .version-badge { display: none; }                       /* hide version badge */
 
     #btn-add {
-      padding: 8px 12px; font-size: 13px;
+      padding: 8px 12px; font-size:13px;
     }
     .btn-header {
-      padding: 7px 10px; font-size: 11px;
+      padding: 7px 10px; font-size:13px;
     }
     .btn-header span, #btn-add span { display: none; }      /* hide text labels */
     .btn-header::after { content: '⚙'; font-size: 16px; }
@@ -499,7 +529,7 @@
     .stats-bar { gap: 8px; margin-bottom: 14px; }
     .stat-card { padding: 10px 12px; min-width: 0; }
     .stat-num { font-size: 20px; }
-    .stat-label { font-size: 11px; }
+    .stat-label { font-size:12px; }
 
     /* --- Connection Banner --- */
     .conn-banner { padding: 8px 12px; font-size: 12px; flex-direction: column; gap: 4px; text-align: center; }
@@ -508,8 +538,8 @@
     .toolbar { padding: 12px 14px; margin-bottom: 14px; }
     .search-row { flex-wrap: wrap; }
     .search-wrap { min-width: 0; flex: 1; }
-    #search-input { padding: 8px 10px 8px 34px; font-size: 13px; }
-    #search-input::placeholder { font-size: 12px; }
+    #search-input { padding: 8px 10px 8px 34px; font-size:14px; }
+    #search-input::placeholder { font-size:12px; }
 
     /* --- Filter Row: collapse into toggle panel --- */
     .filter-row {
@@ -529,7 +559,7 @@
 
     /* Sort buttons wrap on mobile */
     .sort-btns { width: 100%; margin-left: 0 !important; flex-wrap: wrap; justify-content: center; }
-    .sort-btn { font-size: 12px; padding: 6px 10px; flex: 1 1 auto; text-align: center; min-width: 0; }
+    .sort-btn { font-size:12px; padding: 6px 10px; flex: 1 1 auto; text-align: center; min-width: 0; }
     #btn-clear-filter { width: 100%; text-align: center; margin-top: 4px; }
 
     /* Mobile filter toggle button */
@@ -538,7 +568,7 @@
       align-items: center; justify-content: center; gap: 4px;
       width: 100%; padding: 9px; border: 1px solid var(--border);
       border-radius: var(--radius-sm); background: var(--bg);
-      color: var(--text-muted); font-size: 13px; cursor: pointer;
+      color: var(--text-muted); font-size:14px; cursor: pointer;
       margin-top: 8px; transition: all 0.15s;
     }
     .mobile-filter-toggle:hover { border-color: var(--accent); color: var(--accent); }
@@ -551,30 +581,30 @@
     /* Card typography smaller on mobile */
     .note-card { padding: 14px 16px; }
     .card-title { font-size: 14px; }
-    .card-distillery { font-size: 12px; }
-    .card-date { font-size: 10px; }
-    .tag { font-size: 10px; padding: 2px 6px; }
+    .card-distillery { font-size:12px; }
+    .card-date { font-size:12px; }
+    .tag { font-size:12px; padding: 2px 6px; }
     .score-val { font-size: 16px; }
-    .score-lbl { font-size: 10px; }
-    .card-nose, .card-aftertaste { font-size: 11px; }
+    .score-lbl { font-size:12px; }
+    .card-nose, .card-aftertaste { font-size:14px; }
 
     /* Card actions: always visible + icon-only on mobile */
     .card-actions { opacity: 1 !important; margin-top: 10px; padding-top: 10px; gap: 6px; }
-    .btn-edit, .btn-delete { padding: 6px 12px; font-size: 11px; }
+    .btn-edit, .btn-delete { padding: 6px 12px; font-size:13px; }
     .btn-edit::before { content: '✏️ '; font-size: 12px; }
     .btn-delete::before { content: '🗑️ '; font-size: 12px; }
 
     /* List view mobile tweaks */
     #cards-grid.list-view .note-card { padding: 4px 12px; gap: 6px; }
     #cards-grid.list-view .btn-edit,
-    #cards-grid.list-view .btn-delete { width: 26px; height: 26px; font-size: 13px; }
+    #cards-grid.list-view .btn-delete { width: 26px; height: 26px; font-size:13px; }
 
     /* --- Results info --- */
-    .results-info { font-size: 12px; flex-wrap: wrap; gap: 4px; }
+    .results-info { font-size:14px; flex-wrap: wrap; gap: 4px; }
 
     /* --- Pagination: simplified --- */
     .pagination { gap: 4px; margin-top: 18px; }
-    .page-btn { min-width: 36px; height: 36px; font-size: 13px; }
+    .page-btn { min-width: 36px; height: 36px; font-size:13px; }
     /* Hide individual page numbers on small screens, keep prev/next */
     .page-btn:not(:first-child):not(:last-child) { display: none; }
 
@@ -597,7 +627,7 @@
 
     /* Image upload mobile */
     .img-preview-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
-    .img-upload-btn { padding: 8px 14px; font-size: 12px; }
+    .img-upload-btn { padding: 8px 14px; font-size:12px; }
     .detail-images { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
     /* --- Confirm dialog --- */
     .confirm-box { margin: 0 24px; padding: 20px 24px; }
@@ -611,7 +641,7 @@
     .stat-card { padding: 8px 10px; }
     .stat-num { font-size: 18px; }
     .header-right { gap: 6px; }
-    #btn-add { padding: 7px 10px; font-size: 12px; }
+    #btn-add { padding: 7px 10px; font-size:13px; }
     .btn-header { padding: 6px 8px; }
   }
 
@@ -623,7 +653,7 @@
     .detail-grid { grid-template-columns: 1fr !important; gap: 6px 12px; }
     .detail-score-item { padding: 8px 6px; }
     .detail-score-val { font-size: 16px; }
-    .detail-score-lbl { font-size: 10px; }
+    .detail-score-lbl { font-size:12px; }
     #detail-body { padding: 12px 16px 16px; }
     #detail-overlay .modal-footer { padding: 10px 16px; }
     #detail-overlay .modal-header { padding: 12px 16px 10px; }
@@ -637,7 +667,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-14:20</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-18:55</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -719,7 +749,7 @@
     </div>
     <div class="modal-body">
       <div class="form-section">
-        <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;">
+        <div style="font-size:14px;color:var(--text-muted);margin-bottom:12px;line-height:1.7;">
           页面通过 GitHub API 直接读写仓库中的 <code>whisky_notes.json</code>。
           Token 仅保存在当前浏览器的 localStorage 中，不会提交到仓库。
         </div>
@@ -728,14 +758,14 @@
             <label>Personal Access Token (PAT)</label>
             <input type="password" id="set-token" placeholder="ghp_xxxxxxxxxxxx"
               style="font-family:monospace;font-size:12px;">
-            <span style="font-size:11px;color:var(--text-light);margin-top:2px;">
+            <span style="font-size:12px;color:var(--text-light);margin-top:2px;">
               需要 <code>repo</code> 权限。<a href="https://github.com/settings/tokens/new?scopes=repo&description=whisky-notes" target="_blank" rel="noopener">点此生成 →</a>
             </span>
           </div>
           <div class="form-group full">
             <label>仓库地址</label>
             <input type="text" id="set-repo" placeholder="szligen/whisky-notes">
-            <span style="font-size:11px;color:var(--text-light);margin-top:2px;">格式：owner/repo-name</span>
+            <span style="font-size:12px;color:var(--text-light);margin-top:2px;">格式：owner/repo-name</span>
           </div>
           <div class="form-group full">
             <label>分支 (默认 main)</label>
