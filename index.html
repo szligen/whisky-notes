@@ -700,6 +700,58 @@
     #detail-overlay .modal-footer { padding: 10px 16px; }
     #detail-overlay .modal-header { padding: 12px 16px 10px; }
   }
+
+  /* ===== Flavor Wheel ===== */
+  .hidden { display: none !important; }
+  .wheel-wrap { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding:16px; }
+  .wheel-grid { display:grid; grid-template-columns: 360px 1fr; gap:20px; align-items:start; }
+  @media (max-width:900px){ .wheel-grid{ grid-template-columns:1fr; } }
+  .wheel-head { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .wheel-head h2 { font-size:16px; }
+  .wheel-sub { color:var(--text-muted); font-size:12px; }
+  .wheel-svg { width:100%; display:block; }
+  .wseg { cursor:pointer; transition:opacity .15s; stroke:var(--surface); stroke-width:2; }
+  .wseg:hover { opacity:.84; }
+  .wseg.on { stroke:var(--text); stroke-width:3; }
+  .wlegend { display:flex; flex-wrap:wrap; gap:4px 8px; margin-top:12px; }
+  .wlg { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-muted); cursor:pointer; padding:3px 6px; border-radius:5px; }
+  .wlg:hover { background:var(--surface2); }
+  .wlg i { width:10px; height:10px; border-radius:3px; display:inline-block; flex:none; }
+  .wlg b { color:var(--text); font-weight:600; }
+  .wlg.on { color:var(--text); background:var(--surface2); font-weight:600; }
+  .wcrumb { font-size:13px; color:var(--text-muted); margin-bottom:10px; }
+  .wcrumb a { color:var(--accent); cursor:pointer; text-decoration:none; }
+  .wcrumb a:hover { text-decoration:underline; }
+  .wtip { background:var(--surface2); border-left:3px solid var(--olive); border-radius:var(--radius-sm); padding:9px 12px; font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.6; }
+  .wtip b { color:var(--text); }
+  .wrow { display:flex; align-items:baseline; gap:8px; padding:7px 8px; border-radius:6px; cursor:pointer; font-size:14px; }
+  .wrow:hover { background:var(--surface2); }
+  .wname { font-weight:600; min-width:88px; }
+  .wfreq { color:var(--text-muted); font-size:12px; font-variant-numeric:tabular-nums; }
+  .wdelta { font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .wup { color:var(--green); }
+  .wdn { color:var(--info); }
+  .wfp { color:var(--text-muted); font-size:11px; margin-left:auto; text-align:right; }
+  .wtable { width:100%; border-collapse:collapse; font-size:13px; }
+  .wtable td { padding:6px 8px; border-bottom:1px solid var(--border-light); }
+  .wtable tr { cursor:pointer; }
+  .wtable tr:hover { background:var(--surface2); }
+  .wnm { font-weight:600; }
+  .wmeta { color:var(--text-muted); font-size:12px; }
+  .wsc { font-weight:700; font-variant-numeric:tabular-nums; }
+  .wchip { display:inline-block; background:var(--surface2); border:1px solid var(--border); border-radius:999px; padding:2px 10px; margin:2px 5px 2px 0; font-size:12px; }
+  .wchip b { color:var(--text); }
+  .wchip span { color:var(--text-muted); }
+  .wunknown { margin-top:16px; border-top:1px solid var(--border); padding-top:12px; }
+  .wunknown > summary { cursor:pointer; font-size:13px; color:var(--text-muted); }
+  .wunknown > summary:hover { color:var(--text); }
+  .wun-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .wun { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 8px; font-size:12px; color:var(--text-muted); }
+  .wun b { color:var(--text); font-variant-numeric:tabular-nums; }
+  .wbtn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:4px 10px; font-size:12px; cursor:pointer; }
+  .wbtn:hover { border-color:var(--accent-light); }
+  .scrollbox { max-height:520px; overflow:auto; }
+  .wtag { font-size:11px; padding:1px 6px; border-radius:3px; background:var(--olive-bg); color:var(--olive); border:1px solid var(--olive-border); margin-left:6px; }
   </style>
 </head>
 <body data-page-node-id="rYVRabBDNZoVIpfMyZ580D">
@@ -709,7 +761,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-20:35</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:20</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -751,6 +803,7 @@
       <div class="view-toggle" data-page-node-id="hNpuh4aPR5ddj2Lm2LdgNU">
         <button class="view-btn active" id="view-grid" title="卡片视图" data-page-node-id="HY1TQb6FegZk8nTeua6w9Q">⊞</button>
         <button class="view-btn" id="view-list" title="列表视图" data-page-node-id="gHkMZemkVKipuyYonDsU5j">≡</button>
+        <button class="view-btn" id="view-wheel" title="风味轮视图" data-page-node-id="Ww33FlavorWheelBtn01">◍</button>
       </div>
     </div>
     <div class="filter-row" id="filter-row" data-page-node-id="tXW4NCIpCvEp2kPzd2w4yA">
@@ -777,6 +830,9 @@
 
   <!-- Cards -->
   <div id="cards-grid" data-page-node-id="hO7IZkgJkOUbVKnYQChcJw"></div>
+
+  <!-- Flavor Wheel -->
+  <div id="wheel-view" class="hidden" data-page-node-id="Ww33FlavorWheelRoot"></div>
 
   <!-- Pagination -->
   <div class="pagination" id="pagination" data-page-node-id="yRCQBuDAw4PjAnbG8j3DWG"></div>
@@ -1425,7 +1481,9 @@ function distSortCmp(a, b) {
 // Render
 // ============================================================
 function refresh(){
-  applyFiltersAndSort(); renderStats(); renderFilterOptions(); renderCards(); renderPagination();
+  applyFiltersAndSort(); renderStats(); renderFilterOptions();
+  if (viewMode==='wheel'){ renderWheelView(); }
+  else { renderCards(); renderPagination(); }
 }
 
 function renderStats(){
@@ -1469,6 +1527,328 @@ function renderStats(){
 
   document.getElementById('header-count').textContent=N.length+' \u6761\u8bb0\u5f55';
 }
+
+// ============================================================
+// 风味轮 Flavor Wheel —— 运行时聚合，随笔记实时更新
+// 词表来源：flavor_map.json（用户校准 187 词 / 8 类）
+// 匹配策略（四级兜底）：
+//   1) 整短语精确命中        —— 最可靠
+//   2) 子串命中 + 最长优先   —— "很重的泥煤" → 泥煤；"奶油"只算"奶油"不算"奶"
+//   3) 否定词检测            —— "不太甜" 不算甜
+//   4) 别名表 FV_ALIAS       —— 未校准但常见的写法，标"自动"，随时可转正
+//   5) 以上都不中 → 进"待校准"清单，攒够一批用校准工具批量归类
+// 维护：新词直接加进 FV_WORDS（已校准）或 FV_ALIAS（未校准），刷新即生效。
+// ============================================================
+var FV_CATS = ["果香", "甜香", "雪莉干邑", "泥煤烟熏", "木质陈年", "花香", "高级风味", "谷物"];
+var FV_WORDS = {"奶油":"甜香","脂粉":"木质陈年","黄色水果":"木质陈年","雪莉":"雪莉干邑","酸水果":"木质陈年","黑巧":"雪莉干邑","蜜糖":"甜香","香料":"甜香","青苹果":"果香","老味":"高级风味","干邑":"雪莉干邑","杨桃":"果香","花果香":"花香","果核":"果香","脂粉味":"木质陈年","桃味":"果香","水果硬糖":"甜香","芒果":"果香","木质":"木质陈年","皂味":"高级风味","蜜香":"甜香","麦芽":"谷物","深色水果":"果香","熟苹果":"果香","深色果脯":"雪莉干邑","甜食":"甜香","奶油瓜子":"甜香","烟灰":"泥煤烟熏","花香":"花香","红枣":"雪莉干邑","梨":"果香","药水":"泥煤烟熏","油桃":"果香","糖霜":"甜香","果干":"雪莉干邑","红茶":"高级风味","焦糖":"甜香","菠萝":"果香","白花":"花香","酸雪莉":"雪莉干邑","葡萄皮":"雪莉干邑","烟熏":"泥煤烟熏","果脯":"雪莉干邑","红糖":"甜香","酸木头":"木质陈年","淡泥煤":"泥煤烟熏","花蜜":"甜香","根茎":"泥煤烟熏","红色水果":"果香","泥煤":"泥煤烟熏","桃":"果香","旧书":"高级风味","哈密瓜":"果香","百香果":"果香","热带水果":"果香","奶油蛋糕":"甜香","干花":"花香","奶粉":"甜香","水果软糖":"甜香","木质调":"木质陈年","蜜枣":"雪莉干邑","黄桃":"果香","烟":"泥煤烟熏","深色果皮":"雪莉干邑","瓜子":"甜香","酱香雪莉":"雪莉干邑","酸葡萄":"果香","干果":"雪莉干邑","柑橘":"果香","甜":"甜香","樱桃":"果香","葡萄干":"雪莉干邑","梨香":"果香","巧克力":"雪莉干邑","威化饼":"甜香","酸树枝":"木质陈年","酸梨":"果香","果香":"果香","话梅":"果香","香蕉":"果香","柠檬":"果香","白葡萄":"果香","烟尘":"泥煤烟熏","枣味":"雪莉干邑","蜜霜":"甜香","杏仁":"雪莉干邑","矿物质":"泥煤烟熏","雪莉味正":"雪莉干邑","盐渍柠檬":"果香","黄果":"果香","波子汽水":"甜香","椰子":"甜香","咸奶油":"甜香","酸苹果":"果香","水蜜桃":"果香","蜜饯":"雪莉干邑","朗姆":"甜香","琵琶":"果香","糖果":"甜香","粉":"甜香","酱味":"高级风味","葡萄":"果香","苹果":"果香","青味":"谷物","麝香":"高级风味","乳酸菌":"谷物","黄色酸水果":"果香","腊肉":"泥煤烟熏","酸浆果":"果香","奶油威化":"甜香","粉香":"甜香","甜水果":"甜香","高密香":"甜香","啤酒":"谷物","密瓜":"果香","茶味":"高级风味","灰烬":"泥煤烟熏","果味":"果香","柴火":"泥煤烟熏","花果":"花香","酱香":"高级风味","蜂蜜":"甜香","梅子":"果香","菊花蜜":"甜香","皮革":"高级风味","重雪莉":"雪莉干邑","火药":"泥煤烟熏","饭焦":"谷物","高蜜":"甜香","海洋":"泥煤烟熏","熟水果":"果香","杏":"果香","花果调":"花香","黄桃罐头":"果香","成熟水果":"果香","坚果":"雪莉干邑","洋梨":"果香","果":"果香","灰尘":"高级风味","谷物波本":"谷物","胡椒":"甜香","梨蜜":"果香","玫瑰花":"花香","深色葡萄":"果香","乌梅":"果香","杏干":"果香","药水泥煤":"泥煤烟熏","奶油饼干":"谷物","焦香泥煤":"泥煤烟熏","一点药水":"泥煤烟熏","果酱":"果香","干树枝":"木质陈年","老味泥煤":"高级风味","茶":"高级风味","菊花":"花香","饭焦味":"谷物","糖浆":"甜香","木头":"木质陈年","枣":"雪莉干邑","燕麦":"谷物","奶":"甜香","甜奶油":"甜香","淡雪莉":"雪莉干邑","植物根茎":"泥煤烟熏","陈味":"高级风味","皂":"高级风味","有桃味":"果香","巧克力威化":"雪莉干邑","胭脂":"木质陈年","雪莉味淡":"雪莉干邑","烟熏味":"泥煤烟熏","麦芽啤酒":"谷物","树莓":"果香","黑巧克力":"雪莉干邑","青草":"谷物","奶油蜜饯":"雪莉干邑","泥煤药水":"泥煤烟熏","肉桂":"甜香","西米露":"甜香","桶味":"雪莉干邑","轻微皂味":"高级风味","谷物":"谷物","酵母":"谷物","乳酸":"谷物","草本":"高级风味","草药":"高级风味","威化":"甜香"};
+var FV_EXC = ["酒精味","浓郁","新酒","复杂","酸","酒精","苦","杂","gas","平衡","柔和","顺滑","干净","圆润","淡颜色"];
+/* 别名表：常见但尚未校准的写法 → 自动归入类目（在界面上标"自动"） */
+var FV_ALIAS = {
+  "泥炭":"泥煤烟熏","泥炭味":"泥煤烟熏","碘酒":"泥煤烟熏","消毒水":"泥煤烟熏",
+  "绷带":"泥煤烟熏","医院":"泥煤烟熏","焦炭":"泥煤烟熏","灰":"泥煤烟熏",
+  "咸":"泥煤烟熏","咸味":"泥煤烟熏","海水":"泥煤烟熏","海盐":"泥煤烟熏","海风":"泥煤烟熏",
+  "黑加仑":"果香","黑醋栗":"果香","醋栗":"果香","蓝莓":"果香","草莓":"果香",
+  "蔓越莓":"果香","橙":"果香","橘子":"果香","柚子":"果香","西柚":"果香",
+  "青柠":"果香","荔枝":"果香","龙眼":"果香","柿":"果香","无花果":"果香",
+  "香草":"甜香","太妃糖":"甜香","布丁":"甜香","枫糖":"甜香","棉花糖":"甜香",
+  "黄油":"甜香","炼乳":"甜香","蛋糕":"甜香","姜":"甜香","丁香":"甜香",
+  "饼干":"谷物","苏打饼":"谷物","麦片":"谷物","玉米":"谷物","面包":"谷物",
+  "面团":"谷物","谷壳":"谷物","糠":"谷物","波本":"谷物","波本桶":"谷物",
+  "薄荷":"高级风味","桉树":"高级风味",
+  "绿茶":"高级风味","普洱":"高级风味","烟草":"高级风味","蘑菇":"高级风味",
+  "干树叶":"木质陈年","树叶":"木质陈年","树枝":"木质陈年","树皮":"木质陈年",
+  "纸箱":"木质陈年","报纸":"木质陈年","衣柜":"木质陈年","檀香":"木质陈年",
+  "玫瑰":"花香","茉莉":"花香","薰衣草":"花香","桂圆":"雪莉干邑","核桃":"雪莉干邑",
+  "栗子":"雪莉干邑","焦糖布丁":"甜香","糖":"甜香","白糖":"甜香","冰糖":"甜香"
+};
+var FV_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
+                 "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
+var FV_SPLIT = /[、,，;；/|｜]+/;
+var FV_NEG  = /没有|不太|不够|缺乏|缺少|没啥|不|无|没/;
+var FV_LIST = [], FV_EXACT = {};
+
+function fvInit(){
+  if (FV_LIST.length) return;
+  Object.keys(FV_WORDS).forEach(function(w){ FV_LIST.push({w:w,c:FV_WORDS[w],a:0}); });
+  Object.keys(FV_ALIAS).forEach(function(w){ FV_LIST.push({w:w,c:FV_ALIAS[w],a:1}); });
+  FV_LIST.sort(function(a,b){ return b.w.length - a.w.length; });
+  FV_LIST.forEach(function(it){ if(!FV_EXACT[it.w]) FV_EXACT[it.w]=it; });
+}
+/* 词前面 3 个字里出现否定词 → 不计（"不太甜"、"没有泥煤"） */
+function fvNegated(ph,i){
+  var pre = ph.slice(Math.max(0,i-3), i);
+  return FV_NEG.test(pre);
+}
+/* 一个短语命中的全部词；剔除被更长命中词包含的短词，避免"奶油"重复计"奶" */
+function fvMatch(ph){
+  var ex = FV_EXACT[ph];
+  if (ex) return [{w:ex.w, c:ex.c, a:ex.a, i:0}];
+  var hits = [], k;
+  for (k=0;k<FV_LIST.length;k++){
+    var it=FV_LIST[k], i=ph.indexOf(it.w);
+    if (i<0) continue;
+    if (fvNegated(ph,i)) continue;
+    hits.push({w:it.w, c:it.c, a:it.a, i:i});
+  }
+  return hits.filter(function(a){
+    return !hits.some(function(b){ return b.w.length>a.w.length && b.w.indexOf(a.w)>=0; });
+  });
+}
+function fvIsExc(ph){
+  for (var k=0;k<FV_EXC.length;k++) if (ph.indexOf(FV_EXC[k])>=0) return true;
+  return false;
+}
+
+var FV_DATA = null, FV_CUR = null, FV_CURW = null;
+
+function computeFlavor(){
+  fvInit();
+  var N = db.notes, n = N.length, j, k;
+  var gsum=0, gcnt=0, dist={};
+  for (j=0;j<n;j++){
+    var s0=avgScore(N[j]); if (s0>0){ gsum+=s0; gcnt++; }
+    var d0=(N[j].distillery||'').trim()||'-'; dist[d0]=(dist[d0]||0)+1;
+  }
+  var gavg = gcnt ? gsum/gcnt : 0;
+  var byWord = {}, unk = {};
+  for (j=0;j<n;j++){
+    var txt = (N[j].nose||'')+'，'+(N[j].aftertaste||'');
+    var ps = txt.split(FV_SPLIT), seen = {};
+    for (var p=0;p<ps.length;p++){
+      var ph = (ps[p]||'').trim();
+      if (!ph || ph.length>14) continue;
+      var hs = fvMatch(ph);
+      if (hs.length){
+        for (k=0;k<hs.length;k++){
+          var w=hs[k].w;
+          if (seen[w]) continue;
+          seen[w]=1;
+          (byWord[w]=byWord[w]||[]).push(j);
+        }
+      } else if (!fvIsExc(ph) && ph.length>=2){
+        unk[ph]=(unk[ph]||0)+1;
+      }
+    }
+  }
+  var out={cats:{}, tot:n, gavg:Math.round(gavg*100)/100, unknown:[], unkTotal:0};
+  FV_CATS.forEach(function(c){ out.cats[c]={notes:0,freq:0,words:[]}; });
+  Object.keys(byWord).forEach(function(w){
+    var idx=byWord[w], cat=FV_WORDS[w]||FV_ALIAS[w], sc=[], dc={};
+    for (k=0;k<idx.length;k++){
+      var s=avgScore(N[idx[k]]); if (s>0) sc.push(s);
+      var d2=(N[idx[k]].distillery||'').trim()||'-'; dc[d2]=(dc[d2]||0)+1;
+    }
+    var a = sc.length ? sc.reduce(function(x,y){return x+y;},0)/sc.length : null;
+    var fp=[];
+    Object.keys(dc).forEach(function(d3){
+      if (dc[d3]<3 || d3==='-') return;
+      fp.push({d:d3, k:dc[d3], lift:Math.round((dc[d3]/idx.length)/(dist[d3]/n)*10)/10});
+    });
+    fp.sort(function(a,b){return b.lift-a.lift;}); fp=fp.slice(0,3);
+    var bots=idx.map(function(i){return {n:N[i], s:avgScore(N[i])};})
+                .sort(function(a,b){return (b.s||0)-(a.s||0);}).slice(0,6)
+                .map(function(o){ var m=o.n; return {id:m.id, nm:m.whisky_name||'(未命名)',
+                  d:m.distillery||'', s:o.s?Math.round(o.s*100)/100:null,
+                  abv:m.abv, age:m.vintage_age, y:(m.date||'').slice(0,10)}; });
+    out.cats[cat].words.push({w:w, f:idx.length, idx:idx,
+      a: a?Math.round(a*100)/100:null,
+      delta: a?Math.round((a-gavg)*100)/100:null,
+      fp:fp, b:bots, alias: FV_ALIAS[w]?1:0});
+  });
+  FV_CATS.forEach(function(c){
+    var ns={};
+    out.cats[c].words.sort(function(a,b){return b.f-a.f;});
+    out.cats[c].words.forEach(function(w){ w.idx.forEach(function(i){ ns[i]=1; }); });
+    out.cats[c].notes=Object.keys(ns).length;
+    out.cats[c].freq=out.cats[c].words.reduce(function(s,w){return s+w.f;},0);
+  });
+  out.unknown=Object.keys(unk).map(function(p){return {p:p,k:unk[p]};})
+                    .sort(function(a,b){return b.k-a.k;}).slice(0,60);
+  out.unkTotal=Object.keys(unk).length;
+  FV_DATA=out;
+  return out;
+}
+
+function fvSeg(D){
+  var total=0; FV_CATS.forEach(function(c){ total+=D.cats[c].notes; });
+  if (!total) total=1;
+  var CX=200, CY=200, R=175, ri=92, ang=-90, out=[];
+  function pt(rr,deg){ var rad=deg*Math.PI/180; return [CX+rr*Math.cos(rad), CY+rr*Math.sin(rad)]; }
+  FV_CATS.forEach(function(c){
+    var sweep=360*D.cats[c].notes/total, a0=ang, a1=ang+sweep;
+    var p0=pt(R,a0), p1=pt(R,a1), p2=pt(ri,a1), p3=pt(ri,a0), la=sweep>180?1:0;
+    out.push('<path class="wseg" data-cat="'+c+'" fill="'+FV_COLORS[c]+'" d="M '
+      +p0[0].toFixed(2)+' '+p0[1].toFixed(2)+' A '+R+' '+R+' 0 '+la+' 1 '
+      +p1[0].toFixed(2)+' '+p1[1].toFixed(2)+' L '+p2[0].toFixed(2)+' '+p2[1].toFixed(2)
+      +' A '+ri+' '+ri+' 0 '+la+' 0 '+p3[0].toFixed(2)+' '+p3[1].toFixed(2)+' Z"/>');
+    var mid=(a0+a1)/2*Math.PI/180, lr=(R+ri)/2;
+    var lx=CX+lr*Math.cos(mid), ly=CY+lr*Math.sin(mid);
+    var pct=100*D.cats[c].notes/total;
+    if (pct>=5){
+      out.push('<text x="'+lx.toFixed(1)+'" y="'+(ly-6).toFixed(1)+'" text-anchor="middle"'
+        +' dominant-baseline="middle" font-size="13" font-weight="700" fill="#fff"'
+        +' pointer-events="none">'+c+'</text>');
+      out.push('<text x="'+lx.toFixed(1)+'" y="'+(ly+10).toFixed(1)+'" text-anchor="middle"'
+        +' dominant-baseline="middle" font-size="11" fill="rgba(255,255,255,.85)"'
+        +' pointer-events="none">'+Math.round(pct)+'%</text>');
+    }
+    ang=a1;
+  });
+  return out.join('');
+}
+
+function renderWheelView(){
+  var D = computeFlavor();
+  var el = document.getElementById('wheel-view');
+  var legend = FV_CATS.map(function(c){
+    return '<span class="wlg" data-cat="'+c+'"><i style="background:'+FV_COLORS[c]+'"></i>'
+      +c+' <b>'+D.cats[c].words.length+'</b>词 <span>'+D.cats[c].notes+'</span>条</span>';
+  }).join('');
+  el.innerHTML =
+    '<div class="wheel-wrap">'
+    + '<div class="wheel-head"><h2>风味轮</h2><span class="wheel-sub">'+D.tot+' 支品鉴记录 · '
+    + Object.keys(FV_WORDS).length+' 个已校准词 + '+Object.keys(FV_ALIAS).length+' 个别名 · '
+    + '扇区按覆盖笔记数 · 全库均分 '+D.gavg+'</span></div>'
+    + '<div class="wheel-grid">'
+    +   '<div><svg class="wheel-svg" viewBox="0 0 400 400">'+fvSeg(D)
+    +     '<circle cx="200" cy="200" r="88" fill="var(--surface)"/>'
+    +     '<text id="fv-c1" x="200" y="192" text-anchor="middle" font-size="15" font-weight="700" fill="var(--text)">'+D.tot+' 支</text>'
+    +     '<text id="fv-c2" x="200" y="212" text-anchor="middle" font-size="12" fill="var(--text-muted)">点扇区查看</text>'
+    +   '</svg><div class="wlegend" id="fv-legend">'+legend+'</div></div>'
+    +   '<div><div class="wcrumb" id="fv-crumb"></div><div id="fv-panel"></div></div>'
+    + '</div>'
+    + fvUnknownHTML(D)
+    + '</div>';
+  el.querySelectorAll('.wseg').forEach(function(s){
+    s.onclick=function(){ FV_CURW ? fvShowWord(FV_CUR, s.dataset.cat) : fvShowCat(s.dataset.cat); };
+    s.onmouseenter=function(){ fvCenter(s.dataset.cat); };
+    s.onmouseleave=function(){ fvCenter(null); };
+  });
+  el.querySelectorAll('.wlg').forEach(function(s){
+    s.onclick=function(){ FV_CURW=null; fvShowCat(s.dataset.cat); };
+  });
+  fvShowHome();
+}
+
+function fvUnknownHTML(D){
+  if (!D.unknown.length) return '';
+  var chips = D.unknown.slice(0,40).map(function(u){
+    return '<span class="wun">'+esc(u.p)+' <b>'+u.k+'</b></span>';
+  }).join('');
+  return '<details class="wunknown"><summary>待校准短语 '+D.unkTotal+' 个（出现 '
+    + D.unknown.reduce(function(s,u){return s+u.k;},0)+' 次，仅列前 40）'
+    + ' —— 词表里还没有它们，攒够一批可用校准工具批量归类</summary>'
+    + '<div class="wun-list">'+chips+'</div>'
+    + '<div style="margin-top:10px"><button class="wbtn" onclick="fvCopyUnknown()">复制待校准清单</button></div>'
+    + '</details>';
+}
+
+function fvCopyUnknown(){
+  var D=FV_DATA||computeFlavor();
+  var txt=D.unknown.map(function(u){return u.p+'\t'+u.k;}).join('\n');
+  var ta=document.createElement('textarea');
+  ta.value=txt; ta.style.position='fixed'; ta.style.top='-1000px';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('已复制 '+D.unknown.length+' 条待校准短语'); }
+  catch(e){ toast('复制失败，请手动选取'); }
+  document.body.removeChild(ta);
+}
+
+function fvCenter(cat){
+  var D=FV_DATA, c1=document.getElementById('fv-c1'), c2=document.getElementById('fv-c2');
+  if (!c1) return;
+  if (cat){ c1.textContent=D.cats[cat].notes+' 条'; c2.textContent=cat; }
+  else if (FV_CUR){ c1.textContent=D.cats[FV_CUR].notes+' 条'; c2.textContent=D.cats[FV_CUR].freq+' 次提及'; }
+  else { c1.textContent=D.tot+' 支'; c2.textContent='点扇区查看'; }
+}
+
+function fvShowHome(){
+  var D=FV_DATA; FV_CUR=null; FV_CURW=null;
+  document.querySelectorAll('#wheel-view .wseg').forEach(function(s){s.classList.remove('on');});
+  document.querySelectorAll('#wheel-view .wlg').forEach(function(s){s.classList.remove('on');});
+  document.getElementById('fv-crumb').innerHTML='<b>全部类目</b>';
+  var h='<div class="wtip">点左侧扇区看该类的风味词，再点词看对应酒款与酒厂指纹。'
+      + '点词右侧「筛」可直接在列表里筛出含该词的酒。<br>数据<b>每次打开本视图时实时重算</b>，新记录即刻反映。</div><table class="wtable">';
+  FV_CATS.slice().sort(function(a,b){return D.cats[b].notes-D.cats[a].notes;}).forEach(function(c){
+    h+='<tr onclick="fvShowCat(\''+c+'\')"><td><span style="display:inline-block;width:10px;height:10px;'
+      +'border-radius:3px;background:'+FV_COLORS[c]+';margin-right:8px"></span><b>'+c+'</b>'
+      +'<div class="wmeta">'+D.cats[c].words.length+' 个词 · 高频：'
+      +D.cats[c].words.slice(0,4).map(function(w){return esc(w.w);}).join('、')+'</div></td>'
+      +'<td style="text-align:right"><b>'+D.cats[c].notes+'</b> 条'
+      +'<div class="wmeta">'+D.cats[c].freq+' 次提及</div></td></tr>';
+  });
+  document.getElementById('fv-panel').innerHTML=h+'</table>';
+}
+
+function fvShowCat(c){
+  var D=FV_DATA; FV_CUR=c; FV_CURW=null; fvCenter(c);
+  document.querySelectorAll('#wheel-view .wseg').forEach(function(s){s.classList.toggle('on',s.dataset.cat===c);});
+  document.querySelectorAll('#wheel-view .wlg').forEach(function(s){s.classList.toggle('on',s.dataset.cat===c);});
+  document.getElementById('fv-crumb').innerHTML='<a onclick="fvShowHome()">全部</a> › <b>'+c+'</b>';
+  var h='<div class="wtip">'+D.cats[c].notes+' 条笔记出现过这一类（占全库 '
+    +Math.round(100*D.cats[c].notes/D.tot)+'%）。「偏离」= 含该词的酒均分 − 全库均分 '+D.gavg+'。</div>'
+    +'<div class="scrollbox">';
+  D.cats[c].words.forEach(function(w){
+    var d=w.delta, cls=d===null?'':(d>=0.05?'wup':(d<=-0.05?'wdn':''));
+    var ds=d===null?'':(d>0?'+'+d.toFixed(2):d.toFixed(2));
+    h+='<div class="wrow" onclick="fvShowWord(\''+c+'\',\''+esc(w.w).replace(/'/g,"\\'")+'\')">'
+      +'<span class="wname">'+esc(w.w)+(w.alias?'<span class="wtag">自动</span>':'')+'</span>'
+      +'<span class="wfreq">'+w.f+' 次</span>'
+      +(ds?'<span class="wdelta '+cls+'">'+ds+'</span>':'')
+      +'<span class="wfp">'+w.fp.map(function(x){return esc(x.d)+' ×'+x.lift;}).join(' · ')+'</span></div>';
+  });
+  document.getElementById('fv-panel').innerHTML=h+'</div>';
+}
+
+function fvShowWord(c,w){
+  var D=FV_DATA, o=null;
+  D.cats[c].words.forEach(function(x){ if(x.w===w) o=x; });
+  if(!o) return;
+  FV_CUR=c; FV_CURW=w;
+  document.getElementById('fv-crumb').innerHTML='<a onclick="fvShowHome()">全部</a> › '
+    +'<a onclick="fvShowCat(\''+c+'\')">'+c+'</a> › <b>'+esc(w)+'</b>';
+  var h='<div class="wtip"><b>'+esc(w)+'</b> 出现在 '+o.f+' 条笔记'
+    +(o.a!==null?('，这些酒均分 <b>'+o.a+'</b>（全库 '+D.gavg+'，偏离 '+(o.delta>0?'+':'')+o.delta+'）'):'')
+    +'。'+(o.fp.length?'下方是该词最偏好的酒厂（× 倍 = 相对全库的偏好强度）。':'')
+    +' <a onclick="fvFilterWord(\''+esc(w).replace(/'/g,"\\'")+'\')">在列表里筛出这 '+o.f+' 支 →</a></div>';
+  if(o.fp.length){
+    h+='<div style="margin-bottom:10px;font-size:13px"><b>酒厂指纹</b><br>'
+      +o.fp.map(function(x){return '<span class="wchip"><b>'+esc(x.d)+'</b> ×'+x.lift
+      +' <span>'+x.k+'支</span></span>';}).join('')+'</div>';
+  }
+  h+='<table class="wtable">';
+  o.b.forEach(function(b){
+    h+='<tr onclick="openDetail(\''+b.id+'\')"><td class="wnm">'+esc(b.nm)
+      +'<div class="wmeta">'+esc(b.d)+(b.age?' · '+b.age+'年':'')+(b.abv?' · '+b.abv+'%':'')+'</div></td>'
+      +'<td style="text-align:right"><span class="wsc">'+(b.s||'—')+'</span>'
+      +'<div class="wmeta">'+b.y+'</div></td></tr>';
+  });
+  document.getElementById('fv-panel').innerHTML=h+'</table>';
+}
+
+/* 点词 → 回到列表视图并筛出含该词的酒 */
+function fvFilterWord(w){
+  filters.q=w;
+  var si=document.getElementById('search-input'); if(si) si.value=w;
+  currentPage=1; setView('grid'); refresh();
+  toast('已筛出含「'+w+'」的记录');
+}
+
+/* 统一视图切换：grid / list / wheel */
+function setView(m){
+  viewMode=m;
+  var cg=document.getElementById('cards-grid'), wv=document.getElementById('wheel-view');
+  cg.classList.toggle('list-view', m==='list');
+  cg.classList.toggle('hidden', m==='wheel');
+  wv.classList.toggle('hidden', m!=='wheel');
+  var pg=document.getElementById('pagination'); if(pg) pg.classList.toggle('hidden', m==='wheel');
+  var ri=document.querySelector('.results-info'); if(ri) ri.classList.toggle('hidden', m==='wheel');
+  var fr=document.getElementById('filter-row'); if(fr) fr.classList.toggle('hidden', m==='wheel');
+  ['grid','list','wheel'].forEach(function(k){
+    var b=document.getElementById('view-'+k); if(b) b.classList.toggle('active', k===m);
+  });
+}
+
 /* 独立装瓶判定：官方装瓶在数据里明确标记为 'OB'，其余非空装瓶商即为 IB */
 function isIB(n){
   const b=(n.bottler||'').trim();
@@ -2013,18 +2393,13 @@ document.querySelectorAll('.sort-btn').forEach(btn=>{
 });
 
 document.getElementById('view-grid').addEventListener('click', function(){
-  viewMode='grid';
-  document.getElementById('cards-grid').classList.remove('list-view');
-  this.classList.add('active');
-  document.getElementById('view-list').classList.remove('active');
-  renderCards();
+  setView('grid'); refresh();
 });
 document.getElementById('view-list').addEventListener('click', function(){
-  viewMode='list';
-  document.getElementById('cards-grid').classList.add('list-view');
-  this.classList.add('active');
-  document.getElementById('view-grid').classList.remove('active');
-  renderCards();
+  setView('list'); refresh();
+});
+document.getElementById('view-wheel').addEventListener('click', function(){
+  setView('wheel'); refresh();
 });
 
 document.addEventListener('keydown', e=>{
