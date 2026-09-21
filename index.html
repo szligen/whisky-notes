@@ -232,32 +232,37 @@
   #search-input:focus { border-color: var(--accent); }
   .filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
   .filter-row select, .filter-row input[type="number"] {
-    padding: 7px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 7px 10px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
     font-size: 13px; background: var(--bg); color: var(--text); outline: none; cursor: pointer; min-width: 110px;
   }
   .filter-row select:focus, .filter-row input:focus { border-color: var(--accent); }
   .sort-btns { display: flex; gap: 6px; margin-left: auto; }
   .sort-btn {
-    padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 13px; background: var(--bg); color: var(--text-muted);
+    padding: 6px 12px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 13px; line-height: 1.3; background: var(--bg); color: var(--text-muted);
     cursor: pointer; transition: all 0.15s;
   }
+  .sort-btn:hover { border-color: var(--accent-light); }
   .sort-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .sort-btn.active:hover { border-color: var(--accent); }
   #btn-clear-filter {
-    padding: 7px 12px; border: none; border-radius: var(--radius-sm);
+    padding: 7px 12px; height: 31px; border: none; border-radius: var(--radius-sm);
     font-size: 13px; background: var(--accent); color: #fff; cursor: pointer;
     font-weight: 500; transition: background 0.15s;
   }
   #btn-clear-filter:hover { background: var(--accent-light); }
   /* ===== Date Filter (button + popover) ===== */
   .date-filter { position: relative; }
+  /* 与 .sort-btn 完全同规格：同底色/同字号/同等高，只额外带图标与箭头 */
   .date-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    background: var(--surface); color: var(--text); font-size: 13px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 12px; height: 31px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text-muted); font-size: 13px; cursor: pointer;
+    font-weight: 400; line-height: 1.3;
     transition: border-color .15s, background .15s, color .15s;
   }
   .date-btn:hover { border-color: var(--accent-light); }
+  .date-btn svg { flex: none; opacity: .85; }
   .date-btn.active {
     border-color: var(--accent); background: var(--accent-bg); color: var(--accent); font-weight: 600;
   }
@@ -646,6 +651,9 @@
     .sort-btns { width: 100%; margin-left: 0 !important; flex-wrap: wrap; justify-content: center; }
     .sort-btn { font-size:12px; padding: 6px 10px; flex: 1 1 auto; text-align: center; min-width: 0; }
     #btn-clear-filter { width: 100%; text-align: center; margin-top: 4px; }
+    .date-filter { width: 100%; }
+    .date-btn { width: 100%; justify-content: center; font-size: 12px; padding: 6px 10px; }
+    .date-pop { left: 0; right: 0; min-width: 0; }
 
     /* Mobile filter toggle button */
     .mobile-filter-toggle {
@@ -827,6 +835,17 @@
   .wmy-head { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); margin-bottom:9px; flex-wrap:wrap; }
   .wmy-actions { margin-left:auto; display:flex; gap:6px; }
   .wun-foot { font-size:12px; color:var(--text-muted); margin-top:10px; }
+  /* 存储位置说明：明确三层数据各自落在哪 */
+  .wstore {
+    margin-top:10px; padding:9px 11px; border:1px solid var(--border-light);
+    border-radius:var(--radius-sm); background:var(--surface2);
+    font-size:12px; color:var(--text-muted); line-height:1.75;
+  }
+  .wstore-row { display:block; }
+  .wstore-row b { color:var(--text); font-weight:600; margin-right:6px; }
+  .wstore-ok b { color:var(--success); }
+  .wstore-warn b { color:var(--warn); }
+  .wstore-idle b { color:var(--info); }
   .wbtn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:4px 10px; font-size:12px; cursor:pointer; }
   .wbtn:hover { border-color:var(--accent-light); }
   .scrollbox { max-height:520px; overflow:auto; }
@@ -840,7 +859,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:05</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:25</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -1770,11 +1789,20 @@ async function fvPushRemote(isRetry){
     FV_USER.sha = (await r.json()).content.sha;
     FV_USER.dirty = false;
     fvUserSave();
+    fvRefreshStorageLine();          /* 局部刷新存储状态，不打断当前钻取 */
     return true;
   }catch(e){
     toast('云端同步失败：'+e.message+'（已保存在本机）');
     return false;
   }
+}
+/* 只替换存储状态行，避免整页重渲染丢失用户的钻取位置 */
+function fvRefreshStorageLine(){
+  var el = document.querySelector('.wstore');
+  if (!el) return;
+  var tmp = document.createElement('div');
+  tmp.innerHTML = fvStorageLine();
+  if (tmp.firstChild) el.parentNode.replaceChild(tmp.firstChild, el);
 }
 
 /* ---- 归类动作 ---- */
@@ -1814,7 +1842,7 @@ function fvEditUnknown(w){
 async function fvSyncNow(){
   FV_USER.dirty = true;
   var ok = await fvPushRemote();
-  if (ok) toast('已同步到云端，其它设备打开即生效');
+  if (ok){ toast('已同步到云端，其它设备打开即生效'); fvRefreshStorageLine(); }
 }
 /* 词前面 3 个字里出现否定词 → 不计（"不太甜"、"没有泥煤"） */
 function fvNegated(ph,i){
@@ -1978,6 +2006,28 @@ function renderWheelView(){
   fvShowHome();
 }
 
+/* 存储位置说明：基线词表 / 本机校准 / 云端副本，三层各在哪 */
+function fvStorageLine(){
+  var nBase = Object.keys(FV_WORDS).length;
+  var nUser = Object.keys(FV_USER.words||{}).length + (FV_USER.removed||[]).length;
+  var cfg = (typeof hasConfig === 'function') ? hasConfig() : (typeof ghCfg !== 'undefined' && !!ghCfg);
+  var cloud, cls;
+  if (!cfg){
+    cloud = '未连接 GitHub —— 校准只存在本机浏览器，换设备会丢'; cls = 'warn';
+  } else if (FV_USER.dirty){
+    cloud = '本地有改动待推送（每次归类已自动同步，稍候或点「同步到云端」立即推）'; cls = 'warn';
+  } else if (FV_USER.sha){
+    cloud = '已同步到仓库 <b>flavor_words.json</b>，多设备打开自动读取'; cls = 'ok';
+  } else {
+    cloud = '仓库里还没有 flavor_words.json —— 归类任意一个词即自动创建'; cls = 'idle';
+  }
+  return '<div class="wstore">'
+    + '<span class="wstore-row"><b>基线词表</b>内嵌在 index.html 里（'+nBase+' 词，随代码版本走，离线也能用）</span>'
+    + '<span class="wstore-row"><b>本页校准</b>浏览器本地存储（'+nUser+' 项，仅此设备）</span>'
+    + '<span class="wstore-row wstore-'+cls+'"><b>云端副本</b>'+cloud+'</span>'
+    + '</div>';
+}
+
 function fvUnknownHTML(D){
   var mine = fvUserCount();
   var mineHTML = '';
@@ -1999,7 +2049,7 @@ function fvUnknownHTML(D){
       + '<div class="wun-foot">点「同步到云端」后，其它设备打开页面会自动读取这些校准；'
       + '点「导出词表」可下载合并后的 flavor_map.json 覆盖项目里的同名文件，沉淀为基线。</div></div>';
   }
-  if (!D.unknown.length && !mine) return '';
+  if (!D.unknown.length && !mine) return fvStorageLine();
   var chips = D.unknown.slice(0,40).map(function(u){
     var w = u.p, q = esc(w).replace(/'/g,"\\'");
     if (FV_EDITING === w){
@@ -2020,7 +2070,8 @@ function fvUnknownHTML(D){
       + ' —— 点任意一条即可归类，即时生效</summary>'
       + '<div class="wun-list">'+chips+'</div>'
       + '<div class="wun-foot">点词条 → 选类目，该词立即并入风味轮并记住；误判可点「非风味」排除。</div>'
-      + '</details>' : '');
+      + '</details>' : '')
+    + fvStorageLine();
 }
 
 /* 导出合并后的完整词表（可覆盖项目里的 flavor_map.json 沉淀为基线） */
