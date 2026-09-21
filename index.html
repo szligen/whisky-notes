@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-09-21-18:55 -->
+<!-- VERSION: 2026-09-21-19:15 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -9,11 +9,11 @@
   /* ===== Reset & Base ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #faf8f5;
+    --bg: #f9faf6;
     --surface: #ffffff;
-    --surface2: #f5f2ed;
-    --border: #e8e2d9;
-    --border-light: #f0ece5;
+    --surface2: #f3f5ec;
+    --border: #e6e9dc;
+    --border-light: #eff1e7;
     --text: #1a1614;
     --text-muted: #6b6057;
     --text-light: #7a6f65;
@@ -24,6 +24,24 @@
     --gold-light: #fef7e6;
     --green: #2d7a4f;
     --red: #c0392b;
+    /* 橄榄/苔绿 secondary — 第二色相锚点 (hue 74°) */
+    --olive: #667534;
+    --olive-bg: #f4f7ea;
+    --olive-border: #c8d4a3;
+    /* 状态色（语义化，亮/暗各一套） */
+    --success: #1f5c3a;
+    --success-bg: #f0f4ea;
+    --success-border: #c3d9c8;
+    --warn: #7a5a10;
+    --warn-bg: #fdf8e8;
+    --warn-border: #eddfae;
+    --info: #1a4f8f;
+    --info-bg: #eef4fb;
+    --info-border: #c2d8f0;
+    --danger-bg: #fdf0ee;
+    --danger-border: #f0c8c0;
+    --toast-bg: #1a1614;
+    --toast-text: #ffffff;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
     --radius: 8px;
@@ -32,11 +50,11 @@
 
   /* ===== Dark Theme ===== */
   [data-theme="dark"] {
-    --bg: #1a1618;
-    --surface: #242024;
-    --surface2: #2e2a2e;
-    --border: #3a3538;
-    --border-light: #332e32;
+    --bg: #191a17;
+    --surface: #222420;
+    --surface2: #2b2e28;
+    --border: #3a3d34;
+    --border-light: #33362e;
     --text: #ede8e4;
     --text-muted: #9a8f88;
     --text-light: #8a8079;
@@ -47,19 +65,34 @@
     --gold-light: #3a3224;
     --green: #3dbf8a;
     --red: #ef5555;
+    --olive: #a3ba62;
+    --olive-bg: #2a3120;
+    --olive-border: #4d5a33;
+    --success: #7fd6a8;
+    --success-bg: #1e2a22;
+    --success-border: #2f4a38;
+    --warn: #e0c86a;
+    --warn-bg: #2e2a1c;
+    --warn-border: #4d4526;
+    --info: #7fb0e8;
+    --info-bg: #1c2431;
+    --info-border: #2c4055;
+    --danger-bg: #2e1e1c;
+    --danger-border: #552d28;
+    --toast-bg: #222420;
+    --toast-text: #ede8e4;
     --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
   }
-  [data-theme="dark"] header { background: #201c20; border-bottom-color: #3a3538; }
+  [data-theme="dark"] header { background: var(--surface); border-bottom-color: var(--border); }
   [data-theme="dark"] .modal-content, [data-theme="dark"] .detail-content,
-  [data-theme="dark"] .confirm-content { background: #242024; }
+  [data-theme="dark"] .confirm-content { background: var(--surface); }
   [data-theme="dark"] input, [data-theme="dark"] textarea, [data-theme="dark"] select {
-    background: #1a1618; color: #ede8e4; border-color: #3a3538;
+    background: var(--bg); color: var(--text); border-color: var(--border);
   }
-  [data-theme="dark"] .btn-cancel { background: #3a3538; color: #ede8e4; }
-  [data-theme="dark"] .toast { background: #242024; color: #ede8e4; }
+  [data-theme="dark"] .btn-cancel { background: var(--surface2); color: var(--text); }
   [data-theme="dark"] .empty-state { color: var(--text-light); }
-  [data-theme="dark"] .loading-spinner { border-color: #3a3538; border-top-color: var(--accent); }
+  [data-theme="dark"] .loading-spinner { border-color: var(--border); border-top-color: var(--accent); }
   [data-theme="dark"] .score-display { color: var(--text-muted); }
   [data-theme="dark"] .version-badge { background: var(--surface2); }
 
@@ -138,16 +171,16 @@
     font-size:14px;
   }
   .conn-banner.connected {
-    background: linear-gradient(135deg,#f0fdf4,#f0fdf4); border-color: #bbf7d0; color: #166534;
+    background: var(--success-bg); border-color: var(--success-border); color: var(--success);
   }
   .conn-banner.disconnected {
-    background: linear-gradient(135deg,#fffbeb,#fffbeb); border-color: #fde68a; color: #92400e;
+    background: var(--warn-bg); border-color: var(--warn-border); color: var(--warn);
   }
   .conn-banner.error {
-    background: #fef2f2; border-color: #fecaca; color: var(--red);
+    background: var(--danger-bg); border-color: var(--danger-border); color: var(--red);
   }
   .conn-banner.syncing {
-    background: linear-gradient(135deg,#eff6ff,#eff6ff); border-color: #bfdbfe; color: #1e40af;
+    background: var(--info-bg); border-color: var(--info-border); color: var(--info);
   }
   .conn-dot {
     width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px;
@@ -160,9 +193,9 @@
   }
   .sync-badge.dirty { background: var(--gold-light); color: var(--gold); border-color: var(--gold); }
   .sync-badge.clean { background: var(--surface2); color: var(--text-muted); }
-  .conn-dot.disconnected { background: #f59e0b; }
+  .conn-dot.disconnected { background: var(--warn); }
   .conn-dot.error { background: var(--red); }
-  .conn-dot.syncing { background: #3b82f6; animation: pulse 1s infinite; }
+  .conn-dot.syncing { background: var(--info); animation: pulse 1s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   /* ===== Stats Bar ===== */
@@ -242,8 +275,8 @@
   .tag { padding: 2px 8px; border-radius: 20px; font-size:12px; font-weight: 600; letter-spacing: 0.3px; }
   .tag-age { background: var(--gold-light); color: var(--gold); }
   .tag-abv { background: var(--accent-bg); color: var(--accent); }
-  .tag-wb { background: var(--surface2); color: var(--text-muted); }
-  .tag-year { background: #f0fdf4; color: var(--green); }
+  .tag-wb { background: var(--olive-bg); color: var(--olive); }
+  .tag-year { background: var(--success-bg); color: var(--success); }
 
   .card-scores { display: flex; gap: 16px; background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 10px; }
   .score-item { text-align: center; flex: 1; }
@@ -273,7 +306,7 @@
   .btn-edit { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
   .btn-edit:hover { background: var(--accent); color: white; }
   .btn-delete { background: transparent; border-color: var(--border); color: var(--text-muted); margin-left: auto; }
-  .btn-delete:hover { background: #fef2f2; border-color: var(--red); color: var(--red); }
+  .btn-delete:hover { background: var(--danger-bg); border-color: var(--red); color: var(--red); }
 
 /* List view overrides */
 #cards-grid.list-view .note-card {
@@ -477,7 +510,7 @@
 
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
-    background: #1a1614; color: white; padding: 10px 20px; border-radius: 20px;
+    background: var(--toast-bg); color: var(--toast-text); padding: 10px 20px; border-radius: 20px;
     font-size:14px; font-weight: 500; z-index: 2000; transition: transform 0.25s ease;
     pointer-events: none; white-space: nowrap;
   }
@@ -667,7 +700,7 @@
   <div class="logo">
     <span class="logo-icon">🥃</span>
     <div><h1>Whisky Notes</h1><span id="header-count">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-18:55</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.21-19:15</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
