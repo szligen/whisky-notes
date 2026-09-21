@@ -761,7 +761,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:20</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:25</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -1720,7 +1720,7 @@ function renderWheelView(){
     + fvUnknownHTML(D)
     + '</div>';
   el.querySelectorAll('.wseg').forEach(function(s){
-    s.onclick=function(){ FV_CURW ? fvShowWord(FV_CUR, s.dataset.cat) : fvShowCat(s.dataset.cat); };
+    s.onclick=function(){ fvShowCat(s.dataset.cat); };
     s.onmouseenter=function(){ fvCenter(s.dataset.cat); };
     s.onmouseleave=function(){ fvCenter(null); };
   });
@@ -1758,6 +1758,10 @@ function fvCenter(cat){
   var D=FV_DATA, c1=document.getElementById('fv-c1'), c2=document.getElementById('fv-c2');
   if (!c1) return;
   if (cat){ c1.textContent=D.cats[cat].notes+' 条'; c2.textContent=cat; }
+  else if (FV_CURW){
+    var o=null; D.cats[FV_CUR].words.forEach(function(x){ if(x.w===FV_CURW) o=x; });
+    c1.textContent=o ? o.f+' 次' : D.cats[FV_CUR].freq+' 次提及'; c2.textContent=FV_CURW;
+  }
   else if (FV_CUR){ c1.textContent=D.cats[FV_CUR].notes+' 条'; c2.textContent=D.cats[FV_CUR].freq+' 次提及'; }
   else { c1.textContent=D.tot+' 支'; c2.textContent='点扇区查看'; }
 }
@@ -1778,6 +1782,7 @@ function fvShowHome(){
       +'<div class="wmeta">'+D.cats[c].freq+' 次提及</div></td></tr>';
   });
   document.getElementById('fv-panel').innerHTML=h+'</table>';
+  fvCenter(null);
 }
 
 function fvShowCat(c){
@@ -1803,7 +1808,7 @@ function fvShowCat(c){
 function fvShowWord(c,w){
   var D=FV_DATA, o=null;
   D.cats[c].words.forEach(function(x){ if(x.w===w) o=x; });
-  if(!o) return;
+  if(!o){ fvShowCat(c); return; }   /* 词不在该类目时兜底回类目，不静默失败 */
   FV_CUR=c; FV_CURW=w;
   document.getElementById('fv-crumb').innerHTML='<a onclick="fvShowHome()">全部</a> › '
     +'<a onclick="fvShowCat(\''+c+'\')">'+c+'</a> › <b>'+esc(w)+'</b>';
@@ -1824,6 +1829,7 @@ function fvShowWord(c,w){
       +'<div class="wmeta">'+b.y+'</div></td></tr>';
   });
   document.getElementById('fv-panel').innerHTML=h+'</table>';
+  fvCenter(null);
 }
 
 /* 点词 → 回到列表视图并筛出含该词的酒 */
