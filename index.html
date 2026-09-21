@@ -5,6 +5,10 @@
 <meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="H860oRPmoyWmLSXfzvHpxA">
 <title>Whisky Notes</title>
+<!-- 站点图标：ico 兜底全平台，SVG 给现代浏览器更锐利的缩放 -->
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="favicon.ico">
 <style>
   /* ===== Reset & Base ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -167,8 +171,13 @@
   }
   .logo { display: flex; align-items: center; gap: 10px; }
   /* 品牌标记改成一根硬色条（原 🥃 emoji 是 UI 图标里的禁用项） */
-  .logo-mark { width: 4px; height: 22px; background: var(--accent); flex: none; }
-  .logo h1 { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; }
+  /* 站标：琥珀方块抠出等宽 W —— 与根目录 favicon.ico / favicon.svg 同一图形 */
+  .logo-icon { width: 22px; height: 22px; flex: none; display: block; color: var(--accent); }
+  .logo-icon rect { fill: currentColor; }
+  .logo-icon path { stroke: var(--surface); }   /* 挖空用 surface，亮/暗主题各自成立 */
+  /* 标题走等宽体：与全站读数同一套字，「仪表台账」制度从这里收口 */
+  .logo h1 { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--accent);
+             letter-spacing: 0.15em; text-transform: uppercase; }
   .logo span { font-size: 11.5px; color: var(--text-muted); font-weight: 400; }
   .version-badge {
     font-size: 11px; color: var(--text-light); background: transparent;
@@ -692,7 +701,7 @@
     /* --- Header --- */
     header { padding: 10px 14px; gap: 6px; flex-wrap: wrap; }
     .logo { gap: 6px; }
-    .logo h1 { font-size: 15px; }
+    .logo h1 { font-size: 13.5px; letter-spacing: 0.11em; }
     .logo span { font-size:12px; display: none; }          /* hide "697条记录" */
     .version-badge { display: none; }                       /* hide version badge */
 
@@ -700,7 +709,7 @@
     .btn-header, #btn-add { padding: 0 10px; gap: 0; }
     .btn-theme { width: 32px; height: 32px; }
     .btn-header span, #btn-add span { display: none; }
-    .logo-mark { height: 18px; width: 3px; }
+    .logo-icon { width: 19px; height: 19px; }
 
     /* --- Container & Stats --- */
     .container { padding: 12px 10px; }
@@ -980,7 +989,7 @@
 <!-- Header -->
 <header data-page-node-id="Z0YRmt33Qp6fxhvuQ1285O">
   <div class="logo">
-    <span class="logo-mark" aria-hidden="true"></span>
+    <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
     <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-02:10</span>
