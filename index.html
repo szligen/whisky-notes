@@ -244,10 +244,42 @@
   }
   .sort-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); font-weight: 600; }
   #btn-clear-filter {
-    padding: 7px 12px; border: 1px solid var(--text); border-radius: var(--radius-sm);
-    font-size: 13px; background: var(--text); color: var(--surface); cursor: pointer; font-weight: 500;
+    padding: 7px 12px; border: none; border-radius: var(--radius-sm);
+    font-size: 13px; background: var(--accent); color: #fff; cursor: pointer;
+    font-weight: 500; transition: background 0.15s;
   }
-  #btn-clear-filter:hover { background: var(--red); border-color: var(--red); color: #fff; }
+  #btn-clear-filter:hover { background: var(--accent-light); }
+  /* ===== Date Filter (button + popover) ===== */
+  .date-filter { position: relative; }
+  .date-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--surface); color: var(--text); font-size: 13px; cursor: pointer;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .date-btn:hover { border-color: var(--accent-light); }
+  .date-btn.active {
+    border-color: var(--accent); background: var(--accent-bg); color: var(--accent); font-weight: 600;
+  }
+  .date-caret { font-size: 9px; opacity: .7; }
+  .date-pop {
+    position: absolute; top: calc(100% + 6px); right: 0; z-index: 60;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 12px; min-width: 238px;
+  }
+  .date-pop-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .date-pop-row label { font-size: 13px; color: var(--text-muted); width: 34px; flex: none; }
+  .date-pop-row input {
+    flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px;
+  }
+  .date-pop-quick { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 8px; }
+  .date-pop-foot {
+    display: flex; justify-content: space-between; gap: 8px;
+    border-top: 1px solid var(--border-light); padding-top: 10px;
+  }
+  .wbtn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+  .wbtn-primary:hover { background: var(--accent-light); border-color: var(--accent-light); }
   /* ===== Page Jump ===== */
   .page-jump-wrap { display: inline-flex; align-items: center; gap: 5px; margin: 0 4px; }
   .page-jump {
@@ -759,6 +791,42 @@
   .wun-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
   .wun { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:3px 8px; font-size:12px; color:var(--text-muted); }
   .wun b { color:var(--text); font-variant-numeric:tabular-nums; }
+  /* 待校准词条的交互态（网页内归类） */
+  .wun-tap { cursor:pointer; font-family:inherit; transition:border-color .15s, color .15s; }
+  .wun-tap:hover { border-color:var(--accent); color:var(--text); }
+  .wun-done {
+    background:var(--olive-bg); border-color:var(--olive-border); color:var(--olive);
+    display:inline-flex; align-items:center; gap:4px;
+  }
+  .wun-done b { color:inherit; }
+  .wun-exc { background:var(--surface2); border-color:var(--border); color:var(--text-muted); }
+  .wun-x {
+    border:none; background:transparent; color:inherit; cursor:pointer;
+    font-size:14px; line-height:1; padding:0 0 0 2px; opacity:.6;
+  }
+  .wun-x:hover { opacity:1; }
+  .wun-editor {
+    flex-basis:100%; background:var(--surface2); border:1px solid var(--accent);
+    border-radius:6px; padding:9px 11px;
+  }
+  .wun-editor-w { font-weight:600; font-size:13px; }
+  .wcat-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+  .wcat {
+    display:inline-flex; align-items:center; gap:4px; padding:5px 10px;
+    border:1px solid var(--border); border-radius:999px; background:var(--surface);
+    color:var(--text); font-size:12px; cursor:pointer; font-family:inherit;
+  }
+  .wcat:hover { background:var(--accent-bg); }
+  .wcat i { width:8px; height:8px; border-radius:2px; display:inline-block; flex:none; }
+  .wcat-exc { color:var(--text-muted); }
+  .wcat-cancel { padding:5px 9px; color:var(--text-muted); }
+  .wmy {
+    margin-top:14px; padding:11px 13px; background:var(--olive-bg);
+    border:1px solid var(--olive-border); border-radius:var(--radius-sm);
+  }
+  .wmy-head { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); margin-bottom:9px; flex-wrap:wrap; }
+  .wmy-actions { margin-left:auto; display:flex; gap:6px; }
+  .wun-foot { font-size:12px; color:var(--text-muted); margin-top:10px; }
   .wbtn { background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:4px 10px; font-size:12px; cursor:pointer; }
   .wbtn:hover { border-color:var(--accent-light); }
   .scrollbox { max-height:520px; overflow:auto; }
@@ -772,7 +840,7 @@
   <div class="logo" data-page-node-id="US3HZqHVtJ0AqXdCeVvozl">
     <span class="logo-icon" data-page-node-id="81OiRRgD8yNtyCXaGxrCVU">🥃</span>
     <div data-page-node-id="Bkg9651itpN2ZsyBXCQ6GH"><h1 data-page-node-id="RspaG9w8V36wYHn0BqZ85v">Whisky Notes</h1><span id="header-count" data-page-node-id="6guB0wk04b3RJjq0gwIWLM">loading...</span></div>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.21-23:50</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版" data-page-node-id="09DG3j8gGrnbKLN3iO2gXf">v2026.09.22-00:05</span>
   </div>
   <div class="header-right" data-page-node-id="0ZDXkFMeTR6F8PEXPL5WAr">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步" data-page-node-id="X6Cgxqd1FAZ2xDR8oRSxcL">✓ 已同步</span>
@@ -829,8 +897,27 @@
         <button class="sort-btn" data-sort="age-desc" data-page-node-id="AGSBPZrSlCFHb9zrktEopf">年份最老</button>
         <button class="sort-btn" data-sort="distillery-asc" data-page-node-id="K224UsyBxFJGEyfKHV0rtX">酒厂名称 A-Z</button>
       </div>
-      <input type="date" id="filter-date-from" title="按录入日期筛选：起始日" style="max-width:150px;" aria-label="录入日期从">
-      <input type="date" id="filter-date-to" title="按录入日期筛选：截止日" style="max-width:150px;" aria-label="录入日期到">
+      <div class="date-filter" id="date-filter">
+        <button type="button" class="date-btn" id="date-btn" aria-haspopup="true" aria-expanded="false" title="按录入日期筛选">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="date-btn-label">录入日期</span>
+          <span class="date-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="date-pop hidden" id="date-pop" role="dialog" aria-label="录入日期筛选">
+          <div class="date-pop-row"><label for="filter-date-from">开始</label><input type="date" id="filter-date-from"></div>
+          <div class="date-pop-row"><label for="filter-date-to">结束</label><input type="date" id="filter-date-to"></div>
+          <div class="date-pop-quick">
+            <button type="button" class="wbtn" data-days="7">近 7 天</button>
+            <button type="button" class="wbtn" data-days="30">近 30 天</button>
+            <button type="button" class="wbtn" data-days="90">近 90 天</button>
+            <button type="button" class="wbtn" data-days="365">近一年</button>
+          </div>
+          <div class="date-pop-foot">
+            <button type="button" class="wbtn" id="date-pop-clear">清空</button>
+            <button type="button" class="wbtn wbtn-primary" id="date-pop-done">完成</button>
+          </div>
+        </div>
+      </div>
       <button id="btn-clear-filter" data-page-node-id="4WNRokteTvAXKlSK7vzljW">清除筛选</button>
     </div>
     <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()" data-page-node-id="3aNqbcvZlpMF7zKsNyaGG4">
@@ -1427,6 +1514,7 @@ function commitMessage(label) {
 // ============================================================
 async function init() {
   loadConfig();
+  fvUserLoad();   /* 先加载本机风味词表校准，立即可用 */
 
   if (!hasConfig()) {
     setStatus('disconnected',
@@ -1434,6 +1522,11 @@ async function init() {
     refresh();
     return;
   }
+
+  /* 后台拉取云端词表校准（有变化且当前在风味轮视图则重渲染） */
+  fvFetchRemote().then(function(changed){
+    if (changed && viewMode === 'wheel') renderWheelView();
+  });
 
   try {
     await reconcileOnLoad();
@@ -1581,13 +1674,147 @@ var FV_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c",
 var FV_SPLIT = /[、,，;；/|｜]+/;
 var FV_NEG  = /没有|不太|不够|缺乏|缺少|没啥|不|无|没/;
 var FV_LIST = [], FV_EXACT = {};
+/* ---- 网页内校准：用户自建词表（本机 localStorage + 云端 flavor_words.json）----
+   词表分两层：
+     FV_WORDS  基线（内嵌在页面里，来自 flavor_map.json）
+     FV_USER   本页新增/覆盖（用户在待校准清单里归类的词）
+   合并顺序：基线 → 删掉 removed → 覆盖 user.words → 别名只补空缺。
+   因此「在这里归类」= 立即生效 + 可撤销，不需要再回来改代码。            */
+var FV_USER_KEY = 'wn-flavor-user';
+var FV_FILE = 'flavor_words.json';
+var FV_USER = { version:1, words:{}, removed:[], sha:null, dirty:false };
+var FV_EDITING = null;   /* 正在归类中的待校准词 */
+var FV_UNK_OPEN = false; /* 待校准区展开状态（跨重渲染保持，便于连续归类） */
 
-function fvInit(){
-  if (FV_LIST.length) return;
-  Object.keys(FV_WORDS).forEach(function(w){ FV_LIST.push({w:w,c:FV_WORDS[w],a:0}); });
+function fvUserLoad(){
+  try{
+    var o = JSON.parse(localStorage.getItem(FV_USER_KEY));
+    if (o && typeof o === 'object'){
+      FV_USER = { version:1, words:o.words||{}, removed:o.removed||[], sha:o.sha||null, dirty:!!o.dirty };
+    }
+  }catch(e){}
+}
+function fvUserSave(){
+  try{ localStorage.setItem(FV_USER_KEY, JSON.stringify(FV_USER)); }catch(e){}
+}
+/* 生效词表：基线 + 用户覆盖 - 用户删除 */
+function fvEffective(){
+  var W = {}, k;
+  for (k in FV_WORDS) W[k] = FV_WORDS[k];
+  (FV_USER.removed||[]).forEach(function(w){ delete W[w]; });
+  for (k in (FV_USER.words||{})) W[k] = FV_USER.words[k];
+  return W;
+}
+function fvUserCount(){
+  return Object.keys(FV_USER.words||{}).length + (FV_USER.removed||[]).length;
+}
+
+function fvInit(force){
+  if (FV_LIST.length && !force) return;
+  FV_LIST = []; FV_EXACT = {};
+  var W = fvEffective();
+  Object.keys(W).forEach(function(w){ FV_LIST.push({w:w,c:W[w],a:0}); });
   Object.keys(FV_ALIAS).forEach(function(w){ FV_LIST.push({w:w,c:FV_ALIAS[w],a:1}); });
   FV_LIST.sort(function(a,b){ return b.w.length - a.w.length; });
   FV_LIST.forEach(function(it){ if(!FV_EXACT[it.w]) FV_EXACT[it.w]=it; });
+}
+
+/* ---- 云端同步（复用已配置的 GitHub 连接；未配置则只存本机） ---- */
+function fvRemoteUrl(){
+  return 'https://api.github.com/repos/'+ghCfg.owner+'/'+ghCfg.repo+'/contents/'+FV_FILE;
+}
+async function fvFetchRemote(){
+  if (!ghCfg) return false;
+  try{
+    var r = await fetch(fvRemoteUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+    if (r.status === 404){ FV_USER.sha = null; return false; }
+    if (!r.ok) return false;
+    var info = await r.json();
+    var txt = new TextDecoder('utf-8').decode(
+      Uint8Array.from(atob(info.content.replace(/\n/g,'')), function(c){ return c.charCodeAt(0); }));
+    var data = JSON.parse(txt);
+    FV_USER.sha = info.sha;
+    if (data && data.words && !FV_USER.dirty){        /* 本机没有未推送改动，才接受云端 */
+      FV_USER.words   = data.words || {};
+      FV_USER.removed = data.removed || [];
+      fvUserSave();
+      return true;
+    }
+    return false;
+  }catch(e){ return false; }
+}
+async function fvPushRemote(isRetry){
+  if (!ghCfg){ toast('已保存在本机（未连接 GitHub，无法同步云端）'); return false; }
+  try{
+    var payload = { version:1, words:FV_USER.words, removed:FV_USER.removed,
+                    updated:new Date().toISOString() };
+    var body = { message:'chore: 风味词表校准更新',
+                 content: btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 1)))),
+                 branch: ghCfg.branch };
+    if (FV_USER.sha) body.sha = FV_USER.sha;
+    var r = await fetch(fvRemoteUrl(), {
+      method:'PUT',
+      headers:{ Authorization:'Bearer '+ghCfg.token, 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (r.status === 409 || r.status === 422){        /* sha 过期：取最新 sha 重试一次 */
+      if (isRetry) throw new Error('SHA 冲突');
+      var g = await fetch(fvRemoteUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+      FV_USER.sha = g.ok ? (await g.json()).sha : null;
+      return await fvPushRemote(true);
+    }
+    if (!r.ok){
+      var eb = await r.json().catch(function(){ return {}; });
+      throw new Error('HTTP '+r.status+': '+((eb.message||'').slice(0,80)));
+    }
+    FV_USER.sha = (await r.json()).content.sha;
+    FV_USER.dirty = false;
+    fvUserSave();
+    return true;
+  }catch(e){
+    toast('云端同步失败：'+e.message+'（已保存在本机）');
+    return false;
+  }
+}
+
+/* ---- 归类动作 ---- */
+function fvClassify(w, cat){
+  FV_USER.words[w] = cat;
+  FV_USER.removed = (FV_USER.removed||[]).filter(function(x){ return x !== w; });
+  FV_EDITING = null; FV_USER.dirty = true;
+  fvUserSave();
+  fvInit(true);                       /* 重建词表 → 该词立即参与匹配 */
+  renderWheelView();
+  toast('「'+w+'」已归入 '+cat+'，立即生效');
+  fvPushRemote();                     /* 后台推云端，失败也不影响本机 */
+}
+function fvExclude(w){
+  delete FV_USER.words[w];
+  if ((FV_USER.removed||[]).indexOf(w) < 0) FV_USER.removed.push(w);
+  FV_EDITING = null; FV_USER.dirty = true;
+  fvUserSave(); fvInit(true); renderWheelView();
+  toast('「'+w+'」已标记为非风味词，不再追踪');
+  fvPushRemote();
+}
+function fvUndo(w){
+  delete FV_USER.words[w];
+  FV_USER.removed = (FV_USER.removed||[]).filter(function(x){ return x !== w; });
+  FV_USER.dirty = true;
+  fvUserSave(); fvInit(true); renderWheelView();
+  toast('已撤销「'+w+'」的校准');
+  fvPushRemote();
+}
+function fvEditUnknown(w){
+  FV_EDITING = (FV_EDITING === w) ? null : w;
+  if (FV_EDITING) FV_UNK_OPEN = true;
+  renderWheelView();
+  var box = document.querySelector('.wunknown');
+  if (box) box.open = true;
+}
+async function fvSyncNow(){
+  FV_USER.dirty = true;
+  var ok = await fvPushRemote();
+  if (ok) toast('已同步到云端，其它设备打开即生效');
 }
 /* 词前面 3 个字里出现否定词 → 不计（"不太甜"、"没有泥煤"） */
 function fvNegated(ph,i){
@@ -1618,6 +1845,7 @@ var FV_DATA = null, FV_CUR = null, FV_CURW = null;
 
 function computeFlavor(){
   fvInit();
+  var W = fvEffective();          /* 生效词表 = 基线 + 本页校准；归类后即时反映 */
   var N = db.notes, n = N.length, j, k;
   var gsum=0, gcnt=0, dist={};
   for (j=0;j<n;j++){
@@ -1648,7 +1876,8 @@ function computeFlavor(){
   var out={cats:{}, tot:n, gavg:Math.round(gavg*100)/100, unknown:[], unkTotal:0};
   FV_CATS.forEach(function(c){ out.cats[c]={notes:0,freq:0,words:[]}; });
   Object.keys(byWord).forEach(function(w){
-    var idx=byWord[w], cat=FV_WORDS[w]||FV_ALIAS[w], sc=[], dc={};
+    var idx=byWord[w], cat=W[w]||FV_ALIAS[w], sc=[], dc={};
+    if (!out.cats[cat]) return;   /* 防御：类目不认识就跳过，别让整页崩 */
     for (k=0;k<idx.length;k++){
       var s=avgScore(N[idx[k]]); if (s>0) sc.push(s);
       var d2=(N[idx[k]].distillery||'').trim()||'-'; dc[d2]=(dc[d2]||0)+1;
@@ -1722,7 +1951,9 @@ function renderWheelView(){
   el.innerHTML =
     '<div class="wheel-wrap">'
     + '<div class="wheel-head"><h2>风味轮</h2><span class="wheel-sub">'+D.tot+' 支品鉴记录 · '
-    + Object.keys(FV_WORDS).length+' 个已校准词 + '+Object.keys(FV_ALIAS).length+' 个别名 · '
+    + Object.keys(fvEffective()).length+' 个已校准词'
+    + (fvUserCount() ? '（其中本页校准 '+fvUserCount()+'）' : '')
+    + ' + '+Object.keys(FV_ALIAS).length+' 个别名 · '
     + '扇区按覆盖笔记数 · 全库均分 '+D.gavg+'</span></div>'
     + '<div class="wheel-grid">'
     +   '<div><svg class="wheel-svg" viewBox="0 0 400 400">'+fvSeg(D)
@@ -1742,31 +1973,75 @@ function renderWheelView(){
   el.querySelectorAll('.wlg').forEach(function(s){
     s.onclick=function(){ FV_CURW=null; fvShowCat(s.dataset.cat); };
   });
+  var ub = el.querySelector('.wunknown');
+  if (ub) ub.addEventListener('toggle', function(){ FV_UNK_OPEN = ub.open; });
   fvShowHome();
 }
 
 function fvUnknownHTML(D){
-  if (!D.unknown.length) return '';
+  var mine = fvUserCount();
+  var mineHTML = '';
+  if (mine){
+    var items = Object.keys(FV_USER.words).map(function(w){
+      return '<span class="wun wun-done">'+esc(w)+' <b>'+esc(FV_USER.words[w])+'</b>'
+        + '<button class="wun-x" title="撤销" onclick="event.stopPropagation();fvUndo(\''+esc(w).replace(/'/g,"\\'")+'\')">&times;</button></span>';
+    }).join('')
+    + (FV_USER.removed||[]).map(function(w){
+      return '<span class="wun wun-done wun-exc">'+esc(w)+' <b>非风味</b>'
+        + '<button class="wun-x" title="撤销" onclick="event.stopPropagation();fvUndo(\''+esc(w).replace(/'/g,"\\'")+'\')">&times;</button></span>';
+    }).join('');
+    mineHTML = '<div class="wmy"><div class="wmy-head">本页已校准 <b>'+mine+'</b> 项'
+      + '<span class="wmy-actions">'
+      + '<button class="wbtn" onclick="fvDownloadWords()">导出词表</button>'
+      + '<button class="wbtn wbtn-primary" onclick="fvSyncNow()">同步到云端</button>'
+      + '</span></div>'
+      + '<div class="wun-list">'+items+'</div>'
+      + '<div class="wun-foot">点「同步到云端」后，其它设备打开页面会自动读取这些校准；'
+      + '点「导出词表」可下载合并后的 flavor_map.json 覆盖项目里的同名文件，沉淀为基线。</div></div>';
+  }
+  if (!D.unknown.length && !mine) return '';
   var chips = D.unknown.slice(0,40).map(function(u){
-    return '<span class="wun">'+esc(u.p)+' <b>'+u.k+'</b></span>';
+    var w = u.p, q = esc(w).replace(/'/g,"\\'");
+    if (FV_EDITING === w){
+      var btns = FV_CATS.map(function(c){
+        return '<button class="wcat" style="border-color:'+FV_COLORS[c]+'" onclick="event.stopPropagation();fvClassify(\''+q+'\',\''+c+'\')">'
+          + '<i style="background:'+FV_COLORS[c]+'"></i>'+c+'</button>';
+      }).join('');
+      return '<div class="wun-editor"><span class="wun-editor-w">'+esc(w)+'</span>'
+        + '<div class="wcat-row">'+btns
+        + '<button class="wcat wcat-exc" onclick="event.stopPropagation();fvExclude(\''+q+'\')">非风味</button>'
+        + '<button class="wcat wcat-cancel" onclick="event.stopPropagation();fvEditUnknown(\''+q+'\')">&times;</button></div></div>';
+    }
+    return '<button class="wun wun-tap" onclick="fvEditUnknown(\''+q+'\')">'+esc(w)+' <b>'+u.k+'</b></button>';
   }).join('');
-  return '<details class="wunknown"><summary>待校准短语 '+D.unkTotal+' 个（出现 '
-    + D.unknown.reduce(function(s,u){return s+u.k;},0)+' 次，仅列前 40）'
-    + ' —— 词表里还没有它们，攒够一批可用校准工具批量归类</summary>'
-    + '<div class="wun-list">'+chips+'</div>'
-    + '<div style="margin-top:10px"><button class="wbtn" onclick="fvCopyUnknown()">复制待校准清单</button></div>'
-    + '</details>';
+  return (mine ? mineHTML : '')
+    + (D.unknown.length ? '<details class="wunknown"'+((FV_EDITING||FV_UNK_OPEN)?' open':'')+'><summary>待校准短语 '
+      + D.unkTotal+' 个（出现 '+D.unknown.reduce(function(s,u){return s+u.k;},0)+' 次，仅列前 40）'
+      + ' —— 点任意一条即可归类，即时生效</summary>'
+      + '<div class="wun-list">'+chips+'</div>'
+      + '<div class="wun-foot">点词条 → 选类目，该词立即并入风味轮并记住；误判可点「非风味」排除。</div>'
+      + '</details>' : '');
 }
 
-function fvCopyUnknown(){
-  var D=FV_DATA||computeFlavor();
-  var txt=D.unknown.map(function(u){return u.p+'\t'+u.k;}).join('\n');
-  var ta=document.createElement('textarea');
-  ta.value=txt; ta.style.position='fixed'; ta.style.top='-1000px';
-  document.body.appendChild(ta); ta.select();
-  try{ document.execCommand('copy'); toast('已复制 '+D.unknown.length+' 条待校准短语'); }
-  catch(e){ toast('复制失败，请手动选取'); }
-  document.body.removeChild(ta);
+/* 导出合并后的完整词表（可覆盖项目里的 flavor_map.json 沉淀为基线） */
+function fvDownloadWords(){
+  var M = { categories: FV_CATS, words: fvEffective(), excluded: FV_EXC,
+            alias: FV_ALIAS, pending: [] };
+  var txt = JSON.stringify(M, null, 2);
+  try{
+    var blob = new Blob([txt], { type:'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'flavor_map.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+    toast('已导出 flavor_map.json（'+Object.keys(M.words).length+' 词）');
+  }catch(e){
+    if (navigator.clipboard) navigator.clipboard.writeText(txt)
+      .then(function(){ toast('下载被拦截，已复制词表 JSON 到剪贴板'); })
+      .catch(function(){ toast('导出失败：'+e.message); });
+    else toast('导出失败：'+e.message);
+  }
 }
 
 function fvCenter(cat){
@@ -2402,7 +2677,7 @@ document.getElementById('filter-year-to').addEventListener('input', function(){
 document.querySelectorAll('.stat-card.clickable').forEach(function(card){
   card.addEventListener('click', function(){
     const k=card.getAttribute('data-stat');
-    if(k==='all'){ const r=document.getElementById('btn-clear-filter'); if(r){ r.click(); return; } filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',dateFrom:'',dateTo:'',minScore:0,caskStrength:false,ibOnly:false}; currentPage=1; refresh(); return; }
+    if(k==='all'){ const r=document.getElementById('btn-clear-filter'); if(r){ r.click(); return; } filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',dateFrom:'',dateTo:'',minScore:0,caskStrength:false,ibOnly:false}; updateDateBtn(); currentPage=1; refresh(); return; }
     if(k==='age'){
       const btn=document.querySelector('[data-sort="age-desc"]');
       if(btn){ btn.click(); return; }
@@ -2418,16 +2693,50 @@ document.getElementById('filter-vintage-age-min').addEventListener('input', func
   filters.vintageAgeMin=this.value; currentPage=1; refresh();
 });
 
-document.getElementById('filter-date-from').addEventListener('change', function(){
-  filters.dateFrom=this.value; currentPage=1; refresh();
+/* ---- 录入日期筛选：按钮 + 下拉面板 ---- */
+var dateBtn=document.getElementById('date-btn'), datePop=document.getElementById('date-pop');
+var dateFromEl=document.getElementById('filter-date-from'), dateToEl=document.getElementById('filter-date-to');
+function toggleDatePop(force){
+  var open = (force!==undefined) ? force : datePop.classList.contains('hidden');
+  datePop.classList.toggle('hidden', !open);
+  dateBtn.setAttribute('aria-expanded', open?'true':'false');
+}
+function updateDateBtn(){
+  var f=filters.dateFrom, t=filters.dateTo, label='录入日期';
+  if(f&&t) label=f.slice(5)+' ~ '+t.slice(5);
+  else if(f) label='\u2265 '+f.slice(5);
+  else if(t) label='\u2264 '+t.slice(5);
+  document.getElementById('date-btn-label').textContent=label;
+  dateBtn.classList.toggle('active', !!(f||t));
+}
+dateBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleDatePop(); });
+datePop.addEventListener('click', function(e){ e.stopPropagation(); });
+document.addEventListener('click', function(){ toggleDatePop(false); });
+datePop.addEventListener('keydown', function(e){ if(e.key==='Escape') toggleDatePop(false); });
+
+dateFromEl.addEventListener('change', function(){ filters.dateFrom=this.value; currentPage=1; updateDateBtn(); refresh(); });
+dateToEl.addEventListener('change', function(){ filters.dateTo=this.value; currentPage=1; updateDateBtn(); refresh(); });
+document.getElementById('date-pop-clear').addEventListener('click', function(){
+  dateFromEl.value=''; dateToEl.value='';
+  filters.dateFrom=''; filters.dateTo=''; currentPage=1; updateDateBtn(); refresh();
 });
-document.getElementById('filter-date-to').addEventListener('change', function(){
-  filters.dateTo=this.value; currentPage=1; refresh();
+document.getElementById('date-pop-done').addEventListener('click', function(){ toggleDatePop(false); });
+document.querySelectorAll('.date-pop-quick .wbtn').forEach(function(b){
+  b.addEventListener('click', function(){
+    var days=+b.dataset.days;
+    var fmt=function(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+    var to=new Date(), from=new Date(Date.now()-(days-1)*864e5);
+    dateFromEl.value=fmt(from); dateToEl.value=fmt(to);
+    filters.dateFrom=dateFromEl.value; filters.dateTo=dateToEl.value;
+    currentPage=1; updateDateBtn(); refresh();
+  });
 });
+updateDateBtn();
 document.getElementById('btn-clear-filter').addEventListener('click', ()=>{
   filters={q:'',distillery:'',bottler:'',yearFrom:'',yearTo:'',vintageAgeMin:'',dateFrom:'',dateTo:'',minScore:0,caskStrength:false,ibOnly:false};
   document.getElementById('search-input').value='';
   ['filter-distillery','filter-bottler','filter-year-from','filter-year-to','filter-vintage-age-min','filter-date-from','filter-date-to'].forEach(i=>document.getElementById(i).value='');
+  updateDateBtn();
   currentPage=1; refresh();
 });
 
