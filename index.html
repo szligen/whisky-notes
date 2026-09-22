@@ -1079,7 +1079,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-11:34</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-11:47</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1930,8 +1930,33 @@ var FV_SHA = null, FV_DIRTY = false, FV_READY = false, FV_UPDATED = '';
 var FV_SPLIT = /[、,，;；/|｜]+/;
 var FV_NEG  = /没有|不太|不够|缺乏|缺少|没啥|不|无|没/;
 var FV_LIST = [], FV_EXACT = {};
-var FV_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
-                 "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
+/* 类目配色：不写死在 HTML 里，由 fvBuildColors() 按词表的 categories 运行时生成。
+   FV_LEGACY_COLORS 只保留最初 8 个类目的原色（保证现有观感一字不变）；
+   词表里新增 / 改名的类目，按 FV_PALETTE 顺序取第一个没被占用的颜色，用尽后循环。 */
+var FV_LEGACY_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
+                        "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
+var FV_PALETTE = ["#2f7f7a","#7b5ea7","#b45309","#3f6d4e","#475569","#9c5b2e",
+                  "#5b6c9e","#a2543f","#6a7f5a","#8a5a8f","#7f6a3f","#4f7f9e"];
+var FV_COLORS = {};   /* 运行时填充：{类目名: 色值} */
+
+function fvBuildColors(){
+  var m = {}, used = {}, i, c;
+  for (i = 0; i < FV_CATS.length; i++){                 /* 老类目沿用原色 */
+    c = FV_CATS[i];
+    if (FV_LEGACY_COLORS[c]){ m[c] = FV_LEGACY_COLORS[c]; used[m[c]] = 1; }
+  }
+  var pi = 0;
+  for (i = 0; i < FV_CATS.length; i++){                 /* 新类目取未占用的调色板色 */
+    c = FV_CATS[i];
+    if (m[c]) continue;
+    while (pi < FV_PALETTE.length && used[FV_PALETTE[pi]]) pi++;
+    if (pi >= FV_PALETTE.length) pi = i % FV_PALETTE.length;
+    m[c] = FV_PALETTE[pi]; used[m[c]] = 1; pi++;
+  }
+  FV_COLORS = m;
+}
+/* 取类目色 —— 未知类目给中性灰兜底，保证任何情况下都不会渲染出 undefined */
+function fvColor(c){ return FV_COLORS[c] || '#8a8178'; }
 var FV_EDITING = null;   /* 正在归类中的待校准词 */
 var FV_UNK_OPEN = false; /* 待校准区展开状态（跨重渲染保持，便于连续归类） */
 
@@ -1943,6 +1968,7 @@ function fvApply(d){
   FV_ALIAS   = (d && d.alias) || {};
   FV_TOUCHED = (d && d.touched) || {};
   FV_UPDATED = (d && d.updated) || '';
+  fvBuildColors();                 /* 类目配色跟着词表现算，加/改类目无需动 HTML */
   FV_READY   = (Object.keys(FV_WORDS).length + Object.keys(FV_ALIAS).length) > 0;
   fvInit(true);
   fvMergeLegacy();                 /* 词表就绪后再合并旧版增量，否则会被覆盖 */
@@ -2212,7 +2238,7 @@ function fvSeg(D){
   FV_CATS.forEach(function(c){
     var sweep=360*D.cats[c].notes/total, a0=ang, a1=ang+sweep;
     var p0=pt(R,a0), p1=pt(R,a1), p2=pt(ri,a1), p3=pt(ri,a0), la=sweep>180?1:0;
-    out.push('<path class="wseg" data-cat="'+c+'" fill="'+FV_COLORS[c]+'" d="M '
+    out.push('<path class="wseg" data-cat="'+c+'" fill="'+fvColor(c)+'" d="M '
       +p0[0].toFixed(2)+' '+p0[1].toFixed(2)+' A '+R+' '+R+' 0 '+la+' 1 '
       +p1[0].toFixed(2)+' '+p1[1].toFixed(2)+' L '+p2[0].toFixed(2)+' '+p2[1].toFixed(2)
       +' A '+ri+' '+ri+' 0 '+la+' 0 '+p3[0].toFixed(2)+' '+p3[1].toFixed(2)+' Z"/>');
@@ -2256,7 +2282,7 @@ function renderWheelView(){
   if (!FV_READY){ el.innerHTML = fvNotReadyHTML(); return; }
   var D = computeFlavor();
   var legend = FV_CATS.map(function(c){
-    return '<span class="wlg" data-cat="'+c+'"><i style="background:'+FV_COLORS[c]+'"></i>'
+    return '<span class="wlg" data-cat="'+c+'"><i style="background:'+fvColor(c)+'"></i>'
       +c+' <b>'+D.cats[c].words.length+'</b>词 <span>'+D.cats[c].notes+'</span>条</span>';
   }).join('');
   el.innerHTML =
@@ -2338,8 +2364,8 @@ function fvUnknownHTML(D){
     var w = u.p, q = esc(w).replace(/'/g,"\\'");
     if (FV_EDITING === w){
       var btns = FV_CATS.map(function(c){
-        return '<button class="wcat" style="border-color:'+FV_COLORS[c]+'" onclick="event.stopPropagation();fvClassify(\''+q+'\',\''+c+'\')">'
-          + '<i style="background:'+FV_COLORS[c]+'"></i>'+c+'</button>';
+        return '<button class="wcat" style="border-color:'+fvColor(c)+'" onclick="event.stopPropagation();fvClassify(\''+q+'\',\''+c+'\')">'
+          + '<i style="background:'+fvColor(c)+'"></i>'+c+'</button>';
       }).join('');
       return '<div class="wun-editor"><span class="wun-editor-w">'+esc(w)+'</span>'
         + '<div class="wcat-row">'+btns
@@ -2397,7 +2423,7 @@ function fvShowHome(){
       + '点词右侧「筛」可直接在列表里筛出含该词的酒。<br>数据<b>每次打开本视图时实时重算</b>，新记录即刻反映。</div><table class="wtable">';
   FV_CATS.slice().sort(function(a,b){return D.cats[b].notes-D.cats[a].notes;}).forEach(function(c){
     h+='<tr onclick="fvShowCat(\''+c+'\')"><td><span style="display:inline-block;width:10px;height:10px;'
-      +'border-radius:3px;background:'+FV_COLORS[c]+';margin-right:8px"></span><b>'+c+'</b>'
+      +'border-radius:3px;background:'+fvColor(c)+';margin-right:8px"></span><b>'+c+'</b>'
       +'<div class="wmeta">'+D.cats[c].words.length+' 个词 · 高频：'
       +D.cats[c].words.slice(0,4).map(function(w){return esc(w.w);}).join('、')+'</div></td>'
       +'<td style="text-align:right"><b>'+D.cats[c].notes+'</b> 条'
