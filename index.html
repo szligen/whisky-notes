@@ -166,19 +166,19 @@
   /* ===== Header ===== */
   header {
     background: var(--surface); border-bottom: 2px solid var(--frame);
-    padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
   }
-  .logo { display: flex; align-items: center; gap: 10px; }
-  /* 品牌标记改成一根硬色条（原 🥃 emoji 是 UI 图标里的禁用项） */
-  /* 站标：琥珀方块抠出等宽 W —— 与根目录 favicon.ico / favicon.svg 同一图形 */
-  .logo-icon { width: 22px; height: 22px; flex: none; display: block; color: var(--accent); }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  /* 站标：琥珀方块抠出等宽 W —— 与根目录 favicon.ico / favicon.svg 同一图形
+     图标是页头上唯一的品牌色锚点，标题退为墨色读数色 → 语义分工：琥珀 = 数据，墨色 = 名称 */
+  .logo-icon { width: 28px; height: 28px; flex: none; display: block; color: var(--accent); }
   .logo-icon rect { fill: currentColor; }
   .logo-icon path { stroke: var(--surface); }   /* 挖空用 surface，亮/暗主题各自成立 */
-  /* 标题走等宽体：与全站读数同一套字，「仪表台账」制度从这里收口 */
-  .logo h1 { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--accent);
-             letter-spacing: 0.15em; text-transform: uppercase; }
-  .logo span { font-size: 11.5px; color: var(--text-muted); font-weight: 400; }
+  /* 标题走等宽体：与全站读数同一套字，但字号提到刊头量级并收紧字距（宽字距 15px 读作导语标签） */
+  .logo h1 { font-family: var(--mono); font-size: 25px; font-weight: 700; color: var(--text);
+             letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.1; }
+  .logo span { font-size: 12.5px; color: var(--text-muted); font-weight: 400; }
   .version-badge {
     font-size: 11px; color: var(--text-light); background: transparent;
     border: 1px solid var(--border); padding: 1px 6px; border-radius: 0; margin-left: 8px;
@@ -700,8 +700,9 @@
 
     /* --- Header --- */
     header { padding: 10px 14px; gap: 6px; flex-wrap: wrap; }
-    .logo { gap: 6px; }
-    .logo h1 { font-size: 13.5px; letter-spacing: 0.11em; }
+    .logo { gap: 8px; }
+    /* 手机端同步放大：图标 ≥ 标题 cap-height，避免小屏上图标压过品牌名 */
+    .logo h1 { font-size: 17px; letter-spacing: 0.05em; }
     .logo span { font-size:12px; display: none; }          /* hide "697条记录" */
     .version-badge { display: none; }                       /* hide version badge */
 
@@ -709,7 +710,17 @@
     .btn-header, #btn-add { padding: 0 10px; gap: 0; }
     .btn-theme { width: 32px; height: 32px; }
     .btn-header span, #btn-add span { display: none; }
-    .logo-icon { width: 19px; height: 19px; }
+    .logo-icon { width: 23px; height: 23px; }
+
+    /* 同步徽章收成状态点：文字宽度让给放大的 logo；状态用「色 + 符号」双通道，不单靠颜色 */
+    .sync-badge, .sync-badge.clean, .sync-badge.dirty {
+      font-size: 0; width: 18px; height: 18px; padding: 0; border-radius: 50%;
+      border-color: transparent; display: flex; align-items: center; justify-content: center;
+    }
+    .sync-badge.clean { background: var(--success); }
+    .sync-badge.clean::before { content: "✓"; font-size: 11px; color: #fff; line-height: 1; }
+    .sync-badge.dirty { background: var(--warn); }
+    .sync-badge.dirty::before { content: "↻"; font-size: 11px; color: #fff; line-height: 1; }
 
     /* --- Container & Stats --- */
     .container { padding: 12px 10px; }
