@@ -583,6 +583,47 @@
   .btn-save:hover { background: var(--accent-light); }
   .btn-save.saving { opacity: 0.7; pointer-events: none; }
 
+  /* ===== 趣味猜酒厂 =====
+     footer 左侧的辅助入口：金底为底，与「取消」(透明) 、「保存记录」(实底棕) 三者分层
+     无描述时 disabled（灰化），点了不触发任何逻辑 */
+  .btn-guess {
+    padding: 9px 18px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; margin-right: auto;
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--gold-light); border: 1px solid var(--gold); color: var(--accent);
+  }
+  .btn-guess:hover:not(:disabled) { background: var(--warn-bg); border-color: var(--accent-light); }
+  .btn-guess:disabled {
+    background: transparent; border-color: var(--border); color: var(--text-light);
+    cursor: not-allowed; opacity: 0.7;
+  }
+
+  /* 结果面板（表单最底部） */
+  .gs-words { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .gs-word {
+    font-size: 11px; line-height: 19px; padding: 0 7px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--text-muted);
+  }
+  .gs-word.alias { border-style: dashed; color: var(--text-light); }
+  .gs-rows { display: flex; flex-direction: column; }
+  .gs-row {
+    display: flex; align-items: baseline; gap: 9px;
+    padding: 7px 0; border-top: 1px solid var(--border-light);
+  }
+  .gs-row:first-child { border-top: none; padding-top: 2px; }
+  .gs-rank { flex: none; width: 12px; font-family: var(--mono); font-size: 11px; color: var(--text-light); }
+  .gs-dis { flex: none; min-width: 112px; font-size: 14px; font-weight: 600; color: var(--text); }
+  .gs-common { flex: 1; min-width: 0; font-size: 12px; color: var(--text-muted); }
+  .gs-common i { font-style: normal; color: var(--text-light); }
+  .gs-n { flex: none; font-size: 11px; color: var(--text-light); white-space: nowrap; }
+  .gs-msg { font-size: 12px; line-height: 1.7; color: var(--text-light); }
+  .gs-foot {
+    margin-top: 11px; padding-top: 9px; border-top: 1px solid var(--border-light);
+    font-size: 11px; line-height: 1.65; color: var(--text-light);
+  }
+  /* 点开时滚到面板：留出 sticky footer 的高度，否则脚注被按钮条盖住 */
+  #gs-panel { scroll-margin-bottom: 74px; }
+
   /* ===== Delete Confirm ===== */
   .confirm-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1100;
@@ -864,7 +905,14 @@
     .modal-overlay { padding: 0; align-items: flex-end; }
     .modal-header { padding: 16px 20px 12px; }
     .modal-body { padding: 16px 20px 20px; }
-    .modal-footer { padding: 12px 20px; }
+    .modal-footer { padding: 12px 16px; gap: 8px; }
+    /* 三个按钮挤一行：收窄「趣味猜酒厂」，保证不与取消/保存重叠 */
+    .btn-guess { padding: 9px 12px; font-size: 13px; gap: 5px; }
+    .btn-guess svg { width: 13px; height: 13px; }
+    /* 结果行：窄屏改为「序号 酒厂名 …… 样本量」+ 次行共同词，避免中段硬换行 */
+    .gs-row { flex-wrap: wrap; }
+    .gs-n { order: 1; margin-left: auto; }
+    .gs-common { order: 2; flex: 1 1 100%; margin-top: 3px; }
 
     /* Form grid single column on mobile */
     .form-grid { grid-template-columns: 1fr !important; }
@@ -1031,7 +1079,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-09:33</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-11:34</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1269,8 +1317,20 @@
             <div class="score-inputs" data-page-node-id="w4VX1DdROzV2EX2BKdCtz7"><input type="number" id="f-finish" min="0" max="5" step="0.1" value="" placeholder="0-5" oninput="updateScore('finish',this.value)" data-page-node-id="KWAO8DGagtflfhPISn28g4"><span class="score-display" id="disp-finish" data-page-node-id="Fs9DnT5CuGiZ58yboMiuDt">—</span></div></div>
         </div>
       </div>
+
+      <!-- 趣味猜酒厂 · 结果：点 footer 按钮后在表单最底部展开 -->
+      <div class="form-section hidden" id="gs-panel">
+        <div class="form-section-title" id="gs-title">趣味猜酒厂 · 仅作风格参考</div>
+        <div class="gs-words" id="gs-words"></div>
+        <div class="gs-rows" id="gs-rows"></div>
+        <div class="gs-foot" id="gs-foot"></div>
+      </div>
     </div>
     <div class="modal-footer" data-page-node-id="dwv0yE8mgdSpPHKRA6G11N">
+      <button class="btn-guess" id="btn-guess" type="button" disabled title="先在「闻香」或「余韵」写下描述">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="8.5" cy="8.5" r="1.15" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.15" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.15" fill="currentColor" stroke="none"/></svg>
+        趣味猜酒厂
+      </button>
       <button class="btn-cancel" id="btn-cancel" data-page-node-id="MBPr0WOLfEAxepYNT3c9mR">取消</button>
       <button class="btn-save" id="btn-save-note" data-page-node-id="dKM6fNjnu2shGu0sh7k8T3">保存记录 <span class="sync-spinner" data-page-node-id="NCumwyZ9e05RDls48YDYgx"></span></button>
     </div>
@@ -2816,7 +2876,7 @@ async function saveSettingsAndTest() {
 // ============================================================
 // Modal helpers
 // ============================================================
-function openModal(){ document.getElementById('modal-overlay').classList.remove('hidden'); }
+function openModal(){ document.getElementById('modal-overlay').classList.remove('hidden'); gsReset(); }
 function closeModal(){ document.getElementById('modal-overlay').classList.add('hidden'); }
 
 /** Toggle mobile filter panel visibility */
@@ -2919,6 +2979,149 @@ document.getElementById('confirm-cancel').addEventListener('click', ()=>{
   document.getElementById('confirm-overlay').classList.add('hidden');
 });
 document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+
+// ============================================================
+// 趣味猜酒厂 — 用闻香 / 余韵的风味词，反查最像的酒厂
+// ------------------------------------------------------------
+// 口径（与离线留一验证脚本一致）：
+//   score      = 覆盖率 x 样本量修正
+//   覆盖率      = 你这段描述提出的词里，该厂历史描述出现过词的比例
+//   样本量修正   = n/(n+k)  —— 压制"只留过 1 条记录却 100% 命中"的虚高
+//   入榜门槛    = 该厂至少 GS_MIN_NOTES 条能提出词的记录
+//   自我排除    = 编辑已有记录时剔除它自己，否则等于自己命中自己
+// 定位说明：这是「风格相似度参考」，不是鉴定。同厂不同桶型方差很大，
+//          且描述用词也可能只反映你自己的语言习惯 —— 所以不显示百分比。
+// ============================================================
+var GS_MIN_NOTES = 3, GS_K = 3, GS_TOP = 5, GS_MIN_WORDS = 3;
+
+function gsQueryWords(){
+  fvInit();
+  var txt = (document.getElementById('f-nose').value || '') + '\uff0c' +
+            (document.getElementById('f-aftertaste').value || '');
+  var ps = txt.split(FV_SPLIT), seen = {}, out = [];
+  for (var p = 0; p < ps.length; p++){
+    var ph = (ps[p] || '').trim();
+    if (!ph || ph.length > 14) continue;
+    var hs = fvMatch(ph);
+    for (var k = 0; k < hs.length; k++){
+      var w = hs[k].w;
+      if (seen[w]) continue;
+      seen[w] = 1;
+      out.push({ w: w, a: hs[k].a, c: hs[k].c });
+    }
+  }
+  return out;
+}
+
+/* 一段文本里能提出的全部风味词 -> {词:1} */
+function gsWordsOf(text){
+  var ps = String(text || '').split(FV_SPLIT), seen = {};
+  for (var p = 0; p < ps.length; p++){
+    var ph = (ps[p] || '').trim();
+    if (!ph || ph.length > 14) continue;
+    var hs = fvMatch(ph);
+    for (var k = 0; k < hs.length; k++) seen[hs[k].w] = 1;
+  }
+  return seen;
+}
+
+function gsCompute(){
+  var q = gsQueryWords();
+  var res = { q: q, rows: [], pool: 0 };
+  if (!q.length || !FV_READY) return res;
+
+  var prof = {}, cnt = {}, N = db.notes;
+  for (var j = 0; j < N.length; j++){
+    var r = N[j];
+    if (editingId && r.id === editingId) continue;              /* leave-one-out */
+    var d = (r.distillery || '').trim();
+    if (!d) continue;
+    if (!(r.nose || '').trim() && !(r.aftertaste || '').trim()) continue;
+    var ws = gsWordsOf((r.nose || '') + '\uff0c' + (r.aftertaste || ''));
+    var keys = Object.keys(ws);
+    if (!keys.length) continue;                                 /* 提不出词的不算样本 */
+    cnt[d] = (cnt[d] || 0) + 1;
+    prof[d] = prof[d] || {};
+    for (var t = 0; t < keys.length; t++) prof[d][keys[t]] = 1;
+  }
+
+  var rows = [];
+  Object.keys(prof).forEach(function(d){
+    var n = cnt[d];
+    if (n < GS_MIN_NOTES) return;
+    var U = prof[d], hit = [];
+    q.forEach(function(x){ if (U[x.w]) hit.push(x); });
+    if (!hit.length) return;
+    var cov = hit.length / q.length;
+    rows.push({ d: d, n: n, hit: hit, cov: cov, score: cov * (n / (n + GS_K)) });
+  });
+  res.pool = Object.keys(prof).length;
+  rows.sort(function(a, b){
+    return (b.score - a.score) || (b.n - a.n) || a.d.localeCompare(b.d);
+  });
+  res.rows = rows.slice(0, GS_TOP);
+  return res;
+}
+
+function gsHide(){ document.getElementById('gs-panel').classList.add('hidden'); }
+
+/* 按钮可用性：闻香与余韵都为空 -> 灰化，点击不触发任何逻辑 */
+function gsSyncBtn(){
+  var has = !!((document.getElementById('f-nose').value || '').trim() ||
+               (document.getElementById('f-aftertaste').value || '').trim());
+  var b = document.getElementById('btn-guess');
+  b.disabled = !has;
+  b.title = has ? '根据闻香 / 余韵的风味词，看看最像哪几家酒厂'
+                : '先在「闻香」或「余韵」写下描述';
+  if (!has) gsHide();
+}
+
+function gsReset(){ gsHide(); gsSyncBtn(); }
+
+function gsRender(){
+  fvInit();
+  if (!FV_READY){ toast('风味词表还没加载好，稍后再试'); return; }
+  var res = gsCompute();
+  if (!res.q.length){ toast('先在「闻香」或「余韵」写下描述'); return; }
+
+  var wordsEl = document.getElementById('gs-words');
+  var rowsEl  = document.getElementById('gs-rows');
+  var footEl  = document.getElementById('gs-foot');
+
+  var head = '识别到 ' + res.q.length + ' 个风味词';
+  if (res.q.length < GS_MIN_WORDS) head += '（偏少，可信度有限）';
+  document.getElementById('gs-title').textContent = '趣味猜酒厂 · ' + head;
+
+  wordsEl.innerHTML = res.q.map(function(x){
+    return '<span class="gs-word' + (x.a ? ' alias' : '') + '">' + esc(x.w) + '</span>';
+  }).join('');
+
+  if (!res.rows.length){
+    rowsEl.innerHTML = '<div class="gs-msg">没找到匹配的酒厂。库里至少 ' + GS_MIN_NOTES +
+      ' 条有描述记录的酒厂才参与比对，目前可比对的共 ' + res.pool + ' 家。</div>';
+  } else {
+    rowsEl.innerHTML = res.rows.map(function(r, i){
+      var common = r.hit.map(function(x){ return x.w; }).join('、');
+      return '<div class="gs-row">' +
+        '<span class="gs-rank">' + (i + 1) + '</span>' +
+        '<span class="gs-dis">' + esc(r.d) + '</span>' +
+        '<span class="gs-common">共同词 <i>' + esc(common) + '</i></span>' +
+        '<span class="gs-n">库里 ' + r.n + ' 条</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  footEl.textContent = '口径：你描述里的风味词，在每家酒厂历史描述中出现过的比例 x 样本量修正'
+    + '（n/(n+3)）。这是风格参考，不是鉴定 —— 同一酒厂不同桶型差异很大。';
+
+  document.getElementById('gs-panel').classList.remove('hidden');
+  document.getElementById('gs-panel').scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+document.getElementById('btn-guess').addEventListener('click', gsRender);
+['f-nose', 'f-aftertaste'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', gsSyncBtn);
+});
 
 // ============================================================
 // 同步状态条 + 多路触发（不赌定时器：手机锁屏会挂起 JS 定时器）
