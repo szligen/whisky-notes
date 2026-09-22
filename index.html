@@ -1079,7 +1079,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-18:42</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-19:39</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1434,7 +1434,9 @@ function setStatus(type, msg) {
 // ============================================================
 // Data — lives in memory, source of truth is GitHub
 // ============================================================
-let db = { version: "1.0", notes: [] };
+// db.deleted = 删除墓碑表 { 记录id: 删除时间 }，随数据文件一起同步到仓库；
+// 作用是阻止「另一台设备上还留着的旧副本」把已删除的记录复活。见 mergeLocalWithServer()
+let db = { version: "1.0", notes: [], deleted: {} };
 const PAGE_SIZE = 24;
 let filtered = [];
 let currentPage = 1;
@@ -1468,6 +1470,7 @@ let dbRev = 0;                 // ★ 本地数据修订号：每次本地改动
                                //   同步是异步的（PUT 可能飞 1~3 秒），必须靠它判断
                                //   "推送期间有没有新编辑"，否则会用旧快照把新改动覆盖掉
 const SYNC_DEBOUNCE = 12000;   // 12 秒防抖：批量录入合并成一次 commit
+const TOMBSTONE_TTL_MS = 90 * 24 * 3600 * 1000;  // 删除墓碑保留 90 天（兜住长期不打开的设备）
 
 // ---------- Store：异步存储抽象，localStorage 优先，超配额自动切 IndexedDB ----------
 let _idbPromise = null;
@@ -1544,14 +1547,61 @@ async function loadLocal(){
     syncMeta = Object.assign({ baseSha:null, dirty:false, lastSyncAt:null, pendingDeletes:[] }, meta);
     if (!Array.isArray(syncMeta.pendingDeletes)) syncMeta.pendingDeletes = [];
   }
-  if (snap && Array.isArray(snap.notes)) { db = snap; return true; }
+  if (snap && Array.isArray(snap.notes)) {
+    db = snap;
+    if (!db.deleted || typeof db.deleted !== 'object') db.deleted = {};   // 老快照没有墓碑表
+    return true;
+  }
   return false;
 }
 
 // ---------- 合并算法（纯函数，便于单独测试）----------
-// 策略：以服务器为底 + 本地优先覆盖 + 删除墓碑剔除 + 追加本地独有
-function mergeLocalWithServer(serverRecords, localRecords, pendingDeletes){
-  const delSet = new Set(pendingDeletes || []);
+/* 多设备同步的冲突裁决规则（2026-09-22 修订）
+
+   旧的策略是「同 id 一律本地优先」。它只在本机是唯一写入者时成立：手机上改完还没推，
+   电脑上那份旧副本一同步就把手机的新内容覆盖掉（本地优先 → 旧赢新）。现改为：
+
+   1. 每条记录带 updated_at（保存时盖章）。同 id 比较时间戳，【新的赢】；
+      两边都没有时间戳（历史老记录）则保持本地优先，与旧行为一致，不产生无谓改动。
+   2. 删除也带时间戳，存进 db.deleted（随数据文件同步的墓碑表）：
+      记录时间戳 <= 墓碑时间戳 → 该记录已死，任何设备都不得复活它。
+      墓碑保留 90 天（TOMBSTONE_TTL_MS），足够覆盖"某台设备长期没打开"的场景。
+   3. pendingDeletes 是本机"删了但还没推上去"的强墓碑，参与本轮裁决。
+
+   仍未覆盖：两台设备在时钟偏移范围内同时编辑同一条 → 时间较晚的那次赢，
+   较早的那次被覆盖（无字段级合并）。这是"新的赢"的固有代价，只能二选一。 */
+function tsOf(v){                                   // 时间戳容忍 ISO 字符串 / 数字 / 缺失
+  if (v == null || v === '') return 0;
+  const t = (typeof v === 'number') ? v : Date.parse(v);
+  return isNaN(t) ? 0 : t;
+}
+function recTs(r){ return tsOf(r && (r.updated_at || r.updatedAt)); }
+
+/** 合并两侧墓碑：取较新时间戳，并淘汰过期条目 */
+function mergeTombstones(a, b){
+  const out = {};
+  [a, b].forEach(src => {
+    if (!src || typeof src !== 'object') return;
+    Object.keys(src).forEach(id => {
+      const t = tsOf(src[id]);
+      if (!id || !t) return;
+      if (!(id in out) || out[id] < t) out[id] = t;
+    });
+  });
+  const cutoff = Date.now() - TOMBSTONE_TTL_MS;
+  Object.keys(out).forEach(id => { if (out[id] < cutoff) delete out[id]; });
+  return out;
+}
+
+/** 以服务器为底 + 同 id 新的赢 + 墓碑剔除 + 追加本地独有
+    返回 { notes, deleted } —— deleted 是合并后的墓碑表，需要一起推送 */
+function mergeLocalWithServer(serverRecords, localRecords, localTombstones, serverTombstones, pendingDeletes){
+  const tomb = mergeTombstones(serverTombstones, localTombstones);
+  const nowTs = Date.now();
+  (pendingDeletes || []).forEach(id => { if (id) tomb[id] = Math.max(tomb[id] || 0, nowTs); });
+
+  const alive = r => { const t = tomb[r.id]; return !t || recTs(r) > t; };
+
   const localMap = new Map();
   (localRecords || []).forEach(r => { if (r && r.id) localMap.set(r.id, r); });
 
@@ -1559,20 +1609,46 @@ function mergeLocalWithServer(serverRecords, localRecords, pendingDeletes){
   const seen = new Set();
   (serverRecords || []).forEach(r => {
     if (!r || !r.id) return;
-    if (delSet.has(r.id)) return;                                  // 墓碑：服务器侧删除，防止复活
-    if (localMap.has(r.id)) { out.push(localMap.get(r.id)); seen.add(r.id); }  // 同 id：本地优先
-    else out.push(r);
+    const l = localMap.get(r.id);
+    // 同 id：时间戳新的赢；平局（含两边都无时间戳）本地优先，保持历史行为
+    const pick = (l && recTs(l) >= recTs(r)) ? l : r;
+    if (alive(pick)) out.push(pick);
+    seen.add(r.id);                       // 即使被墓碑剔除也要标记，避免下面又当"本地独有"加回来
   });
-  (localRecords || []).forEach(r => {                              // 本地独有（未同步新增）
-    if (!r || !r.id) return;
-    if (!seen.has(r.id) && !delSet.has(r.id)) { out.push(r); seen.add(r.id); }
+  (localRecords || []).forEach(r => {     // 本地独有（未同步新增 / 被删掉的那侧已不含它）
+    if (!r || !r.id || seen.has(r.id)) return;
+    seen.add(r.id);
+    if (!alive(r)) return;                // ★ 被墓碑判死 → 不再复活
+    out.push(r);
   });
-  return out;
+  // 记录比墓碑新（用户删后又以同 id 重建）→ 墓碑作废
+  Object.keys(tomb).forEach(id => {
+    const live = out.find(x => x.id === id);
+    if (live && recTs(live) > tomb[id]) delete tomb[id];
+  });
+  return { notes: out, deleted: tomb };
+}
+
+/** 本地干净时采用服务器快照：记录以服务器为准，但本机墓碑仍参与过滤
+    （不然一台设备删掉的记录，会被另一台"本地还留着旧副本"的设备复活） */
+function adoptServerSnapshot(snap){
+  const m = mergeLocalWithServer(snap.notes, [], db.deleted, snap.deleted, syncMeta.pendingDeletes);
+  db.notes = m.notes;
+  db.deleted = m.deleted;
 }
 
 // ============================================================
 // GitHub API — read & write
 // ============================================================
+
+/** 从服务端数据文件里读墓碑表（缺字段 = 空表，兼容历史文件） */
+function readTombstones(data){
+  const d = data && data.deleted;
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return {};
+  const out = {};
+  Object.keys(d).forEach(id => { const t = tsOf(d[id]); if (id && t) out[id] = t; });
+  return out;
+}
 
 /** Load db from GitHub Contents API */
 async function loadFromGitHub() {
@@ -1584,7 +1660,7 @@ async function loadFromGitHub() {
   if (!res.ok) {
     if (res.status === 404) {
       ghCfg.fileSha = null;
-      db = { version: "1.0", notes: [] };
+      db = { version: "1.0", notes: [], deleted: {} };
       setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo}（空仓库，开始添加记录吧）`);
       refresh();
       return;
@@ -1603,6 +1679,7 @@ async function loadFromGitHub() {
 
   if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
   db = data;
+  if (!db.deleted || typeof db.deleted !== 'object') db.deleted = {};
 
   setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo} · ${db.notes.length} 条记录`);
   refresh();
@@ -1620,14 +1697,17 @@ async function fetchServerSnapshot(){
   const json = new TextDecoder('utf-8').decode(bytes);
   const data = JSON.parse(json);
   if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
-  return { notes: data.notes, sha: info.sha, missing: false };
+  return { notes: data.notes, deleted: readTombstones(data), sha: info.sha, missing: false };
 }
 
-/** 整文件 PUT（去缩进省约 30% 体积）；冲突抛出 conflict 标记 */
-async function putServerSnapshot(notes, sha){
-  const jsonStr = JSON.stringify({ version: (db && db.version) || "1.0", notes: notes });
+/** 整文件 PUT（去缩进省约 30% 体积）；冲突抛出 conflict 标记
+    墓碑表非空时一并写入（为空则省略该字段，保持文件与旧格式一致） */
+async function putServerSnapshot(notes, sha, tombstones){
+  const fileObj = { version: (db && db.version) || "1.0", notes: notes };   // ← 数据文件内容
+  if (tombstones && Object.keys(tombstones).length) fileObj.deleted = tombstones;
+  const jsonStr = JSON.stringify(fileObj);
   const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
-  const payload = { message: commitMessage('更新'), content: b64, branch: ghCfg.branch };
+  const payload = { message: commitMessage('更新'), content: b64, branch: ghCfg.branch };  // ← 请求体
   if (sha) payload.sha = sha;
 
   const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json`;
@@ -1659,7 +1739,8 @@ async function runSync(){
   if (!hasConfig()) return false;
   if (isSyncing) { pendingAgain = true; return false; }   // 修复：不再静默丢弃
 
-  const revAtStart = dbRev;      // ★ 记下本次同步开始时的修订号（见文件末尾的说明）
+  const revAtStart = dbRev;      // ★ 记下本次同步开始时的修订号：推送期间若又编辑，dbRev 会变，
+                                 //   就不许用这份"发送前的快照"覆盖本地（否则改动永久丢失）
   isSyncing = true;
   document.body.classList.add('syncing');
   setStatus('syncing', '正在同步到 GitHub…');
@@ -1669,7 +1750,7 @@ async function runSync(){
 
     // 本地干净 → 服务器为准（期间若来了新编辑，dbRev 已变，交给下面的合并分支）
     if (!syncMeta.dirty && dbRev === revAtStart) {
-      db.notes = snap.notes;
+      adoptServerSnapshot(snap);
       syncMeta.baseSha = snap.sha;
       await Store.set(LS_DB, db);
       await Store.set(LS_SYNC, syncMeta);
@@ -1680,17 +1761,18 @@ async function runSync(){
     }
 
     // 本地脏 → 合并后推送
-    let notesToPush = mergeLocalWithServer(snap.notes, db.notes, syncMeta.pendingDeletes);
+    let merged = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes);
     let shaToUse = snap.sha;
     let attempt = 0, delay = 2000, lastErr = null, ok = false;
 
     while (attempt < 4 && !ok) {
       try {
-        const newSha = await putServerSnapshot(notesToPush, shaToUse);
+        const newSha = await putServerSnapshot(merged.notes, shaToUse, merged.deleted);
         syncMeta.baseSha = newSha;
         if (dbRev === revAtStart) {
           /* 推送期间没有新的本地改动 → 可以安全采用这份快照 */
-          db.notes = notesToPush;
+          db.notes = merged.notes;
+          db.deleted = merged.deleted;
           syncMeta.dirty = false;
           syncMeta.pendingDeletes = [];
         } else {
@@ -1713,7 +1795,7 @@ async function runSync(){
           // 冲突 → 重新拉取最新 SHA/内容再合并
           try {
             const s2 = await fetchServerSnapshot();
-            notesToPush = mergeLocalWithServer(s2.notes, db.notes, syncMeta.pendingDeletes);
+            merged = mergeLocalWithServer(s2.notes, db.notes, db.deleted, s2.deleted, syncMeta.pendingDeletes);
             shaToUse = s2.sha;
           } catch(_){}
           await new Promise(r => setTimeout(r, delay));
@@ -1762,7 +1844,7 @@ async function reconcileOnLoad(){
 
   // 本地干净 → 服务器为准
   if (!syncMeta.dirty) {
-    db.notes = snap.notes;
+    adoptServerSnapshot(snap);
     syncMeta.baseSha = snap.sha;
     await Store.set(LS_DB, db);
     await Store.set(LS_SYNC, syncMeta);
@@ -1772,9 +1854,10 @@ async function reconcileOnLoad(){
   }
 
   // 本地有未同步修改 → 合并 + 推送 + 提示
-  const merged = mergeLocalWithServer(snap.notes, db.notes, syncMeta.pendingDeletes);
-  const recoveredCount = merged.length - snap.notes.length + syncMeta.pendingDeletes.length;
-  db.notes = merged;
+  const merged = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes);
+  const recoveredCount = merged.notes.length - snap.notes.length + syncMeta.pendingDeletes.length;
+  db.notes = merged.notes;
+  db.deleted = merged.deleted;
   await Store.set(LS_DB, db);
   setStatus('syncing', '检测到未同步修改，正在合并并同步…');
   refresh(); updateSyncBadge();
@@ -1830,7 +1913,9 @@ function applyFiltersAndSort() {
   if (filters.q) {
     const terms = filters.q.trim().toLowerCase().split(/\s+/).filter(t => t.length > 0);
     notes = notes.filter(n => {
-      const hay = JSON.stringify(n).toLowerCase();
+      // updated_at 是同步用的元数据，不参与文本检索
+      // （否则搜「2026」会把所有刚改过的记录全命中）
+      const hay = JSON.stringify(n, (k, v) => k === 'updated_at' ? undefined : v).toLowerCase();
       return terms.every(t => hay.includes(t));
     });
   }
@@ -2789,6 +2874,8 @@ async function saveNote(){
     palate_score: scoreActive.palate  ? parseFloat(document.getElementById('f-palate').value)  : null,
     body_score:   scoreActive.body   ? parseFloat(document.getElementById('f-body').value)    : null,
     finish_score: scoreActive.finish ? parseFloat(document.getElementById('f-finish').value)  : null,
+    // ★ 修改时间：跨设备合并时判断"同一条记录谁更新"的唯一依据（见 mergeLocalWithServer）
+    updated_at: new Date().toISOString(),
   };
 
   // Merge images
@@ -2822,6 +2909,7 @@ async function saveNote(){
       var ni = db.notes.findIndex(function(x){ return x.id === note.id; });
       if (ni >= 0) {
         db.notes[ni].images = existingImages.concat(uploadedNames);
+        db.notes[ni].updated_at = new Date().toISOString();   // 图片也是内容变更，要盖时间戳
       }
       await persistLocal();
       toast('\u2705 ' + uploadedNames.length + ' \u5f20\u56fe\u7247\u5df2\u4e0a\u4f20');
@@ -2861,9 +2949,15 @@ async function confirmDelete(){
 
   const deletedId = deletingId;
   db.notes=db.notes.filter(n=>n.id!==deletedId);
-  // 墓碑：记录待删除 id，防止合并时从服务器"复活"
-  if (deletedId && syncMeta.pendingDeletes.indexOf(deletedId) < 0) {
-    syncMeta.pendingDeletes.push(deletedId);
+  // 墓碑（双层）：
+  //  · db.deleted[id] = 删除时间 —— 随数据文件同步，让其它设备也知道"这条是被删的"，不得复活
+  //  · syncMeta.pendingDeletes —— 本机"删了但还没推上去"的强墓碑，推送成功后清空
+  if (deletedId) {
+    if (!db.deleted || typeof db.deleted !== 'object') db.deleted = {};
+    db.deleted[deletedId] = new Date().toISOString();
+    if (syncMeta.pendingDeletes.indexOf(deletedId) < 0) {
+      syncMeta.pendingDeletes.push(deletedId);
+    }
   }
   deletingId=null;
   document.getElementById('confirm-overlay').classList.add('hidden');
