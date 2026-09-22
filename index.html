@@ -1079,7 +1079,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-19:39</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-20:12</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1562,11 +1562,15 @@ async function loadLocal(){
    电脑上那份旧副本一同步就把手机的新内容覆盖掉（本地优先 → 旧赢新）。现改为：
 
    1. 每条记录带 updated_at（保存时盖章）。同 id 比较时间戳，【新的赢】；
-      两边都没有时间戳（历史老记录）则保持本地优先，与旧行为一致，不产生无谓改动。
+      两边都没有时间戳（历史老记录）则视为平局，归属由 tieWinner 决定：
+        推送路径取 'local'（本地优先，与旧行为一致，不产生无谓改动）；
+        采纳路径取 'server'（本地干净时服务器先优先，免得本机旧副本顶掉别处的改动）。
    2. 删除也带时间戳，存进 db.deleted（随数据文件同步的墓碑表）：
       记录时间戳 <= 墓碑时间戳 → 该记录已死，任何设备都不得复活它。
       墓碑保留 90 天（TOMBSTONE_TTL_MS），足够覆盖"某台设备长期没打开"的场景。
    3. pendingDeletes 是本机"删了但还没推上去"的强墓碑，参与本轮裁决。
+   4. 合并结果额外回报 localNewer（本机有、快照里没有的条数）。采纳路径据此拒绝
+      反向采纳一份残缺/过旧的快照 —— 这是"读缓存回退"事故的第二道防线。
 
    仍未覆盖：两台设备在时钟偏移范围内同时编辑同一条 → 时间较晚的那次赢，
    较早的那次被覆盖（无字段级合并）。这是"新的赢"的固有代价，只能二选一。 */
@@ -1594,8 +1598,14 @@ function mergeTombstones(a, b){
 }
 
 /** 以服务器为底 + 同 id 新的赢 + 墓碑剔除 + 追加本地独有
-    返回 { notes, deleted } —— deleted 是合并后的墓碑表，需要一起推送 */
-function mergeLocalWithServer(serverRecords, localRecords, localTombstones, serverTombstones, pendingDeletes){
+    tieWinner: 'local'（默认，推送路径：平局本地优先）/ 'server'（采纳路径：平局服务器优先）
+    返回 { notes, deleted, localNewer }：
+      · notes / deleted —— 合并结果，需要一起推送
+      · localNewer —— 本机持有、而这份服务器快照里没有（或更旧）的条数。
+        调用方据此判断"手上这份服务器快照是否残缺/过期"：> 0 就绝不能反向采纳它，
+        因为那会把本机较新的数据连同 updated_at 一起抹掉（2026-09-22 读缓存回退事故的根源）。 */
+function mergeLocalWithServer(serverRecords, localRecords, localTombstones, serverTombstones, pendingDeletes, tieWinner){
+  const tieLocal = tieWinner !== 'server';   // 平局归属，默认本地优先（推送路径）
   const tomb = mergeTombstones(serverTombstones, localTombstones);
   const nowTs = Date.now();
   (pendingDeletes || []).forEach(id => { if (id) tomb[id] = Math.max(tomb[id] || 0, nowTs); });
@@ -1607,12 +1617,21 @@ function mergeLocalWithServer(serverRecords, localRecords, localTombstones, serv
 
   const out = [];
   const seen = new Set();
+  let localNewer = 0;                     // ★ 本机持有、而这份服务器快照里没有（或更旧）的条数
   (serverRecords || []).forEach(r => {
     if (!r || !r.id) return;
     const l = localMap.get(r.id);
-    // 同 id：时间戳新的赢；平局（含两边都无时间戳）本地优先，保持历史行为
-    const pick = (l && recTs(l) >= recTs(r)) ? l : r;
-    if (alive(pick)) out.push(pick);
+    /* 同 id：时间戳新的赢。平局（含两边都无时间戳的历史记录）由 tieWinner 决定：
+         · 'local'（默认，推送路径）—— 本地优先，与历史行为一致；
+         · 'server'（采纳路径）    —— 服务器优先。因为"本地干净"意味着本机的东西服务器上
+           本该都有，此时服务器内容不同必是别处改的，不能拿本机旧副本去顶。 */
+    const lt = recTs(l), rt = recTs(r);
+    const pick = (l && (lt > rt || (lt === rt && tieLocal))) ? l : r;
+    if (alive(pick)) {
+      out.push(pick);
+      // 选中本地且与服务器那份不同 → 这份快照没包含该改动，必须推上去，不能静默丢弃
+      if (pick === l && JSON.stringify(l) !== JSON.stringify(r)) localNewer++;
+    }
     seen.add(r.id);                       // 即使被墓碑剔除也要标记，避免下面又当"本地独有"加回来
   });
   (localRecords || []).forEach(r => {     // 本地独有（未同步新增 / 被删掉的那侧已不含它）
@@ -1620,26 +1639,32 @@ function mergeLocalWithServer(serverRecords, localRecords, localTombstones, serv
     seen.add(r.id);
     if (!alive(r)) return;                // ★ 被墓碑判死 → 不再复活
     out.push(r);
+    localNewer++;                         // 服务器上根本没有这条 → 本机独有，需要推
   });
   // 记录比墓碑新（用户删后又以同 id 重建）→ 墓碑作废
   Object.keys(tomb).forEach(id => {
     const live = out.find(x => x.id === id);
     if (live && recTs(live) > tomb[id]) delete tomb[id];
   });
-  return { notes: out, deleted: tomb };
-}
-
-/** 本地干净时采用服务器快照：记录以服务器为准，但本机墓碑仍参与过滤
-    （不然一台设备删掉的记录，会被另一台"本地还留着旧副本"的设备复活） */
-function adoptServerSnapshot(snap){
-  const m = mergeLocalWithServer(snap.notes, [], db.deleted, snap.deleted, syncMeta.pendingDeletes);
-  db.notes = m.notes;
-  db.deleted = m.deleted;
+  return { notes: out, deleted: tomb, localNewer: localNewer };
 }
 
 // ============================================================
 // GitHub API — read & write
 // ============================================================
+
+/* ★ 读请求一律走这里：强制绕过 HTTP 缓存（2026-09-22）
+   事故：GitHub 的 contents 接口响应带 `cache-control: max-age=60`，浏览器 60 秒内直接
+   吃缓存；而 PUT 写操作【不会】让这份缓存失效。于是"保存成功后不久再读"，拿回来的是
+   保存【之前】的那份内容 —— 界面看起来就是"我明明保存了，过一会又变回没改的样子"。
+   两道保险：
+     1. cache:'no-store'  —— 请求与响应都不许进缓存；
+     2. 附加一次性 _ts 参数 —— 让 URL 每次不同，连中间代理/CDN 的旧副本也拿不到。 */
+function ghRead(url, extraHeaders){
+  const sep = url.indexOf('?') >= 0 ? '&' : '?';
+  const headers = Object.assign({ Authorization: 'Bearer ' + ghCfg.token }, extraHeaders || {});
+  return fetch(url + sep + '_ts=' + Date.now(), { cache: 'no-store', headers: headers });
+}
 
 /** 从服务端数据文件里读墓碑表（缺字段 = 空表，兼容历史文件） */
 function readTombstones(data){
@@ -1650,45 +1675,12 @@ function readTombstones(data){
   return out;
 }
 
-/** Load db from GitHub Contents API */
-async function loadFromGitHub() {
-  const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json?ref=${ghCfg.branch}`;
-  const res = await fetch(url, {
-    headers: { Authorization: 'Bearer ' + ghCfg.token }
-  });
-
-  if (!res.ok) {
-    if (res.status === 404) {
-      ghCfg.fileSha = null;
-      db = { version: "1.0", notes: [], deleted: {} };
-      setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo}（空仓库，开始添加记录吧）`);
-      refresh();
-      return;
-    }
-    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  }
-
-  const info = await res.json();
-  ghCfg.fileSha = info.sha;
-
-  // Decode base64 content (UTF-8 safe)
-  const binaryStr = atob(info.content.replace(/\n/g, ''));
-  const bytes = Uint8Array.from(binaryStr, c => c.charCodeAt(0));
-  const json = new TextDecoder('utf-8').decode(bytes);
-  const data = JSON.parse(json);
-
-  if (!Array.isArray(data.notes)) throw new Error('无效的数据文件格式');
-  db = data;
-  if (!db.deleted || typeof db.deleted !== 'object') db.deleted = {};
-
-  setStatus('connected', `✓ 已连接 ${ghCfg.owner}/${ghCfg.repo} · ${db.notes.length} 条记录`);
-  refresh();
-}
-
-/** 拉取服务器最新快照（内容 + SHA），不改动 db */
+/** 拉取服务器最新快照（内容 + SHA），不改动 db
+    （原 loadFromGitHub() 已删除：它直接 `db = data` 整份替换，既不合并也不看墓碑，
+      是个静默回退的隐患。页面加载走 reconcileOnLoad()，同步走 runSync()） */
 async function fetchServerSnapshot(){
   const url = `https://api.github.com/repos/${ghCfg.owner}/${ghCfg.repo}/contents/whisky_notes.json?ref=${ghCfg.branch}`;
-  const res = await fetch(url, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+  const res = await ghRead(url);
   if (res.status === 404) return { notes: [], sha: null, missing: true };
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const info = await res.json();
@@ -1748,9 +1740,17 @@ async function runSync(){
   try {
     const snap = await fetchServerSnapshot();
 
-    // 本地干净 → 服务器为准（期间若来了新编辑，dbRev 已变，交给下面的合并分支）
-    if (!syncMeta.dirty && dbRev === revAtStart) {
-      adoptServerSnapshot(snap);
+    /* 先按"采纳口径"合并一次（平局服务器优先）：这一份只用来判断能不能直接采纳服务器快照。
+       ★ 只有当 localNewer === 0 才允许反向采纳。
+       localNewer > 0 意味着"本机有而这份快照里没有（或更旧）的条目" —— 要么读到了
+       HTTP 缓存里的旧副本，要么上一次推送没落地。此时反向采纳会把刚保存的改动连同
+       updated_at 一起抹掉，所以一律改走下面的合并推送分支（2026-09-22 回退事故防线）。 */
+    const adoptView = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes, 'server');
+
+    // 本地干净 且 服务器快照不比本机少东西 → 直接采用服务器快照（不产生 commit）
+    if (!syncMeta.dirty && adoptView.localNewer === 0 && dbRev === revAtStart) {
+      db.notes = adoptView.notes;
+      db.deleted = adoptView.deleted;
       syncMeta.baseSha = snap.sha;
       await Store.set(LS_DB, db);
       await Store.set(LS_SYNC, syncMeta);
@@ -1760,7 +1760,7 @@ async function runSync(){
       return true;
     }
 
-    // 本地脏 → 合并后推送
+    // 本地脏 / 服务器快照过旧 → 按"推送口径"合并（平局本地优先，保持历史行为）后推送
     let merged = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes);
     let shaToUse = snap.sha;
     let attempt = 0, delay = 2000, lastErr = null, ok = false;
@@ -1842,9 +1842,14 @@ async function reconcileOnLoad(){
     return;
   }
 
-  // 本地干净 → 服务器为准
-  if (!syncMeta.dirty) {
-    adoptServerSnapshot(snap);
+  // 按"采纳口径"合并一次（平局服务器优先）：既用于判断能否直接采纳，也用于识别快照是否过旧
+  const adoptView = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes, 'server');
+  const changed = adoptView.localNewer + syncMeta.pendingDeletes.length;
+
+  // 本地干净 且 服务器快照不比本机少东西 → 服务器为准（不产生 commit）
+  if (!syncMeta.dirty && adoptView.localNewer === 0) {
+    db.notes = adoptView.notes;
+    db.deleted = adoptView.deleted;
     syncMeta.baseSha = snap.sha;
     await Store.set(LS_DB, db);
     await Store.set(LS_SYNC, syncMeta);
@@ -1853,16 +1858,15 @@ async function reconcileOnLoad(){
     return;
   }
 
-  // 本地有未同步修改 → 合并 + 推送 + 提示
-  const merged = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes);
-  const recoveredCount = merged.notes.length - snap.notes.length + syncMeta.pendingDeletes.length;
-  db.notes = merged.notes;
-  db.deleted = merged.deleted;
+  // 本地有未同步修改 / 读到的服务器快照过旧 → 按"推送口径"合并（平局本地优先）+ 推送 + 提示
+  const pushView = mergeLocalWithServer(snap.notes, db.notes, db.deleted, snap.deleted, syncMeta.pendingDeletes);
+  db.notes = pushView.notes;
+  db.deleted = pushView.deleted;
   await Store.set(LS_DB, db);
   setStatus('syncing', '检测到未同步修改，正在合并并同步…');
   refresh(); updateSyncBadge();
   const ok = await runSync();
-  if (ok) toast('✓ 已恢复并同步未同步的修改（' + Math.max(recoveredCount, 1) + ' 处）');
+  if (ok && changed > 0) toast('✓ 已恢复并同步未同步的修改（' + changed + ' 处）');
 }
 
 /** 兼容旧调用：等价于 runSync */
@@ -2128,7 +2132,7 @@ function fvUrl(){
 async function fvFetchWords(){
   if (!ghCfg || !ghCfg.token) return false;
   try{
-    var r = await fetch(fvUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+    var r = await ghRead(fvUrl()+'?ref='+ghCfg.branch);
     if (r.status === 404){ FV_SHA = null; return false; }
     if (!r.ok) return false;
     var info = await r.json();
@@ -2158,7 +2162,7 @@ async function fvPushWords(isRetry){
     });
     if (r.status === 409 || r.status === 422){        /* sha 过期：取最新 sha 重试一次 */
       if (isRetry) throw new Error('SHA 冲突');
-      var g = await fetch(fvUrl()+'?ref='+ghCfg.branch, { headers:{ Authorization:'Bearer '+ghCfg.token } });
+      var g = await ghRead(fvUrl()+'?ref='+ghCfg.branch);
       FV_SHA = g.ok ? (await g.json()).sha : null;
       return await fvPushWords(true);
     }
@@ -3558,7 +3562,7 @@ async function uploadImageToGitHub(file, noteId, seq) {
     // Check if file already exists
     var checkUrl = 'https://api.github.com/repos/' + ghCfg.owner + '/' + ghCfg.repo + '/contents/album/' + filename + '?ref=' + ghCfg.branch;
     try {
-      var checkRes = await fetch(checkUrl, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+      var checkRes = await ghRead(checkUrl);
       if (checkRes.ok) {
         var info = await checkRes.json();
         payload.sha = info.sha;
@@ -3587,7 +3591,7 @@ async function uploadImageToGitHub(file, noteId, seq) {
 /** Delete one image from GitHub album/ */
 async function deleteImageFromGitHub(filename) {
   var url = 'https://api.github.com/repos/' + ghCfg.owner + '/' + ghCfg.repo + '/contents/album/' + encodeURIComponent(filename) + '?ref=' + ghCfg.branch;
-  var res = await fetch(url, { headers: { Authorization: 'Bearer ' + ghCfg.token } });
+  var res = await ghRead(url);
   if (!res.ok) return false;  // Already gone
 
   var info = await res.json();
