@@ -1079,7 +1079,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-11:47</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-11:55</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1931,10 +1931,10 @@ var FV_SPLIT = /[、,，;；/|｜]+/;
 var FV_NEG  = /没有|不太|不够|缺乏|缺少|没啥|不|无|没/;
 var FV_LIST = [], FV_EXACT = {};
 /* 类目配色：不写死在 HTML 里，由 fvBuildColors() 按词表的 categories 运行时生成。
-   FV_LEGACY_COLORS 只保留最初 8 个类目的原色（保证现有观感一字不变）；
+   FV_LEGACY_COLORS 只保留最初 8 个类目的原色（保证现有观感不变）——「天然植物」是「谷物」改名而来，沿用原色；
    词表里新增 / 改名的类目，按 FV_PALETTE 顺序取第一个没被占用的颜色，用尽后循环。 */
-var FV_LEGACY_COLORS = {"果香":"#e8590c","甜香":"#f0b429","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
-                        "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","谷物":"#c9a86a"};
+var FV_LEGACY_COLORS = {"果香":"#f0b429","甜香":"#e8590c","雪莉干邑":"#8e2f1c","泥煤烟熏":"#64748b",
+                        "木质陈年":"#a07850","花香":"#c2185b","高级风味":"#6b7d3a","天然植物":"#c9a86a"};
 var FV_PALETTE = ["#2f7f7a","#7b5ea7","#b45309","#3f6d4e","#475569","#9c5b2e",
                   "#5b6c9e","#a2543f","#6a7f5a","#8a5a8f","#7f6a3f","#4f7f9e"];
 var FV_COLORS = {};   /* 运行时填充：{类目名: 色值} */
