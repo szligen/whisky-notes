@@ -238,33 +238,63 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   /* ===== Stats Bar ===== */
-  /* 统计区 = 一条硬框仪表带：5 格用 1px 竖线分隔，不再各自成卡 */
+  /* 刊号带（两行）：左区 2×2 放四个读数，右侧「总记录」跨两行独立成栏。
+     不用框包内容，只用线分隔 —— 上下各 1px frame 线夹住整条，
+     左区内部 1px 细线切格，右栏与左区之间用更重的 frame 竖线读作「分家」。*/
   .stats-bar {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
-    margin-bottom: 16px; border: 2px solid var(--frame); background: var(--surface);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 150px;
+    grid-template-rows: auto auto; gap: 0; margin-bottom: 15px;
+    border: none; border-top: 1px solid var(--frame); border-bottom: 1px solid var(--frame);
+    background: var(--bg);
+    position: sticky; top: 64px; z-index: 90;
   }
   .stat-card {
-    background: transparent; border: none; border-left: 1px solid var(--border);
-    border-radius: 0; padding: 9px 14px 10px; min-width: 0; text-align: left; box-shadow: none;
+    background: transparent; border: none; border-radius: 0; box-shadow: none;
+    min-width: 0; text-align: left;
+    display: flex; align-items: baseline; gap: 8px; padding: 7px 18px 8px;
   }
-  .stat-card:first-child { border-left: none; }
-  .stat-num { font-size: 23px; font-weight: 650; color: var(--accent); line-height: 1.15; }
-  .stat-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; color: var(--text-muted); margin-top: 3px; }
-  .stat-sub { font-size: 11.5px; color: var(--text-light); margin-top: 1px; }
-  /* 只有「值得回购」与激活态用 accent，其余数字保持中性以维持层次 */
-  .stat-card:not(.primary):not(.active) .stat-num { color: var(--text); }
-  .stat-card.clickable { cursor: pointer; transition: background .12s ease; }
-  .stat-card.clickable:hover { background: var(--surface2); }
-  .stat-card.clickable:active { background: var(--accent-bg); }
-  .stat-card.active { background: var(--accent-bg); }
-  .stat-card.active .stat-num { color: var(--accent); }
-  .stat-card.active .stat-label { color: var(--accent); font-weight: 600; }
-  .stat-card.active .stat-sub { color: var(--accent); }
+  /* 2×2 落位：DOM 顺序 1–4 进左两列，第 5 格（总记录）纵向跨两行占右栏 */
+  .stat-card:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+  .stat-card:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+  .stat-card:nth-child(3) { grid-area: 2 / 1 / 3 / 2; }
+  .stat-card:nth-child(4) { grid-area: 2 / 2 / 3 / 3; }
+  .stat-card:nth-child(5) { grid-area: 1 / 3 / 3 / 4; }
+  /* 左区格线：中间一条竖线 + 第一行一条横线 */
+  .stat-card:nth-child(1), .stat-card:nth-child(2) { border-bottom: 1px solid var(--border); }
+  .stat-card:nth-child(2), .stat-card:nth-child(4) { border-left: 1px solid var(--border); }
+  /* 总记录：竖排、独立成栏、左侧用 frame 重线断开 */
+  .stat-card:nth-child(5) {
+    flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;
+    border-left: 1px solid var(--frame);
+  }
+  /* 主读数与注解之间用引导点线相连（目录 / 刊号的传统语法）——
+     桌面格宽，主副信息相距数百像素，点线把中段读成秩序而不是空白 */
+  .stat-card::after {
+    content: ''; order: 3; flex: 1 1 auto; min-width: 14px; align-self: center;
+    border-bottom: 1px dotted var(--text-light); opacity: .55; margin: 0 10px 5px;
+  }
+  .stat-card:nth-child(5)::after { display: none; }
+  .stat-num { order: 1; font-size: 20px; font-weight: 700; line-height: 1.1; color: var(--text); }
+  .stat-label {
+    order: 2; font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--text-muted); margin: 0;
+  }
+  .stat-sub { order: 4; font-size: 11px; color: var(--text-light); margin: 0 0 0 auto; }
+  .stat-card:nth-child(5) .stat-sub { margin-left: 0; }
+  .stat-sub::before { content: '('; }
+  .stat-sub::after { content: ')'; }
+  /* 只有「值得回购」（primary）与激活态用 accent，其余数字保持中性 */
+  .stat-card.primary .stat-num { color: var(--accent); }
+  .stat-card.clickable { cursor: pointer; }
+  .stat-card.clickable:hover .stat-num { color: var(--accent); }
+  .stat-card.active .stat-num, .stat-card.active .stat-label { color: var(--accent); }
 
   /* ===== Toolbar ===== */
+  /* 工具栏不套框：与卡片脱离同一视觉层，只用一条底线归拢 */
   .toolbar {
-    background: var(--surface); border: 2px solid var(--frame); border-radius: 0;
-    padding: 13px 15px; margin-bottom: 14px;
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
+    border-radius: 0; padding: 13px 0; margin-bottom: 15px;
   }
   .search-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
   .search-wrap { position: relative; flex: 1; }
@@ -724,15 +754,14 @@
 
     /* --- Container & Stats --- */
     .container { padding: 12px 10px; }
-    /* 仪表带在手机折成 2 列（第 5 格通栏） */
-    .stats-bar { grid-template-columns: repeat(2, 1fr); margin-bottom: 12px; }
-    .stat-card { padding: 8px 10px 9px; }
-    .stat-card:nth-child(odd) { border-left: none; }
-    .stat-card:nth-child(n+3) { border-top: 1px solid var(--border); }
-    .stat-card:last-child { grid-column: 1 / -1; }
-    .stat-num { font-size: 19px; }
-    .stat-label { font-size: 11.5px; letter-spacing: 0.08em; }
-    .stat-sub { font-size: 11px; }
+    /* 两行刊号带在手机保持同构：左区 2×2，右栏「总记录」收窄后仍跨两行 */
+    .stats-bar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 94px; margin-bottom: 12px; top: 56px; }
+    .stat-card { padding: 6px 10px 7px; gap: 6px; }
+    .stat-card::after { display: none; }   /* 手机格窄，点线只剩噪点，关掉 */
+    .stat-card:nth-child(5) { padding: 6px 10px 7px; }
+    .stat-num { font-size: 17px; }
+    .stat-label { font-size: 11px; letter-spacing: 0.06em; }
+    .stat-sub { display: none; }
 
     /* --- Connection Banner --- */
     .conn-banner { padding: 8px 12px; font-size: 12px; flex-direction: column; gap: 4px; text-align: center; }
@@ -869,8 +898,8 @@
     .nc-scores .nc-cell i { font-size: 11px; letter-spacing: 0.02em; }
     .nc-scores .nc-cell b { font-size: 17px; }
     .nc-cell.hi b { font-size: 18px; }
-    .stat-card { padding: 8px 10px; }
-    .stat-num { font-size: 18px; }
+    .stat-card { padding: 5px 8px 6px; }
+    .stat-num { font-size: 16px; }
     .header-right { gap: 6px; }
     #btn-add { padding: 7px 10px; font-size:13px; }
     .btn-header { padding: 6px 8px; }
@@ -1003,7 +1032,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-08:03</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-09:22</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
