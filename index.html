@@ -274,7 +274,7 @@
     border-bottom: 1px dotted var(--text-light); opacity: .55; margin: 0 10px 5px;
   }
   .stat-card:nth-child(5)::after { display: none; }
-  .stat-num { order: 1; font-size: 20px; font-weight: 700; line-height: 1.1; color: var(--text); }
+  .stat-num { order: 1; font-size: 26px; font-weight: 700; line-height: 1.1; color: var(--text); letter-spacing: -0.01em; }
   .stat-label {
     order: 2; font-family: var(--mono); font-size: 11px; font-weight: 600;
     letter-spacing: 0.13em; text-transform: uppercase;
@@ -284,8 +284,7 @@
   .stat-card:nth-child(5) .stat-sub { margin-left: 0; }
   .stat-sub::before { content: '('; }
   .stat-sub::after { content: ')'; }
-  /* 只有「值得回购」（primary）与激活态用 accent，其余数字保持中性 */
-  .stat-card.primary .stat-num { color: var(--accent); }
+  /* 五个读数一律中性墨色；只有 hover / 激活态才转 accent（不再给单格开小灶） */
   .stat-card.clickable { cursor: pointer; }
   .stat-card.clickable:hover .stat-num { color: var(--accent); }
   .stat-card.active .stat-num, .stat-card.active .stat-label { color: var(--accent); }
@@ -759,7 +758,7 @@
     .stat-card { padding: 6px 10px 7px; gap: 6px; }
     .stat-card::after { display: none; }   /* 手机格窄，点线只剩噪点，关掉 */
     .stat-card:nth-child(5) { padding: 6px 10px 7px; }
-    .stat-num { font-size: 17px; }
+    .stat-num { font-size: 20px; }
     .stat-label { font-size: 11px; letter-spacing: 0.06em; }
     .stat-sub { display: none; }
 
@@ -899,7 +898,7 @@
     .nc-scores .nc-cell b { font-size: 17px; }
     .nc-cell.hi b { font-size: 18px; }
     .stat-card { padding: 5px 8px 6px; }
-    .stat-num { font-size: 16px; }
+    .stat-num { font-size: 19px; }
     .header-right { gap: 6px; }
     #btn-add { padding: 7px 10px; font-size:13px; }
     .btn-header { padding: 6px 8px; }
@@ -1032,7 +1031,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-09:22</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-09:33</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1061,7 +1060,7 @@
 
   <!-- Stats -->
   <div class="stats-bar" id="stats-bar" data-page-node-id="KPJmPhSY0QN4O7M5wnmuBZ">
-    <div class="stat-card clickable primary" data-stat="repurchase" title="筛出均分 4.0 分以上的酒款"><div class="stat-num" id="stat-repurchase">—</div><div class="stat-label">值得回购</div><div class="stat-sub" id="stat-repurchase-sub">—</div></div>
+    <div class="stat-card clickable" data-stat="repurchase" title="筛出均分 4.0 分以上的酒款"><div class="stat-num" id="stat-repurchase">—</div><div class="stat-label">值得回购</div><div class="stat-sub" id="stat-repurchase-sub">—</div></div>
     <div class="stat-card clickable" data-stat="cask" title="筛出 ABV ≥50% 的桶强酒款"><div class="stat-num" id="stat-cask">—</div><div class="stat-label">桶强占比</div><div class="stat-sub" id="stat-cask-sub">—</div></div>
     <div class="stat-card clickable" data-stat="ib" title="筛出独立装瓶（IB）酒款"><div class="stat-num" id="stat-ib">—</div><div class="stat-label">独立装瓶</div><div class="stat-sub" id="stat-ib-sub">—</div></div>
     <div class="stat-card clickable" data-stat="age" title="按酒龄从高到低排序"><div class="stat-num" id="stat-age">—</div><div class="stat-label">平均酒龄</div><div class="stat-sub" id="stat-age-sub">—</div></div>
