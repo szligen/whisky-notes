@@ -221,6 +221,25 @@
   .conn-banner.syncing {
     background: var(--info-bg); border-color: var(--info-border); color: var(--info);
   }
+  /* 只读访客模式：中性灰蓝，与"已连接"区分开，不暗示可写 */
+  .conn-banner.readonly {
+    background: var(--surface2); border-color: var(--border); color: var(--text-muted);
+  }
+  .readonly-bar {
+    display: none; align-items: center; gap: 8px;
+    margin-bottom: 12px; padding: 8px 12px; border-radius: var(--radius);
+    background: var(--surface2); border: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text-muted); line-height: 1.6;
+  }
+  .readonly-bar.on { display: flex; }
+  .readonly-bar .ro-lock { flex: none; width: 20px; height: 20px; color: var(--text-light); }
+  .readonly-bar b { color: var(--text); font-weight: 600; }
+  .readonly-bar .ro-login {
+    flex: none; margin-left: auto; background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text-muted); font-size: 12.5px;
+    padding: 4px 10px; cursor: pointer;
+  }
+  .readonly-bar .ro-login:hover { border-color: var(--accent-light); color: var(--accent); }
   .conn-dot {
     width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px;
     animation: pulse 2s infinite;
@@ -235,6 +254,7 @@
   .conn-dot.disconnected { background: var(--warn); }
   .conn-dot.error { background: var(--red); }
   .conn-dot.syncing { background: var(--info); animation: pulse 1s infinite; }
+  .conn-dot.readonly { background: var(--text-light); animation: none; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   /* ===== Stats Bar ===== */
@@ -491,6 +511,11 @@
   .lv-name { padding: 0 12px; font-size: 13.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lv-abv { padding: 0 12px; text-align: right; font-size: 13px; color: var(--text-muted); }
   .lv-avg { padding: 0 12px; text-align: right; font-size: 14px; font-weight: 650; color: var(--accent); }
+  /* 只读访客模式：没有「操作」列，表头与数据行必须同步收成三列，
+     否则表头 4 列 / 行 3 列会让"酒精度""均分"整体错位一列 */
+  .lv-head.ro, #cards-grid.list-view.ro .note-card {
+    grid-template-columns: minmax(0,1fr) 96px 82px;
+  }
   #cards-grid.list-view .card-actions {
     margin: 0; padding: 0 10px 0 0; border-top: none; opacity: 1; gap: 4px; justify-content: flex-end;
   }
@@ -1079,7 +1104,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.22-20:12</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.23-22:14</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1104,6 +1129,13 @@
       <span class="conn-dot disconnected" id="conn-dot" data-page-node-id="bPjU3xsutWG8GD5CseRiZq"></span>
       <span id="conn-msg" data-page-node-id="LTySxAgV6y2MDYSt1hFXk0">正在加载...</span>
     </span>
+  </div>
+
+  <!-- 只读访客模式说明条：无 Token 时显示，说明"能看不能改"并给出登录入口 -->
+  <div class="readonly-bar" id="ro-bar">
+    <svg class="ro-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8.2 10.5V7.6a3.8 3.8 0 0 1 7.6 0v2.9"/></svg>
+    <span id="ro-text">只读浏览模式 — 可自由查看、搜索、筛选，录入与修改已停用。</span>
+    <button class="ro-login" id="ro-login" type="button">我是本人 · 登录编辑</button>
   </div>
 
   <!-- Stats -->
@@ -1437,6 +1469,25 @@ function setStatus(type, msg) {
 // db.deleted = 删除墓碑表 { 记录id: 删除时间 }，随数据文件一起同步到仓库；
 // 作用是阻止「另一台设备上还留着的旧副本」把已删除的记录复活。见 mergeLocalWithServer()
 let db = { version: "1.0", notes: [], deleted: {} };
+
+// ============================================================
+// 只读访客模式（无 Token 的访客：能看、能搜、不能改）
+// ============================================================
+/* 页面本身就托管在 PUBLIC_REPO 上，所以同源 ./whisky_notes.json 即公开数据，
+   访客不需要 Token、也没有跨域问题（同源）。所有写入口必须走 roGuard 拦截。 */
+const PUBLIC_REPO = { owner: 'szligen', repo: 'whisky-notes', branch: 'main' };
+let READ_ONLY = false;                       // init() 里按有无 Token 判定，登录后重跑 init 解除
+
+/** 只读用途取仓库坐标（图片 URL 等）；写操作一律不能用它，写了也没权限 */
+function repoRef(){ return hasConfig() ? ghCfg : PUBLIC_REPO; }
+
+/** 写入口守卫：只读模式下拦下动作并提示，返回 true 表示"已拦截，调用方应return" */
+function roGuard(msg){
+  if (!READ_ONLY) return false;
+  toast(msg || '\u{1F512} 只读浏览模式 — 可查看，不能录入或修改');
+  return true;
+}
+
 const PAGE_SIZE = 24;
 let filtered = [];
 let currentPage = 1;
@@ -1880,16 +1931,84 @@ function commitMessage(label) {
 // ============================================================
 // Init — load config then load data
 // ============================================================
+// ---------- 只读访客模式 ----------
+
+/** 收起所有写入口；「设置」保留（本人在陌生设备上靠它登录） */
+function applyReadOnlyUI(){
+  const ro = READ_ONLY;
+  ['btn-add', 'btn-detail-edit', 'btn-detail-delete'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.style.display = ro ? 'none' : '';
+  });
+  var bar = document.getElementById('ro-bar');
+  if (bar) bar.classList.toggle('on', ro);
+  var badge = document.getElementById('sync-badge');   // 访客没有"同步"这回事
+  if (badge) badge.style.display = ro ? 'none' : '';
+}
+
+/** 取仓库里的公开静态文件：同源 Pages 产物优先，失败回退 raw（都无需 Token）
+    ★ 加 _ts 时间戳：Pages 与 raw 都有缓存，否则访客会看到几分钟前的旧内容 */
+async function fetchPublicJSON(file){
+  var urls = ['./' + file + '?_ts=' + Date.now(),
+    'https://raw.githubusercontent.com/' + PUBLIC_REPO.owner + '/' + PUBLIC_REPO.repo
+      + '/' + PUBLIC_REPO.branch + '/' + file + '?_ts=' + Date.now()];
+  for (var i = 0; i < urls.length; i++){
+    try {
+      var r = await fetch(urls[i], { cache: 'no-store' });
+      if (!r.ok) continue;
+      return await r.json();
+    } catch(e){ /* 换下一个源 */ }
+  }
+  return null;
+}
+
+/** 访客路径：读公开数据 → 渲染。刻意不写 localStorage：不在公用电脑上留副本 */
+async function initGuestReadOnly(){
+  setStatus('readonly', '正在载入公开数据…');
+  try {
+    var data = await fetchPublicJSON('whisky_notes.json');
+    if (!data || !Array.isArray(data.notes)) throw new Error('公开数据文件缺失或格式不对');
+    db = { version: data.version || '1.0', notes: data.notes, deleted: data.deleted || {} };
+    /* 静态文件理论上不含已删记录；按墓碑再兜一层，防部署滞后期间露出已删条目 */
+    var tomb = db.deleted || {};
+    if (Object.keys(tomb).length){
+      db.notes = db.notes.filter(function(n){ return !(n.id in tomb) || recTs(n) > tomb[n.id]; });
+    }
+    refresh();
+    setStatus('readonly', '\u{1F512} 只读浏览 · ' + db.notes.length
+      + ' 条记录 · 可搜索筛选，录入与修改已停用');
+  } catch(e){
+    setStatus('error', '✕ 公开数据加载失败：' + (e.message || '').slice(0, 80)
+      + ' — 可点右上角「设置」登录');
+    refresh();
+  }
+  /* 词表同样从同源取（无 Token 走不了 API）；拿到后若正在看风味轮则重渲染 */
+  fvFetchPublic().then(function(changed){
+    if (changed){ if (viewMode === 'wheel') renderWheelView(); fvRefreshStorageLine(); }
+  });
+}
+
+/** 无 Token 时拉词表：同源静态文件，成功则应用并缓存（不推云端） */
+async function fvFetchPublic(){
+  if (!READ_ONLY) return false;
+  try {
+    var data = await fetchPublicJSON(FV_FILE);
+    if (!data || !data.words) return false;
+    if (FV_DIRTY) return false;                                  /* 本机有未推送改动，不被覆盖 */
+    if (data.updated && data.updated === FV_UPDATED) return false; /* 内容没变 */
+    fvApply(data);
+    fvCacheSave();
+    return true;
+  } catch(e){ return false; }
+}
+
 async function init() {
   loadConfig();
+  READ_ONLY = !hasConfig();          // 没 Token = 访客：能看不能改
   fvCacheLoad();   /* 先用本机缓存词表（有缓存则秒开，没有则等云端） */
+  applyReadOnlyUI();
 
-  if (!hasConfig()) {
-    setStatus('disconnected',
-      '未配置 GitHub 连接 — 请点击右上角「设置」输入 Token 和仓库信息');
-    refresh();
-    return;
-  }
+  if (READ_ONLY) { await initGuestReadOnly(); return; }
 
   /* 拉取云端词表；有变化且正在看风味轮则重渲染 */
   fvFetchWords().then(function(changed){
@@ -2195,6 +2314,7 @@ function fvMark(w){                       /* 首次改动某词时记下原值�
   FV_DIRTY = true;
 }
 function fvClassify(w, cat){
+  if (roGuard('\u{1F512} 只读浏览模式 — 词表校准要写入仓库，需先登录')) return;
   fvMark(w);
   FV_WORDS[w] = cat;
   FV_EXC = FV_EXC.filter(function(x){ return x !== w; });
@@ -2204,6 +2324,7 @@ function fvClassify(w, cat){
   fvPushWords();                     /* 后台推云端，失败也不影响本机 */
 }
 function fvExclude(w){
+  if (roGuard('\u{1F512} 只读浏览模式 — 词表校准要写入仓库，需先登录')) return;
   fvMark(w);
   delete FV_WORDS[w];
   if (FV_EXC.indexOf(w) < 0) FV_EXC.push(w);
@@ -2213,6 +2334,7 @@ function fvExclude(w){
   fvPushWords();
 }
 function fvUndo(w){
+  if (roGuard('\u{1F512} 只读浏览模式 — 词表校准要写入仓库，需先登录')) return;
   var prev = FV_TOUCHED[w];
   if (prev){ FV_WORDS[w] = prev; } else { delete FV_WORDS[w]; }
   FV_EXC = FV_EXC.filter(function(x){ return x !== w; });
@@ -2223,6 +2345,7 @@ function fvUndo(w){
   fvPushWords();
 }
 function fvEditUnknown(w){
+  if (roGuard('\u{1F512} 只读浏览模式 — 词表校准要写入仓库，需先登录')) return;
   FV_EDITING = (FV_EDITING === w) ? null : w;
   if (FV_EDITING) FV_UNK_OPEN = true;
   renderWheelView();
@@ -2230,6 +2353,7 @@ function fvEditUnknown(w){
   if (box) box.open = true;
 }
 async function fvSyncNow(){
+  if (roGuard('\u{1F512} 只读浏览模式 — 需要登录才能推送到仓库')) return;
   FV_DIRTY = true;
   var ok = await fvPushWords();
   if (ok){ toast('已同步到云端，其它设备打开即生效'); fvRefreshStorageLine(); }
@@ -2423,7 +2547,9 @@ function fvStorageLine(){
   var cached = false;
   try{ cached = !!localStorage.getItem(FV_CACHE_KEY); }catch(e){}
   var cloud, cls;
-  if (!cfg){
+  if (READ_ONLY){
+    cloud = '只读浏览 —— 词表取自仓库公开文件，校准与同步已停用'; cls = 'idle';
+  } else if (!cfg){
     cloud = '未连接 GitHub —— 改动只留本机浏览器，换设备会丢'; cls = 'warn';
   } else if (FV_DIRTY){
     cloud = '本机有改动待推送（归类时会自动推送，也可点「同步到云端」）'; cls = 'warn';
@@ -2474,14 +2600,17 @@ function fvUnknownHTML(D){
         + '<button class="wcat wcat-exc" onclick="event.stopPropagation();fvExclude(\''+q+'\')">非风味</button>'
         + '<button class="wcat wcat-cancel" onclick="event.stopPropagation();fvEditUnknown(\''+q+'\')">&times;</button></div></div>';
     }
+    /* 只读访客：短语只展示不绑定归类（span，不可点） */
+    if (READ_ONLY) return '<span class="wun">'+esc(w)+' <b>'+u.k+'</b></span>';
     return '<button class="wun wun-tap" onclick="fvEditUnknown(\''+q+'\')">'+esc(w)+' <b>'+u.k+'</b></button>';
   }).join('');
   return (mine ? mineHTML : '')
     + (D.unknown.length ? '<details class="wunknown"'+((FV_EDITING||FV_UNK_OPEN)?' open':'')+'><summary>待校准短语 '
       + D.unkTotal+' 个（出现 '+D.unknown.reduce(function(s,u){return s+u.k;},0)+' 次，仅列前 40）'
-      + ' —— 点任意一条即可归类，即时生效</summary>'
+      + (READ_ONLY ? ' —— 只读模式仅供查看' : ' —— 点任意一条即可归类，即时生效') + '</summary>'
       + '<div class="wun-list">'+chips+'</div>'
-      + '<div class="wun-foot">点词条 → 选类目，该词立即并入风味轮并记住；误判可点「非风味」排除。</div>'
+      + '<div class="wun-foot">'+(READ_ONLY ? '登录后可点词条归类，改动会同步到仓库。'
+          : '点词条 → 选类目，该词立即并入风味轮并记住；误判可点「非风味」排除。')+'</div>'
       + '</details>' : '')
     + fvStorageLine();
 }
@@ -2595,6 +2724,7 @@ function setView(m){
   viewMode=m;
   var cg=document.getElementById('cards-grid'), wv=document.getElementById('wheel-view');
   cg.classList.toggle('list-view', m==='list');
+  cg.classList.toggle('ro', READ_ONLY && m==='list');   /* 只读时去掉「操作」列，配 .lv-head.ro */
   cg.classList.toggle('hidden', m==='wheel');
   wv.classList.toggle('hidden', m!=='wheel');
   var pg=document.getElementById('pagination'); if(pg) pg.classList.toggle('hidden', m==='wheel');
@@ -2642,10 +2772,11 @@ function renderCards(){
     g.innerHTML='<div class="empty-state">'+
       '<div class="empty-mark"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16v13H4z"/><path d="M4 11h16"/><path d="M9.5 4h5"/></svg></div>'+
       '<div class="empty-title">'+(db.notes.length ? '\u6ca1\u6709\u5339\u914d\u7684\u8bb0\u5f55' : '\u8fd8\u6ca1\u6709\u54c1\u9152\u8bb0\u5f55')+'</div>'+
-      '<div class="empty-sub">'+(db.notes.length ? '\u5c1d\u8bd7\u4fee\u6539\u641c\u7d22\u6761\u4ef6' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb')+'</div></div>';
+      '<div class="empty-sub">'+(db.notes.length ? '\u5c1d\u8bd7\u4fee\u6539\u641c\u7d22\u6761\u4ef6'
+        : (READ_ONLY ? '\u53ea\u8bfb\u6a21\u5f0f\u4e0b\u6682\u65e0\u516c\u5f00\u8bb0\u5f55' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb'))+'</div></div>';
     return;
   }
-  g.innerHTML=(viewMode==='list'?LV_HEAD:'')+p.map(n=>cardHTML(n,viewMode==='list')).join('');
+  g.innerHTML=(viewMode==='list'?(READ_ONLY?LV_HEAD_RO:LV_HEAD):'')+p.map(n=>cardHTML(n,viewMode==='list')).join('');
   g.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.id);}));
   g.querySelectorAll('.btn-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDelete(b.dataset.id);}));
   g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openDetail(c.dataset.id)));
@@ -2655,7 +2786,9 @@ function renderCards(){
 var SVG_PEN = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L20 8l-4-4L4 16v4z"/><path d="M14.4 5.6l4 4"/></svg>';
 var SVG_BIN = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9.5 7V4.8h5V7"/><path d="M6.6 7l.9 13h9l.9-13"/></svg>';
 /* 列表列头：与行同一套 grid 列宽 */
-var LV_HEAD = '<div class="lv-head"><span>酒款</span><span class="r">酒精度</span><span class="r">均分</span><span class="r">操作</span></div>';
+/* 列表表头：只读模式没有「操作」列（与 .lv-head.ro 的三列栅格配套） */
+var LV_HEAD     = '<div class="lv-head"><span>酒款</span><span class="r">酒精度</span><span class="r">均分</span><span class="r">操作</span></div>';
+var LV_HEAD_RO  = '<div class="lv-head ro"><span>酒款</span><span class="r">酒精度</span><span class="r">均分</span></div>';
 
 function escQ(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 /* 单元格：缺值统一 —（不能让空值落进 <b> 里塌成 0） */
@@ -2675,7 +2808,8 @@ function cardHTML(n,isL){
   const botShow = (bot && bot.toUpperCase()!=='OB') ? bot : '';
   /* 酒厂列已从列表移除 → 信息不丢，挂在整行 title 上，hover 可查 */
   const meta = [n.distillery||'', botShow, dstr].filter(Boolean).join(' \u00b7 ');
-  const actions = '<div class="card-actions">'+
+  /* 只读访客：卡片上不出现编辑/删除按钮（点卡片仍可看详情） */
+  const actions = READ_ONLY ? '' : '<div class="card-actions">'+
     '<button class="btn-edit" data-id="'+n.id+'" title="\u7f16\u8f91" aria-label="\u7f16\u8f91">'+SVG_PEN+'</button>'+
     '<button class="btn-delete" data-id="'+n.id+'" title="\u5220\u9664" aria-label="\u5220\u9664">'+SVG_BIN+'</button></div>';
 
@@ -2761,6 +2895,7 @@ document.getElementById('pagination').addEventListener('change', e=>{
 // ============================================================
 
 function openAdd(){
+  if (roGuard()) return;                    /* 只读访客：不弹录入表单 */
   editingId=null;
   document.getElementById('modal-title').textContent='\u6dfb\u52a0\u54c1\u9152\u8bb0\u5f55';
   resetForm();
@@ -2774,6 +2909,7 @@ function openAdd(){
 }
 
 function openEdit(id){
+  if (roGuard()) return;                    /* 只读访客：不弹编辑表单 */
   editingId=id;
   const n=db.notes.find(x=>x.id===id);
   if(!n)return;
@@ -2853,6 +2989,7 @@ function updateHint(field, max) {
 
 /** Save (add or edit) → auto push to GitHub */
 async function saveNote(){
+  if (roGuard()) return;                    /* 只读访客：兜底层，防表单被绕过直接提交 */
   const name=document.getElementById('f-name').value.trim();
 
   const btn = document.getElementById('btn-save-note');
@@ -2931,6 +3068,7 @@ async function saveNote(){
 }
 
 function openDelete(id){
+  if (roGuard()) return;                    /* 只读访客：不弹删除确认 */
   deletingId=id;
   const n=db.notes.find(x=>x.id===id);
   document.getElementById('confirm-msg').textContent =
@@ -2939,6 +3077,7 @@ function openDelete(id){
 }
 
 async function confirmDelete(){
+  if (roGuard()) return;                    /* 只读访客：兜底层 */
   if(!deletingId) return;
   const note = db.notes.find(x=>x.id===deletingId);
   const name = (note && note.whisky_name) || '';
@@ -2999,6 +3138,10 @@ async function saveSettingsAndTest() {
 
   ghCfg = { token, owner, repo: reponame, branch };
   localStorage.setItem(CFG_KEY, JSON.stringify(ghCfg));
+
+  /* 从只读访客切回本人：解除只读 → 恢复写入口 → 重新走对账加载 */
+  READ_ONLY = false;
+  applyReadOnlyUI();
 
   closeSettings();
   toast('\u6d4b\u8bd5\u8fde\u63a5\u4e2d...');
@@ -3266,6 +3409,7 @@ document.getElementById('btn-guess').addEventListener('click', gsRender);
 function updateSyncBadge(){
   const el = document.getElementById('sync-badge');
   if (!el) return;
+  if (READ_ONLY) { el.style.display = 'none'; return; }   /* 访客没有同步状态 */
   if (syncMeta.dirty) {
     el.textContent = '● 未同步';
     el.className = 'sync-badge dirty';
@@ -3282,13 +3426,16 @@ window.addEventListener('pagehide', () => {
   if (syncMeta.dirty) { try { runSync(); } catch(e){} }   // 尽力而为
 });
 window.addEventListener('storage', (e) => {
-  // 多标签页：其他标签页写入时刷新视图
+  // 多标签页：其他标签页写入时刷新视图（只读访客不参与 —— 它的数据来自公开文件，不是本地库）
+  if (READ_ONLY) return;
   if (e && (e.key === LS_DB)) { loadLocal().then(() => { refresh(); updateSyncBadge(); }); }
 });
 
 document.getElementById('btn-theme').addEventListener('click', toggleTheme);
 document.getElementById('sync-badge').addEventListener('click', () => { if (syncMeta.dirty) runSync(); else toast('✓ 已是最新，无需同步'); });
 document.getElementById('btn-settings').addEventListener('click', openSettings);
+/* 只读提示条上的登录入口 —— 本人在陌生设备上靠它解除只读 */
+document.getElementById('ro-login').addEventListener('click', openSettings);
 document.getElementById('btn-save-settings').addEventListener('click', saveSettingsAndTest);
 
 // Character count hints — bind on input
@@ -3448,6 +3595,7 @@ const MAX_IMAGES = 5;
 document.getElementById('f-images').addEventListener('change', handleImageSelect);
 
 function handleImageSelect(e) {
+  if (roGuard()) { e.target.value = ''; return; }   /* 只读访客：不接图片 */
   var files = Array.from(e.target.files || []);
   var remaining = MAX_IMAGES - pendingImageFiles.length - existingImages.length;
 
@@ -3537,9 +3685,10 @@ function compressImage(file, maxSize, quality) {
   });
 }
 
-/** Build raw URL for an album image on GitHub */
+/** Build raw URL for an album image on GitHub（访客无 Token，用公开仓库坐标） */
 function getImageUrl(filename) {
-  return 'https://raw.githubusercontent.com/' + ghCfg.owner + '/' + ghCfg.repo + '/' + ghCfg.branch + '/album/' + encodeURIComponent(filename);
+  var r = repoRef();
+  return 'https://raw.githubusercontent.com/' + r.owner + '/' + r.repo + '/' + r.branch + '/album/' + encodeURIComponent(filename);
 }
 
 /** Upload one image file to GitHub album/ directory */
