@@ -1104,7 +1104,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-15:24</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-15:29</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1157,10 +1157,10 @@
         <input type="text" id="search-input" placeholder="搜索酒款名、酒厂、装瓶商、香气描述..." autocomplete="off" data-page-node-id="BnqfPiyzavRsoPXm92sWxt">
       </div>
       <div class="view-toggle" role="group" aria-label="视图切换">
-        <button class="view-btn active" id="view-grid" title="卡片视图" aria-label="卡片视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg></button>
+        <button class="view-btn" id="view-grid" title="卡片视图" aria-label="卡片视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg></button>
         <button class="view-btn" id="view-list" title="列表视图" aria-label="列表视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
         <button class="view-btn" id="view-wheel" title="风味轮视图" aria-label="风味轮视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4v17.2M3.4 12h17.2"/></svg></button>
-        <button class="view-btn" id="view-label" title="酒标样式" aria-label="酒标样式"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v13H4z"/><path d="M4 10.5h16"/><path d="M9 7v13"/></svg></button>
+        <button class="view-btn active" id="view-label" title="酒标样式" aria-label="酒标样式"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v13H4z"/><path d="M4 10.5h16"/><path d="M9 7v13"/></svg></button>
       </div>
     </div>
     <div class="filter-row" id="filter-row" data-page-node-id="tXW4NCIpCvEp2kPzd2w4yA">
@@ -1495,7 +1495,7 @@ let currentPage = 1;
 let currentSort = 'date-desc';
 let editingId = null;
 let deletingId = null;
-let viewMode = 'grid';
+let viewMode = 'label';
 let isSyncing = false;
 let scoreActive = { palate:false, body:false, finish:false };
 
@@ -2008,6 +2008,7 @@ async function init() {
   READ_ONLY = !hasConfig();          // 没 Token = 访客：能看不能改
   fvCacheLoad();   /* 先用本机缓存词表（有缓存则秒开，没有则等云端） */
   applyReadOnlyUI();
+  setView(viewMode);   /* 应用默认视图（酒标样式）：加 label-view 类 + 懒加载 label.css */
 
   if (READ_ONLY) { await initGuestReadOnly(); return; }
 
