@@ -1104,7 +1104,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.09.23-22:14</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-13:35</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1160,6 +1160,7 @@
         <button class="view-btn active" id="view-grid" title="卡片视图" aria-label="卡片视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></svg></button>
         <button class="view-btn" id="view-list" title="列表视图" aria-label="列表视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M8.5 6h12M8.5 12h12M8.5 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></svg></button>
         <button class="view-btn" id="view-wheel" title="风味轮视图" aria-label="风味轮视图"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 3.4v17.2M3.4 12h17.2"/></svg></button>
+        <button class="view-btn" id="view-label" title="酒标样式" aria-label="酒标样式"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16v13H4z"/><path d="M4 10.5h16"/><path d="M9 7v13"/></svg></button>
       </div>
     </div>
     <div class="filter-row" id="filter-row" data-page-node-id="tXW4NCIpCvEp2kPzd2w4yA">
@@ -2719,20 +2720,22 @@ function fvFilterWord(w){
   toast('已筛出含「'+w+'」的记录');
 }
 
-/* 统一视图切换：grid / list / wheel */
+/* 统一视图切换：grid / list / wheel / label（酒标样式） */
 function setView(m){
   viewMode=m;
   var cg=document.getElementById('cards-grid'), wv=document.getElementById('wheel-view');
   cg.classList.toggle('list-view', m==='list');
+  cg.classList.toggle('label-view', m==='label');
   cg.classList.toggle('ro', READ_ONLY && m==='list');   /* 只读时去掉「操作」列，配 .lv-head.ro */
   cg.classList.toggle('hidden', m==='wheel');
   wv.classList.toggle('hidden', m!=='wheel');
   var pg=document.getElementById('pagination'); if(pg) pg.classList.toggle('hidden', m==='wheel');
   var ri=document.querySelector('.results-info'); if(ri) ri.classList.toggle('hidden', m==='wheel');
   var fr=document.getElementById('filter-row'); if(fr) fr.classList.toggle('hidden', m==='wheel');
-  ['grid','list','wheel'].forEach(function(k){
+  ['grid','list','wheel','label'].forEach(function(k){
     var b=document.getElementById('view-'+k); if(b) b.classList.toggle('active', k===m);
   });
+  if(m==='label') loadLabelCss();   /* 仅当选酒标视图时才加载独立样式文件 */
 }
 
 /* 独立装瓶判定：官方装瓶在数据里明确标记为 'OB'，其余非空装瓶商即为 IB */
@@ -2776,10 +2779,11 @@ function renderCards(){
         : (READ_ONLY ? '\u53ea\u8bfb\u6a21\u5f0f\u4e0b\u6682\u65e0\u516c\u5f00\u8bb0\u5f55' : '\u70b9\u51fb\u53f3\u4e0a\u89d2\u300c\u6dfb\u52a0\u8bb0\u5f55\u300d\u5f00\u59cb'))+'</div></div>';
     return;
   }
-  g.innerHTML=(viewMode==='list'?(READ_ONLY?LV_HEAD_RO:LV_HEAD):'')+p.map(n=>cardHTML(n,viewMode==='list')).join('');
+  g.innerHTML=(viewMode==='list'?(READ_ONLY?LV_HEAD_RO:LV_HEAD):'')+p.map(n=>cardHTML(n,viewMode==='list',viewMode==='label')).join('');
   g.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openEdit(b.dataset.id);}));
   g.querySelectorAll('.btn-delete').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();openDelete(b.dataset.id);}));
   g.querySelectorAll('.note-card').forEach(c=>c.addEventListener('click',()=>openDetail(c.dataset.id)));
+  if(viewMode==='label') setTimeout(fitLabelTitles, 0);   /* 酒标标题按列宽自适应缩小，防长酒厂名从词中断行 */
 }
 
 /* 操作按钮图标：铅笔 / 垃圾桶（内联 SVG，替代原来的 ✏ 🗑 emoji） */
@@ -2798,7 +2802,8 @@ function ncell(lbl, val, unit, hi){
 }
 function sc1(v){ return (v==null||v==='') ? '\u2014' : (+v).toFixed(1); }
 
-function cardHTML(n,isL){
+function cardHTML(n,isL,isLb){
+  if(isLb) return labelCardHTML(n);   /* 酒标样式：H1 老酒标复刻 */
   const name = esc(n.whisky_name || '\u672a\u547d\u540d');
   const dstr = (fmtDate(n.date)||'').slice(0,10);
   const a = avgScore(n);
@@ -2842,6 +2847,140 @@ function cardHTML(n,isL){
       (n.aftertaste ? '<div class="nc-line"><strong>\u4f59\u97f5</strong><span>'+esc(n.aftertaste)+'</span></div>' : '')+
     '</div>'+
     actions+'</div>';
+  }
+
+/* ============================================================
+   酒标样式（H1 · 老酒标复刻）—— 仅 label 视图使用
+   样式在 label.css（由 loadLabelCss 动态加载），此处只负责 HTML 结构与字段映射。
+   ============================================================ */
+var LABEL_ORN = 62;   /* 角饰边长：缩小给底部 ALC/WB 行让位（曾被花纹遮挡） */
+
+function labelOrnSvg(corner, color, stroke){
+  stroke = stroke || 1.6;
+  var tf = {'tl':'','tr':'translate('+LABEL_ORN+',0) scale(-1,1)',
+            'bl':'translate(0,'+LABEL_ORN+') scale(1,-1)',
+            'br':'translate('+LABEL_ORN+','+LABEL_ORN+') scale(-1,-1)'}[corner];
+  var path = 'M8 8 C26 6 40 12 46 26 C50 36 46 44 38 46 '
+           + 'M8 8 C14 20 26 28 38 28 '
+           + 'M14 10 C18 18 16 24 10 26 C6 22 8 14 14 10 Z '
+           + 'M46 24 C52 22 56 26 54 32 C50 34 44 30 46 24 Z '
+           + 'M8 8 C18 12 24 20 24 30 C20 34 14 30 16 24 C18 18 14 12 8 8 Z';
+  return '<svg class="orn" viewBox="0 0 74 74" width="'+LABEL_ORN+'" height="'+LABEL_ORN+'" aria-hidden="true">'
+    + '<g transform="'+tf+'" style="fill:none;stroke:'+color+'" stroke-width="'+stroke+'" stroke-linecap="round"><path d="'+path+'"/></g>'
+    + '<g transform="'+tf+'" style="fill:none;stroke:'+color+'" stroke-width="0.7" opacity="0.75" stroke-linecap="round"><path d="M3 3 C20 2 34 8 40 22 M3 3 C10 16 22 24 34 24"/></g></svg>';
+}
+function labelOrnBox(color){
+  return '<div class="h1-orn">'+labelOrnSvg('tl',color)+labelOrnSvg('tr',color)
+    + labelOrnSvg('bl',color)+labelOrnSvg('br',color)+'</div>';
+}
+/* 圆形图章：外双环 + 上英文/下中文 + 中心大数字（dominant-baseline=central 真正居中）
+   SVG 的 stroke/fill 属性里 var() 无效，必须走 style="..." */
+function labelMedalSvg(top,bottom,big,sub,ring,ink,fill){
+  fill = fill || 'none';
+  var top_t = top ? '<text x="50" y="20" text-anchor="middle" font-size="8" letter-spacing="1.4" style="fill:'+ink+'" font-family="Georgia,serif">'+top+'</text>' : '';
+  var bot_t = bottom ? '<text x="50" y="87" text-anchor="middle" font-size="9.5" letter-spacing="1" style="fill:'+ink+'" font-family="\'Noto Serif SC\',serif">'+bottom+'</text>' : '';
+  var sub_t = sub ? '<text x="50" y="72" text-anchor="middle" font-size="7.5" letter-spacing="1.6" style="fill:'+ink+'" font-family="\'Noto Serif SC\',serif" opacity="0.9">'+sub+'</text>' : '';
+  var big_t = big ? '<text class="mbig" x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="bold" style="fill:'+ink+'" font-family="Georgia,\'Noto Serif SC\',serif">'+big+'</text>' : '';
+  return '<svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+    + '<circle cx="50" cy="50" r="47" style="fill:'+fill+';stroke:'+ring+'" stroke-width="1.6"/>'
+    + '<circle cx="50" cy="50" r="41" style="fill:none;stroke:'+ring+'" stroke-width="0.6" opacity="0.7"/>'
+    + top_t + bot_t + big_t + sub_t + '</svg>';
+}
+/* 从 whisky_name 提取系列名：'Imperial 帝国 23年 Old & Rare HL' -> 'Old & Rare' */
+function labelSeriesOf(name){
+  var s = (name||'').replace('\xa0',' ');
+  s = s.replace(/[一-鿿]+/g,' ');                       /* 去中文音译 */
+  s = s.replace(/\b\d+\s*年?\b/g,' ');                  /* 去酒龄 */
+  s = s.replace(/\b(HL|OMC|SV|ElD|NSpS|DeDr|TWf|GM|TUS|CA|BR|LMDW|BNSp|OB|IB)\b/g,' ');
+  s = s.replace(/\s+/g,' ').trim();
+  var toks = s.split(' ').filter(function(t){ return t && !/^[#.\-·]+$/.test(t); }); /* 丢弃纯符号碎片，保留 & */
+  return toks.join(' ');
+}
+/* whisky_name 开头的英文段（酒厂字段缺失时兜底做主标题）：'Scarabus 岩石 HL' -> 'Scarabus' */
+function labelEnHead(name){
+  var m = /^([A-Za-z][A-Za-z&\-'\s.]*?)(?=\s*[一-鿿]|\s*$)/.exec((name||'').trim());
+  return m ? m[1].trim() : '';
+}
+function labelEsc(s){ return (s||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+function labelCardHTML(n){
+  var nm = (n.whisky_name||'').replace('\xa0',' ');
+  var dist = (n.distillery||'').trim();
+  var bot = (n.bottler||'').trim();
+  var isOb = !bot || bot.toUpperCase()==='OB';
+  /* 主标题 = 酒厂名（蓝）；缺失回退英文段 / 中文音译 */
+  var titleSrc = dist || labelEnHead(nm) || '';
+  var mcn = /^([A-Za-z&\-'\s.]*)([一-鿿]+)/.exec(nm);
+  var nameCn = mcn ? mcn[2] : '';
+  if(!titleSrc) titleSrc = nameCn || nm;
+  /* 副题 = 系列名剔除主标题避免重复；无则中文音译兜底 */
+  var series = labelSeriesOf(nm);
+  if(titleSrc && series){
+    series = series.replace(new RegExp(labelEsc(titleSrc),'gi'),' ');
+    series = series.replace(/\s+/g,' ').trim();
+  }
+  var sub = series || (titleSrc!==nameCn ? nameCn : '');
+  var ageHtml = (n.vintage_age!=null && n.vintage_age!=='') ? '<b>'+n.vintage_age+'</b><span>YEARS</span>' : '<b>NAS</b><span>NO AGE</span>';
+  var dy = n.distillation_year ? 'DISTILLED '+n.distillation_year : 'DISTILLED —';
+  var dstr = (fmtDate(n.date)||'').slice(0,10).replace(/-/g,'.');
+  var botName = isOb ? '' : bot.replace(/\s*\([^)]*\)\s*$/,'');
+  var head = isOb ? ''
+    : '<div class="h1-brand">'+esc(botName.toUpperCase())+'</div>'
+     +'<div class="h1-tag">INDEPENDENT BOTTLER · 独立装瓶</div>';
+  /* 三枚圆章：英文在上、中文在下、数字居中；章内底色略深于纸色（橡木桶顶盖质感） */
+  var medals = '', scores = [['ENTRY','入口',n.palate_score],['SPIRIT','气韵',n.body_score],['FINISH','喉感',n.finish_score]];
+  for(var i=0;i<scores.length;i++){
+    medals += '<div class="h1-medal">'+labelMedalSvg(scores[i][0],scores[i][1],sc1(scores[i][2]),'',
+      'var(--h1-stamp)','var(--h1-stamp)','var(--h1-stamp-bg)')+'</div>';
+  }
+  var foot = '<div class="h1-foot"><span>'
+    + ((n.abv!=null&&n.abv!=='')?(+n.abv)+' % ALC./VOL.' : '— % ALC./VOL.')
+    + '</span><span>WB · '+(n.wb_id||'—')+'</span></div>';
+  return '<div class="note-card h1c" data-id="'+n.id+'">'
+    + labelOrnBox('var(--h1-silver)')
+    + '<div class="h1-inner">'
+    + head
+    + '<div class="h1-title">'+esc(titleSrc)+'</div>'
+    + (sub ? '<div class="h1-sub">'+esc(sub)+'</div>' : '')
+    + '<div class="h1-age">AGED '+ageHtml+'</div>'
+    + '<div class="h1-line">'+dy+' · TASTED '+(dstr||'—')+'</div>'
+    + '<div class="h1-medals">'+medals+'</div>'
+    + foot
+    + '</div></div>';
+}
+/* 酒标标题按父级内容宽度自适应缩小，防长酒厂名从词中断行（留 0.5px 余量防子像素回折） */
+function fitLabelTitles(){
+  var titles = document.querySelectorAll('#cards-grid.label-view .h1-title');
+  titles.forEach(function(el){
+    var p = el.parentElement, pcs = getComputedStyle(p);
+    var avail = p.clientWidth - parseFloat(pcs.paddingLeft) - parseFloat(pcs.paddingRight);
+    var cs = getComputedStyle(el);
+    var words = (el.textContent||'').trim().split(/\s+/).filter(Boolean);
+    if(!words.length || avail<=0) return;
+    var probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;';
+    probe.style.fontStyle=cs.fontStyle; probe.style.fontWeight=cs.fontWeight;
+    probe.style.fontSize=cs.fontSize; probe.style.fontFamily=cs.fontFamily;
+    probe.style.letterSpacing=cs.letterSpacing; probe.style.textTransform='uppercase';
+    document.body.appendChild(probe);
+    var fs = parseFloat(cs.fontSize), guard=0;
+    while(guard++<12){
+      var widest=0;
+      words.forEach(function(w){ probe.textContent=w; widest=Math.max(widest, probe.getBoundingClientRect().width); });
+      if(widest <= avail-0.5) break;
+      fs = Math.max(18, fs*Math.min(0.94,(avail-1)/widest));
+      el.style.fontSize = fs+'px';
+      probe.style.fontSize = fs+'px';
+      if(fs<=18) break;
+    }
+    document.body.removeChild(probe);
+  });
+}
+/* 首次进入酒标视图才加载独立样式文件；之后复用缓存，不再重复请求 */
+function loadLabelCss(){
+  if(document.getElementById('label-css')) return;
+  var l=document.createElement('link');
+  l.id='label-css'; l.rel='stylesheet'; l.href='label.css';
+  document.head.appendChild(l);
 }
 
 function renderPagination(){
@@ -3546,6 +3685,9 @@ document.getElementById('view-list').addEventListener('click', function(){
 });
 document.getElementById('view-wheel').addEventListener('click', function(){
   setView('wheel'); refresh();
+});
+document.getElementById('view-label').addEventListener('click', function(){
+  setView('label'); refresh();
 });
 
 document.addEventListener('keydown', e=>{

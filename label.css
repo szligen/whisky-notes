@@ -1,0 +1,82 @@
+/* ============================================================
+   酒标样式（H1 · 老酒标复刻）
+   —— 参考 Hunter Laing「Old & Rare」白金纪念酒标
+   本文件由 index.html 在用户选择「酒标」视图时动态加载，
+   普通卡片 / 列表 / 风味轮视图完全不引用，故对其它视图零影响。
+
+   分色（照搬参考标）：
+     银 = 卷草纹 / 装瓶商行 / AGED 小字
+     蓝 = 酒厂名主标题（全卡视觉焦点）
+     紫 = 系列副题 / 酒龄大数字 / 圆章环
+   顶部显示真实装瓶商，OB 官方装瓶整体不显示；
+   主标题只写酒厂名（去全称去重复），系列名降为紫色小副题；
+   分数三枚圆章：章内底色略深于纸色（橡木桶顶盖质感），
+   英文 ENTRY/SPIRIT/FINISH 在上、中文 入口/气韵/喉感 在下、数字精确居中。
+   ============================================================ */
+
+/* 酒标视图网格：略窄列宽，让酒标卡保持接近原比例 */
+#cards-grid.label-view {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+/* 重置 .note-card 默认仪表卡片外观，视觉交给 .h1c 接管 */
+#cards-grid.label-view .note-card.h1c {
+  padding: 0;
+  border: 2px solid var(--h1-ink);
+  background: var(--h1-paper);
+  box-shadow: none;
+}
+
+/* 亮色主题变量（默认） */
+#cards-grid.label-view .h1c {
+  --h1-paper:#fcfbf7; --h1-ink:#262231; --h1-blue:#1873ab; --h1-violet:#463a8c;
+  --h1-silver:#a9a5bc; --h1-silver-deep:#8f8aa6; --h1-muted:#6b6480;
+  --h1-stamp:#5f5b7a; --h1-stamp-bg:#f0eadb;
+}
+/* 暗色主题变量覆盖 */
+html[data-theme="dark"] #cards-grid.label-view .h1c {
+  --h1-paper:#1b1730; --h1-ink:#e8e4f4; --h1-blue:#6fb9e8; --h1-violet:#a89cec;
+  --h1-silver:#7d7893; --h1-silver-deep:#5d5872; --h1-muted:#a49db8;
+  --h1-stamp:#a59ed0; --h1-stamp-bg:#241f3e;
+}
+
+.h1c { position: relative; overflow: hidden; }
+.h1-orn { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.h1-orn .orn { position: absolute; }
+.h1-orn .orn:nth-child(1){ top:3px; left:3px; }
+.h1-orn .orn:nth-child(2){ top:3px; right:3px; }
+.h1-orn .orn:nth-child(3){ bottom:3px; left:3px; }
+.h1-orn .orn:nth-child(4){ bottom:3px; right:3px; }
+.h1-inner {
+  flex: 1; margin: 6px; border: 1px solid var(--h1-silver-deep);
+  padding: 16px 18px 32px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  position: relative; z-index: 1;
+}
+.h1-brand {
+  font: 600 11.5px Georgia, serif; letter-spacing: .34em; text-indent: .34em;
+  color: var(--h1-muted); line-height: 1.6; word-break: break-word;
+}
+.h1-tag { font-size: 11.5px; letter-spacing: .18em; color: var(--h1-violet); margin-top: 3px; }
+.h1-title {
+  font: 700 32px Georgia, 'Noto Serif SC', serif; color: var(--h1-blue); margin-top: 10px;
+  line-height: 1.15; letter-spacing: .03em; text-transform: uppercase; word-break: break-word;
+}
+.h1-sub {
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--h1-violet);
+  margin-top: 6px; line-height: 1.5; max-width: 100%;
+}
+.h1-age { margin-top: 12px; display: flex; align-items: baseline; gap: 7px; font-family: Georgia, serif; }
+.h1-age b {
+  font-size: 46px; font-weight: 700; color: var(--h1-violet); line-height: 1;
+  font-family: Georgia, 'Noto Serif SC', serif;
+}
+.h1-age span { font-size: 12px; letter-spacing: .28em; color: var(--h1-muted); }
+.h1-line { font-size: 11.5px; letter-spacing: .1em; color: var(--h1-muted); margin-top: 7px; }
+.h1-medals { display: flex; justify-content: space-evenly; align-items: center; width: 100%; margin-top: 13px; }
+.h1-medal { width: 80px; height: 80px; flex: none; }
+.h1-foot {
+  width: 100%; display: flex; justify-content: space-between; margin-top: auto;
+  padding: 9px 26px 0; border-top: 1px solid var(--h1-silver-deep);
+  font-size: 11.5px; letter-spacing: .08em; color: var(--h1-muted);
+}
