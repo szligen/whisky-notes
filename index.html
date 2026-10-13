@@ -1104,7 +1104,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-13:35</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-15:24</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -2923,9 +2923,7 @@ function labelCardHTML(n){
   var dy = n.distillation_year ? 'DISTILLED '+n.distillation_year : 'DISTILLED —';
   var dstr = (fmtDate(n.date)||'').slice(0,10).replace(/-/g,'.');
   var botName = isOb ? '' : bot.replace(/\s*\([^)]*\)\s*$/,'');
-  var head = isOb ? ''
-    : '<div class="h1-brand">'+esc(botName.toUpperCase())+'</div>'
-     +'<div class="h1-tag">INDEPENDENT BOTTLER · 独立装瓶</div>';
+  var head = isOb ? '' : '<div class="h1-brand">'+esc(botName.toUpperCase())+'</div>';
   /* 三枚圆章：英文在上、中文在下、数字居中；章内底色略深于纸色（橡木桶顶盖质感） */
   var medals = '', scores = [['ENTRY','入口',n.palate_score],['SPIRIT','气韵',n.body_score],['FINISH','喉感',n.finish_score]];
   for(var i=0;i<scores.length;i++){
