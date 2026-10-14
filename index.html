@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-09-22-02:10 -->
+<!-- VERSION: 2026-10-14-15:19 -->
 <html lang="zh-CN" data-page-node-id="5V8n3FPUyt2IVBjzFhiMOg">
 <head data-page-node-id="vs6T1NiFVt4ZSlPDLilNse">
 <meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
@@ -1094,7 +1094,8 @@
   .wbtn:hover { border-color:var(--accent-light); }
   .scrollbox { max-height:520px; overflow:auto; }
   .wtag { font-size:11px; padding:1px 6px; border-radius:0; background:var(--olive-bg); color:var(--olive); border:1px solid var(--olive-border); margin-left:6px; }
-  </style>
+</style>
+<link rel="stylesheet" href="archive.css">
 </head>
 <body data-page-node-id="rYVRabBDNZoVIpfMyZ580D">
 
@@ -1104,7 +1105,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.13-15:29</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.14-15:19</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -1169,12 +1170,6 @@
       <input type="number" id="filter-year-from" placeholder="年份 ≥" min="1900" max="2100" style="max-width:90px;" data-page-node-id="4m1NX9ukG2rW6n04hMCq5Q">
       <input type="number" id="filter-year-to" placeholder="年份 ≤" min="1900" max="2100" style="max-width:90px;" data-page-node-id="Jila7kJXDWSw7EhKU9VC06">
       <input type="number" id="filter-vintage-age-min" placeholder="酒龄 ≥" min="0" max="100" style="max-width:90px;" data-page-node-id="aUe7L3EZByJ5gmRKfIwQNr">
-      <div class="sort-btns" data-page-node-id="IZ2NW75HLhAnK9WlzJwi7N">
-        <button class="sort-btn active" data-sort="date-desc" data-page-node-id="vHSi62BpLD38PYC7lYuTky">最新优先</button>
-        <button class="sort-btn" data-sort="score-desc" data-page-node-id="0zMyBm6HXe9HVDXlnd8rN7">评分最高</button>
-        <button class="sort-btn" data-sort="age-desc" data-page-node-id="AGSBPZrSlCFHb9zrktEopf">年份最老</button>
-        <button class="sort-btn" data-sort="distillery-asc" data-page-node-id="K224UsyBxFJGEyfKHV0rtX">酒厂名称 A-Z</button>
-      </div>
       <div class="date-filter" id="date-filter">
         <button type="button" class="date-btn" id="date-btn" aria-haspopup="true" aria-expanded="false" title="按录入日期筛选">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -1197,6 +1192,12 @@
         </div>
       </div>
       <button id="btn-clear-filter" data-page-node-id="4WNRokteTvAXKlSK7vzljW">清除筛选</button>
+      <div class="sort-btns" data-page-node-id="IZ2NW75HLhAnK9WlzJwi7N">
+        <button class="sort-btn active" data-sort="date-desc" data-page-node-id="vHSi62BpLD38PYC7lYuTky">最新优先</button>
+        <button class="sort-btn" data-sort="score-desc" data-page-node-id="0zMyBm6HXe9HVDXlnd8rN7">评分最高</button>
+        <button class="sort-btn" data-sort="age-desc" data-page-node-id="AGSBPZrSlCFHb9zrktEopf">年份最老</button>
+        <button class="sort-btn" data-sort="distillery-asc" data-page-node-id="K224UsyBxFJGEyfKHV0rtX">酒厂名称 A-Z</button>
+      </div>
     </div>
     <button class="mobile-filter-toggle" id="mobile-filter-toggle" onclick="toggleMobileFilter()" data-page-node-id="3aNqbcvZlpMF7zKsNyaGG4">
       <span>筛选 / 排序</span><span class="arrow" data-page-node-id="W1axiC9wQ8FREOhDhOLjpC">▾</span>
@@ -1478,6 +1479,27 @@ let db = { version: "1.0", notes: [], deleted: {} };
    访客不需要 Token、也没有跨域问题（同源）。所有写入口必须走 roGuard 拦截。 */
 const PUBLIC_REPO = { owner: 'szligen', repo: 'whisky-notes', branch: 'main' };
 let READ_ONLY = false;                       // init() 里按有无 Token 判定，登录后重跑 init 解除
+
+/* 酒厂地区与真实 Logo 都是只读展示资产；加载失败时卡片仍可正常显示文字。 */
+let DISTILLERY_REGION_TABLE = { palette: {}, entries: [] };
+let DISTILLERY_LOGO_FILES = [];
+const DISTILLERY_LOGO_ALIASES = {
+  'ancnoc':'AnCnoc', 'arran':'Isle of Arran', 'raasay':'Isle of Raasay',
+  'glengyle':'Kilkerran', 'glenrothes':'The Glenrothes', 'macduff':'The Deveron',
+  'dufftown':'The Singleton', 'glen ord':'The Singleton', 'glendullan':'The Singleton',
+  'pulteney':'Pulteney', 'copperworks':'Copperworks', 'the lakes':'The Lakes'
+};
+
+async function loadDistilleryAssets(){
+  try {
+    const pair = await Promise.all([
+      fetchPublicJSON('distillery-regions.json'),
+      fetchPublicJSON('distillery-logos/manifest.json')
+    ]);
+    if(pair[0] && Array.isArray(pair[0].entries)) DISTILLERY_REGION_TABLE = pair[0];
+    if(pair[1] && Array.isArray(pair[1].files)) DISTILLERY_LOGO_FILES = pair[1].files;
+  } catch(e) { /* 展示资产失败不阻断数据读取与编辑 */ }
+}
 
 /** 只读用途取仓库坐标（图片 URL 等）；写操作一律不能用它，写了也没权限 */
 function repoRef(){ return hasConfig() ? ghCfg : PUBLIC_REPO; }
@@ -2006,6 +2028,7 @@ async function fvFetchPublic(){
 async function init() {
   loadConfig();
   READ_ONLY = !hasConfig();          // 没 Token = 访客：能看不能改
+  await loadDistilleryAssets();
   fvCacheLoad();   /* 先用本机缓存词表（有缓存则秒开，没有则等云端） */
   applyReadOnlyUI();
   setView(viewMode);   /* 应用默认视图（酒标样式）：加 label-view 类 + 懒加载 label.css */
@@ -2945,6 +2968,64 @@ function labelCardHTML(n){
     + '<div class="h1-medals">'+medals+'</div>'
     + foot
     + '</div></div>';
+}
+
+/* 暖纸档案酒厂卡：酒厂、酒龄与三项评分为第一层级；日期退到底部。 */
+function distilleryKey(s){
+  return String(s||'').trim().toLowerCase().replace(/[^a-z0-9一-鿿]+/g,'');
+}
+function distilleryMeta(name){
+  var key=distilleryKey(name), entries=DISTILLERY_REGION_TABLE.entries||[], entry=null;
+  for(var i=0;i<entries.length;i++) if(distilleryKey(entries[i].name)===key){ entry=entries[i]; break; }
+  var pkey=entry&&entry.paletteKey||'other';
+  var palette=(DISTILLERY_REGION_TABLE.palette||{})[pkey]||{label:'其它地区',color:'#788286',dark:'#A5AEB1',textOnColor:'#FFFFFF'};
+  return {entry:entry||{},paletteKey:pkey,palette:palette};
+}
+function distilleryLogo(name, meta){
+  var candidates=[name];
+  var alias=DISTILLERY_LOGO_ALIASES[String(name||'').trim().toLowerCase()];
+  if(alias) candidates.push(alias);
+  if(meta&&meta.entry&&meta.entry.canonicalName) candidates.push(meta.entry.canonicalName);
+  for(var c=0;c<candidates.length;c++){
+    var want=distilleryKey(candidates[c]);
+    for(var i=0;i<DISTILLERY_LOGO_FILES.length;i++){
+      var file=DISTILLERY_LOGO_FILES[i], base=file.replace(/\.[^.]+$/,'');
+      if(distilleryKey(base)===want) return 'distillery-logos/'+file;
+    }
+  }
+  return '';
+}
+function regionEnglish(key){
+  return ({highland:'HIGHLAND',speyside:'SPEYSIDE',islay:'ISLAY',islands:'ISLANDS',campbeltown:'CAMPBELTOWN',lowland:'LOWLAND',usa:'USA',other:'OTHER'})[key]||'OTHER';
+}
+/* 同名函数置于旧模板之后，函数声明提升时以此实现为准。 */
+function labelCardHTML(n){
+  var dist=(n.distillery||'').trim()||'—', meta=distilleryMeta(dist), pal=meta.palette;
+  var logo=distilleryLogo(dist,meta), logoHtml=logo?'<div class="lmc-logo"><img src="'+escQ(encodeURI(logo))+'" alt="'+escQ(dist)+' Logo" loading="lazy"></div>':'';
+  var noLogo=logo?'':' no-logo';
+  var age=(n.vintage_age!=null&&n.vintage_age!=='')?esc(String(n.vintage_age)):'NAS';
+  var ageUnit=age==='NAS'?'':'<small>年</small>';
+  var year=(n.distillation_year!=null&&n.distillation_year!=='')?esc(String(n.distillation_year)):'—';
+  var dstr=(fmtDate(n.date)||'').slice(0,10).replace(/-/g,'.');
+  var bot=(n.bottler||'').trim()||'—';
+  var region=regionEnglish(meta.paletteKey);
+  if(meta.paletteKey==='other'&&meta.entry.country) region+=' · '+String(meta.entry.country).toUpperCase();
+  var style='--region-light:'+pal.color+';--region-dark:'+(pal.dark||pal.color)+';--region-on:'+(pal.textOnColor||'#fff');
+  return '<div class="note-card lmc'+noLogo+'" style="'+style+'" data-id="'+n.id+'">'
+    +'<div class="lmc-top">'+logoHtml
+    +'<div class="lmc-identity"><div class="lmc-distillery">'+esc(dist)+'</div><div class="lmc-name">'+esc(n.whisky_name||'未命名')+'</div></div>'
+    +'<div class="lmc-vintage"><div class="lmc-age">'+age+ageUnit+'</div><div class="lmc-year">'+year+'</div></div></div>'
+    +'<div class="lmc-rule"></div>'
+    +'<div class="lmc-scores">'
+    +'<div class="lmc-score"><b>'+sc1(n.palate_score)+'</b><span>入口</span></div>'
+    +'<div class="lmc-score"><b>'+sc1(n.body_score)+'</b><span>气韵</span></div>'
+    +'<div class="lmc-score"><b>'+sc1(n.finish_score)+'</b><span>喉感</span></div></div>'
+    +'<div class="lmc-facts"><div class="lmc-fact"><span class="lmc-key">ABV</span><span class="lmc-value">'+((n.abv!=null&&n.abv!=='')?esc(String(+n.abv))+'%':'—')+'</span></div>'
+    +'<div class="lmc-fact"><span class="lmc-key">BOTTLER</span><span class="lmc-value">'+esc(bot)+'</span></div></div>'
+    +'<div class="lmc-notes">'
+    +(n.nose?'<div class="lmc-note"><b>闻香</b><span>'+esc(n.nose)+'</span></div>':'')
+    +(n.aftertaste?'<div class="lmc-note"><b>余韵</b><span>'+esc(n.aftertaste)+'</span></div>':'')+'</div>'
+    +'<span class="lmc-region">'+esc(region)+'</span><span class="lmc-date">'+esc(dstr||'—')+'</span></div>';
 }
 /* 酒标标题按父级内容宽度自适应缩小，防长酒厂名从词中断行（留 0.5px 余量防子像素回折） */
 function fitLabelTitles(){

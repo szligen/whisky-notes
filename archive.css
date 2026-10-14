@@ -1,0 +1,156 @@
+/* Warm Paper Archive — visual-only skin. Business logic remains in index.html. */
+:root {
+  --bg: #eee9df;
+  --surface: #fdfaf4;
+  --surface2: #f4ecdd;
+  --border: #d5cec2;
+  --border-light: #e5dfd5;
+  --text: #182426;
+  --text-muted: #596664;
+  --text-light: #6f7976;
+  --accent: #6c5135;
+  --accent-light: #8a6846;
+  --on-accent: #ffffff;
+  --accent-bg: #f3e8dc;
+  --frame: #bcb3a5;
+  --radius: 7px;
+  --radius-sm: 5px;
+  --shadow: 0 7px 18px rgba(76,58,34,.075);
+  --shadow-md: 0 12px 28px rgba(68,53,35,.14);
+}
+
+[data-theme="dark"] {
+  --bg: #1b201f;
+  --surface: #242a29;
+  --surface2: #2d3432;
+  --border: #414a47;
+  --border-light: #353d3b;
+  --text: #f2eee6;
+  --text-muted: #b7bfbc;
+  --text-light: #9da7a3;
+  --accent: #c49a6c;
+  --accent-light: #d8b185;
+  --on-accent: #201c17;
+  --accent-bg: #3a3128;
+  --frame: #515a57;
+  --shadow: 0 8px 20px rgba(0,0,0,.24);
+  --shadow-md: 0 14px 30px rgba(0,0,0,.4);
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(94,73,45,.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94,73,45,.026) 1px, transparent 1px),
+    radial-gradient(circle at 18% 24%, rgba(103,77,45,.032) 0 1px, transparent 1.5px);
+  background-size: 28px 28px, 28px 28px, 13px 13px;
+}
+[data-theme="dark"] body {
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+}
+
+header {
+  min-height: 62px;
+  padding: 12px 38px;
+  background: #faf7f0;
+  border-bottom: 1px solid #cec6b9;
+  box-shadow: 0 3px 12px rgba(69,54,35,.07);
+}
+[data-theme="dark"] header { background: #202625; border-bottom-color: #3d4643; }
+.logo { gap: 12px; }
+.logo-icon { width: 31px; height: 31px; color: var(--accent); filter: drop-shadow(0 2px 3px rgba(44,34,24,.14)); }
+.logo h1 { font-family: Georgia, "Times New Roman", serif; font-size: 22px; letter-spacing: .055em; }
+.logo span { font-size: 12px; }
+.version-badge { border-radius: 4px; background: var(--surface); padding: 2px 7px; }
+.sync-badge { border-radius: 6px; padding: 4px 10px; }
+.sync-badge.clean { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+.btn-theme, .btn-header, #btn-add { border-radius: 5px; }
+.btn-theme, .btn-header { background: var(--surface); }
+#btn-add { background: var(--accent); box-shadow: 0 2px 5px rgba(45,35,25,.12); }
+
+.container { max-width: 1280px; padding-top: 24px; }
+.conn-banner { border-radius: 7px; padding: 10px 16px; box-shadow: 0 2px 8px rgba(35,46,40,.035); }
+
+.stats-bar {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(253,250,244,.95);
+  box-shadow: var(--shadow);
+}
+[data-theme="dark"] .stats-bar { background: rgba(36,42,41,.96); }
+.stat-card { padding: 8px 18px; }
+.stat-card:nth-child(1), .stat-card:nth-child(2) { border-bottom-color: var(--border); }
+.stat-card:nth-child(2), .stat-card:nth-child(4) { border-left-color: var(--border); }
+.stat-card:nth-child(5) {
+  border-left: 1px solid var(--border);
+  background: var(--surface2);
+}
+.stat-card:nth-child(5) .stat-num { color: #9a5c2b; }
+[data-theme="dark"] .stat-card:nth-child(5) .stat-num { color: #d4ad7f; }
+.stat-num { font-family: Georgia, "Times New Roman", serif; }
+
+.toolbar {
+  padding: 15px 16px 14px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(253,250,244,.95);
+  box-shadow: 0 5px 14px rgba(74,57,34,.045);
+}
+[data-theme="dark"] .toolbar { background: rgba(36,42,41,.96); }
+.search-row { margin-bottom: 11px; }
+#search-input, .filter-row select, .filter-row input[type="number"],
+.sort-btn, .date-btn, #btn-clear-filter, .view-toggle, .view-btn {
+  border-radius: 4px;
+}
+#search-input, .filter-row select, .filter-row input[type="number"], .sort-btn, .date-btn {
+  background: var(--surface);
+}
+.view-toggle { overflow: hidden; }
+.view-btn.active { box-shadow: inset 0 -2px var(--accent); }
+
+/* Desktop filter arrangement: filters/date/clear on row 1; sorting on row 2 right. */
+@media (min-width: 769px) {
+  .filter-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(220px, 1.45fr) 90px 90px 90px auto minmax(20px, 1fr) auto;
+    gap: 10px;
+  }
+  .filter-row select, .filter-row input[type="number"] { width: 100%; min-width: 0; max-width: none !important; }
+  .date-filter { grid-column: 6; grid-row: 1; }
+  #btn-clear-filter { grid-column: 8; grid-row: 1; justify-self: end; }
+  .sort-btns { grid-column: 1 / -1; grid-row: 2; justify-self: end; margin-left: 0; }
+}
+#btn-clear-filter { background: var(--accent); }
+
+.results-info { color: var(--text-muted); }
+.pagination { gap: 7px; }
+.page-btn { border-radius: 4px; background: var(--surface); }
+.page-btn.active { background: var(--accent); color: var(--on-accent); }
+
+/* Keep non-label views functional, but bring surfaces into the same family. */
+#cards-grid:not(.list-view):not(.label-view) .note-card {
+  border-radius: 9px;
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+.modal-content, .detail-content, .confirm-content, .date-pop {
+  border-radius: 9px;
+  box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 768px) {
+  header { min-height: 54px; padding: 10px 14px; }
+  .logo h1 { font-size: 18px; }
+  .container { padding: 14px 10px 32px; }
+  .stats-bar { border-radius: 7px; }
+  .toolbar { padding: 12px; border-radius: 7px; }
+  .filter-row.mobile-open { display: flex; }
+  .sort-btns { justify-content: stretch; }
+  .sort-btn { min-width: 0; }
+  #btn-clear-filter { width: 100%; }
+}
