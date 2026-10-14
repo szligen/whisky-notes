@@ -1,0 +1,1615 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-14",
+  "description": "WordBuddy whisky-notes 酒厂/品牌地域分类与主题色查询表。entries 的键与当前 whisky_notes.json 的 distillery 值完全对应。",
+  "classificationNotes": [
+    "苏格兰酒厂按传统威士忌产区分类；岛屿作为独立展示组。",
+    "美国使用青色；日本、爱尔兰、中国、台湾等非指定地区统一使用 other 灰色，但保留 country。",
+    "品牌、调和、其它烈酒及未知名称不会被强行归入苏格兰产区。",
+    "color 用于浅色主题实心标识；dark 是深色主题建议色；soft 是浅色背景辅助色。"
+  ],
+  "sources": [
+    {
+      "title": "SMWS 酒厂代码表",
+      "file": "SMWS-codes.md",
+      "retrievedAt": "2026-10-14"
+    }
+  ],
+  "palette": {
+    "highland": {
+      "label": "高地",
+      "color": "#3F78B8",
+      "soft": "#E8F0F8",
+      "dark": "#76A7DD",
+      "textOnColor": "#FFFFFF"
+    },
+    "speyside": {
+      "label": "斯佩赛",
+      "color": "#C94F55",
+      "soft": "#F8E9EA",
+      "dark": "#E07A7F",
+      "textOnColor": "#FFFFFF"
+    },
+    "islay": {
+      "label": "艾雷岛",
+      "color": "#5F813F",
+      "soft": "#EAF0E4",
+      "dark": "#8DB16C",
+      "textOnColor": "#FFFFFF"
+    },
+    "islands": {
+      "label": "岛屿",
+      "color": "#785A9D",
+      "soft": "#EFEAF5",
+      "dark": "#A88BC8",
+      "textOnColor": "#FFFFFF"
+    },
+    "campbeltown": {
+      "label": "坎贝尔镇",
+      "color": "#D3A62B",
+      "soft": "#F8F0D6",
+      "dark": "#E5C65D",
+      "textOnColor": "#2C2616"
+    },
+    "lowland": {
+      "label": "低地",
+      "color": "#D77935",
+      "soft": "#F8ECE2",
+      "dark": "#E8A36E",
+      "textOnColor": "#FFFFFF"
+    },
+    "usa": {
+      "label": "美国",
+      "color": "#288A91",
+      "soft": "#E3F1F2",
+      "dark": "#61B7BC",
+      "textOnColor": "#FFFFFF"
+    },
+    "other": {
+      "label": "其它地区",
+      "color": "#788286",
+      "soft": "#ECEFF0",
+      "dark": "#A5AEB1",
+      "textOnColor": "#FFFFFF"
+    }
+  },
+  "entries": [
+    {
+      "name": "Aberfeldy",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "60"
+      ]
+    },
+    {
+      "name": "Aberlour",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "54"
+      ]
+    },
+    {
+      "name": "Akkeshi",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Allt-a-Bhainne",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "108"
+      ]
+    },
+    {
+      "name": "anCnoc",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Knockdhu",
+      "smwsCodes": [
+        "115"
+      ]
+    },
+    {
+      "name": "Annandale",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Ardbeg",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "33"
+      ]
+    },
+    {
+      "name": "Ardmore",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "66"
+      ]
+    },
+    {
+      "name": "Ardnahoe",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Ardnamurchan",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "149"
+      ]
+    },
+    {
+      "name": "Arran",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Isle of Arran",
+      "smwsCodes": [
+        "121"
+      ]
+    },
+    {
+      "name": "Auchentoshan",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "5"
+      ]
+    },
+    {
+      "name": "Auchroisk",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "95"
+      ]
+    },
+    {
+      "name": "Aultmore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "73"
+      ]
+    },
+    {
+      "name": "Balblair",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "70"
+      ]
+    },
+    {
+      "name": "Balcones",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "140",
+        "CW2"
+      ]
+    },
+    {
+      "name": "Balmenach",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "48"
+      ]
+    },
+    {
+      "name": "Balvenie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "40"
+      ]
+    },
+    {
+      "name": "Ben Nevis",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "78"
+      ]
+    },
+    {
+      "name": "Benriach",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "BenRiach",
+      "smwsCodes": [
+        "12"
+      ]
+    },
+    {
+      "name": "BenRiach",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "12"
+      ]
+    },
+    {
+      "name": "Benrinnes",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "36"
+      ]
+    },
+    {
+      "name": "Benromach",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "47"
+      ]
+    },
+    {
+      "name": "Bladnoch",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "50"
+      ]
+    },
+    {
+      "name": "Blair Athol",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "68"
+      ]
+    },
+    {
+      "name": "Blend",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Blend 调和",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Blended",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Borders",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Bowmore",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "3"
+      ]
+    },
+    {
+      "name": "Braeval",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "113"
+      ]
+    },
+    {
+      "name": "Brook Hill",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Brora",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "61"
+      ]
+    },
+    {
+      "name": "Bruichladdich",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "23",
+        "127"
+      ]
+    },
+    {
+      "name": "Bunnahabhain",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "10"
+      ]
+    },
+    {
+      "name": "Bushmills",
+      "paletteKey": "other",
+      "country": "Northern Ireland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "51"
+      ]
+    },
+    {
+      "name": "Caol Ila",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "53"
+      ]
+    },
+    {
+      "name": "Caperdonich",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "38"
+      ]
+    },
+    {
+      "name": "Cardhu",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "106"
+      ]
+    },
+    {
+      "name": "Chichibu",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "130"
+      ]
+    },
+    {
+      "name": "Clynelish",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "26"
+      ]
+    },
+    {
+      "name": "Compass Box",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Compass Box (CB)",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Convalmore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "83"
+      ]
+    },
+    {
+      "name": "Cooley",
+      "paletteKey": "other",
+      "country": "Ireland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "117",
+        "118"
+      ]
+    },
+    {
+      "name": "Copperworks",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery",
+      "canonicalName": "Copperworks Distilling Co.",
+      "smwsCodes": [
+        "143"
+      ]
+    },
+    {
+      "name": "Cragganmore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "37"
+      ]
+    },
+    {
+      "name": "Craigellachie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "44"
+      ]
+    },
+    {
+      "name": "Croftengea",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Loch Lomond",
+      "smwsCodes": [
+        "112",
+        "122",
+        "135",
+        "G15",
+        "G9"
+      ]
+    },
+    {
+      "name": "Daftmill",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Daiking",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Dailuaine",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "41"
+      ]
+    },
+    {
+      "name": "Dallas Dhu",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "45"
+      ]
+    },
+    {
+      "name": "Dalmore",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "13"
+      ]
+    },
+    {
+      "name": "Deanston",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "79"
+      ]
+    },
+    {
+      "name": "Dufftown",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "91"
+      ]
+    },
+    {
+      "name": "Edradour",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "32"
+      ]
+    },
+    {
+      "name": "Fettercairn",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "94"
+      ]
+    },
+    {
+      "name": "From the pâtisserie",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Glen Albyn",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "69"
+      ]
+    },
+    {
+      "name": "Glen Elgin",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "85"
+      ]
+    },
+    {
+      "name": "Glen Garioch",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "19"
+      ]
+    },
+    {
+      "name": "Glen Grant",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "9"
+      ]
+    },
+    {
+      "name": "Glen Keith",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "81"
+      ]
+    },
+    {
+      "name": "Glen Mhor",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "57"
+      ]
+    },
+    {
+      "name": "Glen Moray",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "35"
+      ]
+    },
+    {
+      "name": "Glen Ord",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Glen Ord",
+      "smwsCodes": [
+        "77"
+      ]
+    },
+    {
+      "name": "Glen Scotia",
+      "paletteKey": "campbeltown",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "93"
+      ]
+    },
+    {
+      "name": "Glen Spey",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "80"
+      ]
+    },
+    {
+      "name": "Glenallachie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "107"
+      ]
+    },
+    {
+      "name": "Glenburgie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "71",
+        "104"
+      ]
+    },
+    {
+      "name": "Glencadam",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "82"
+      ]
+    },
+    {
+      "name": "Glendronach",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "96"
+      ]
+    },
+    {
+      "name": "Glendullan",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "84"
+      ]
+    },
+    {
+      "name": "Glenfarclas",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "1"
+      ]
+    },
+    {
+      "name": "Glenfiddich",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "15"
+      ]
+    },
+    {
+      "name": "Glengoyne",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "123"
+      ]
+    },
+    {
+      "name": "Glengyle",
+      "paletteKey": "campbeltown",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Kilkerran / Glengyle"
+    },
+    {
+      "name": "Glenkinchie",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "22"
+      ]
+    },
+    {
+      "name": "Glenlivet",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "2"
+      ]
+    },
+    {
+      "name": "Glenlossie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "46"
+      ]
+    },
+    {
+      "name": "Glenmorangie",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "125"
+      ]
+    },
+    {
+      "name": "Glenrothes",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "30"
+      ]
+    },
+    {
+      "name": "Glentauchers",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "63"
+      ]
+    },
+    {
+      "name": "Glenturret",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "16"
+      ]
+    },
+    {
+      "name": "Golang",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Harris",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Isle of Harris Distillery",
+      "smwsCodes": [
+        "163"
+      ]
+    },
+    {
+      "name": "Hazelburn",
+      "paletteKey": "campbeltown",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Springbank",
+      "smwsCodes": [
+        "27",
+        "114",
+        "126"
+      ]
+    },
+    {
+      "name": "Heiland coup d'etat",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "Hercynian",
+      "paletteKey": "other",
+      "country": "Germany",
+      "entityType": "distillery"
+    },
+    {
+      "name": "High Coast",
+      "paletteKey": "other",
+      "country": "Sweden",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Highland Park",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "4"
+      ]
+    },
+    {
+      "name": "Hinomaru",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Hongyu",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Imperial",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "65"
+      ]
+    },
+    {
+      "name": "Inchgower",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "18"
+      ]
+    },
+    {
+      "name": "Inchmurrin",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Loch Lomond",
+      "smwsCodes": [
+        "112",
+        "122",
+        "135",
+        "G15",
+        "G9"
+      ]
+    },
+    {
+      "name": "Indiana",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Jim Beam",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery"
+    },
+    {
+      "name": "John",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "unknown"
+    },
+    {
+      "name": "Jura",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Isle of Jura",
+      "smwsCodes": [
+        "31"
+      ]
+    },
+    {
+      "name": "Kanosuke",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Karuizawa",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "132"
+      ]
+    },
+    {
+      "name": "Kavalan",
+      "paletteKey": "other",
+      "country": "Taiwan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "139"
+      ]
+    },
+    {
+      "name": "Kilchoman",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "129"
+      ]
+    },
+    {
+      "name": "Kininvie",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Knockando",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "101"
+      ]
+    },
+    {
+      "name": "Knockdhu",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "115"
+      ]
+    },
+    {
+      "name": "La Venenosa（龙舌兰）",
+      "paletteKey": "other",
+      "country": "Mexico",
+      "entityType": "other_spirit"
+    },
+    {
+      "name": "Lagavulin",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "111"
+      ]
+    },
+    {
+      "name": "Laizhou",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Laphroaig",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "29"
+      ]
+    },
+    {
+      "name": "Ledaig",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Tobermory",
+      "smwsCodes": [
+        "42"
+      ]
+    },
+    {
+      "name": "Lindores",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Linkwood",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "39"
+      ]
+    },
+    {
+      "name": "Littlemill",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "97"
+      ]
+    },
+    {
+      "name": "Loch Lomond",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "112",
+        "122",
+        "135",
+        "G15",
+        "G9"
+      ]
+    },
+    {
+      "name": "Longmorn",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "7"
+      ]
+    },
+    {
+      "name": "Longrow",
+      "paletteKey": "campbeltown",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Springbank",
+      "smwsCodes": [
+        "27",
+        "114",
+        "126"
+      ]
+    },
+    {
+      "name": "M&H",
+      "paletteKey": "other",
+      "country": "Israel",
+      "entityType": "distillery",
+      "canonicalName": "Milk & Honey Distillery",
+      "smwsCodes": [
+        "155"
+      ]
+    },
+    {
+      "name": "Macallan",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "24"
+      ]
+    },
+    {
+      "name": "Macduff",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "6"
+      ]
+    },
+    {
+      "name": "Mannochmore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "64"
+      ]
+    },
+    {
+      "name": "Mars",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "canonicalName": "Mars Shinshu / Tsunuki"
+    },
+    {
+      "name": "Midleton",
+      "paletteKey": "other",
+      "country": "Ireland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Millburn",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "87"
+      ]
+    },
+    {
+      "name": "Miltonduff",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "72",
+        "109"
+      ]
+    },
+    {
+      "name": "Miyagikyo",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "124"
+      ]
+    },
+    {
+      "name": "Mortlach",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "76"
+      ]
+    },
+    {
+      "name": "Nagahama",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Nantou",
+      "paletteKey": "other",
+      "country": "Taiwan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "138"
+      ]
+    },
+    {
+      "name": "Nikka Blended Malt",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "North British",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "G1"
+      ]
+    },
+    {
+      "name": "North Port",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "74"
+      ]
+    },
+    {
+      "name": "Oban",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "110"
+      ]
+    },
+    {
+      "name": "Patrón（龙舌兰）",
+      "paletteKey": "other",
+      "country": "Mexico",
+      "entityType": "other_spirit"
+    },
+    {
+      "name": "Penderyn",
+      "paletteKey": "other",
+      "country": "Wales",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "128",
+        "164"
+      ]
+    },
+    {
+      "name": "Pittyvaich",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "90"
+      ]
+    },
+    {
+      "name": "Port Ellen",
+      "paletteKey": "islay",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "43"
+      ]
+    },
+    {
+      "name": "Pulteney",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Old Pulteney",
+      "smwsCodes": [
+        "52"
+      ]
+    },
+    {
+      "name": "Pōkeno",
+      "paletteKey": "other",
+      "country": "New Zealand",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Raasay",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "canonicalName": "Isle of Raasay",
+      "smwsCodes": [
+        "162"
+      ]
+    },
+    {
+      "name": "Redbreast",
+      "paletteKey": "other",
+      "country": "Ireland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Rosebank",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "25"
+      ]
+    },
+    {
+      "name": "Royal Brackla",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "55"
+      ]
+    },
+    {
+      "name": "Royal Lochnagar",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "103"
+      ]
+    },
+    {
+      "name": "Saburomaru",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Sakurao",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Scapa",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "17"
+      ]
+    },
+    {
+      "name": "Shindo",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Shizuoka",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Single Cask",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    },
+    {
+      "name": "South Pacific",
+      "paletteKey": "other",
+      "country": "Fiji",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Speyburn",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "88"
+      ]
+    },
+    {
+      "name": "Speyside",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Springbank",
+      "paletteKey": "campbeltown",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "27",
+        "114",
+        "126"
+      ]
+    },
+    {
+      "name": "Strathclyde",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "G10"
+      ]
+    },
+    {
+      "name": "Strathisla",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "58"
+      ]
+    },
+    {
+      "name": "Strathmill",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "100"
+      ]
+    },
+    {
+      "name": "Talisker",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "14"
+      ]
+    },
+    {
+      "name": "Tamdhu",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "8"
+      ]
+    },
+    {
+      "name": "Tamnavulin",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "34"
+      ]
+    },
+    {
+      "name": "Teaninich",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "59"
+      ]
+    },
+    {
+      "name": "The Chuan",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "The Lakes",
+      "paletteKey": "other",
+      "country": "England",
+      "entityType": "distillery"
+    },
+    {
+      "name": "The Mars Shinshu",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "canonicalName": "Mars Shinshu",
+      "smwsCodes": [
+        "159"
+      ]
+    },
+    {
+      "name": "Thy",
+      "paletteKey": "other",
+      "country": "Denmark",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Tobermory",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "42"
+      ]
+    },
+    {
+      "name": "Tomatin",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "11"
+      ]
+    },
+    {
+      "name": "Torabhaig",
+      "paletteKey": "islands",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Tormore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "105"
+      ]
+    },
+    {
+      "name": "Tsunuki",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "canonicalName": "Mars Tsunuki",
+      "smwsCodes": [
+        "160"
+      ]
+    },
+    {
+      "name": "Tullibardine",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "28"
+      ]
+    },
+    {
+      "name": "Unknow",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "unknown"
+    },
+    {
+      "name": "Westland",
+      "paletteKey": "usa",
+      "country": "USA",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "133"
+      ]
+    },
+    {
+      "name": "White Peak",
+      "paletteKey": "other",
+      "country": "England",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Worthy Park（牙买加朗姆）",
+      "paletteKey": "other",
+      "country": "Jamaica",
+      "entityType": "other_spirit"
+    },
+    {
+      "name": "Yamazaki",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "119"
+      ]
+    },
+    {
+      "name": "Yoichi",
+      "paletteKey": "other",
+      "country": "Japan",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "116"
+      ]
+    },
+    {
+      "name": "Yorkshire Distillery",
+      "paletteKey": "other",
+      "country": "England",
+      "entityType": "distillery"
+    },
+    {
+      "name": "Zuidam",
+      "paletteKey": "other",
+      "country": "Netherlands",
+      "entityType": "distillery"
+    },
+    {
+      "name": "未开名",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "unknown"
+    },
+    {
+      "name": "沪威",
+      "paletteKey": "other",
+      "country": "China",
+      "entityType": "distillery"
+    },
+    {
+      "name": "调和",
+      "paletteKey": "other",
+      "country": null,
+      "entityType": "brand_or_blend"
+    }
+  ]
+}
