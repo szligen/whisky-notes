@@ -1105,7 +1105,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.14-15:19</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.14-16:10</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -2851,26 +2851,24 @@ function cardHTML(n,isL,isLb){
       actions+'</div>';
   }
 
-  return '<div class="note-card" data-id="'+n.id+'">'+
-    '<div class="nc-head"><div class="nc-title">'+name+'</div><div class="nc-date num">'+dstr+'</div></div>'+
-    '<div class="nc-dist">'+esc(n.distillery||'\u2014')+(botShow?'<em> \u00b7 '+esc(botShow)+'</em>':'')+'</div>'+
-    '<div class="nc-spec">'+
-      ncell('\u9152\u9f84', n.vintage_age, '\u5e74')+
-      ncell('\u9152\u7cbe\u5ea6', (n.abv==null||n.abv==='')?'':(+n.abv), '%')+
-      ncell('\u84b8\u998f\u5e74', n.distillation_year)+
-      ncell('WB', n.wb_id)+
-    '</div>'+
-    '<div class="nc-scores">'+
-      ncell('\u5165\u53e3', sc1(n.palate_score))+
-      ncell('\u6c14\u97f5', sc1(n.body_score))+
-      ncell('\u5589\u611f', sc1(n.finish_score))+
-      ncell('\u5747\u5206', a>0 ? a.toFixed(2) : '', '', true)+
-    '</div>'+
-    '<div class="nc-body">'+
-      (n.nose ? '<div class="nc-line"><strong>\u95fb\u9999</strong><span>'+esc(n.nose)+'</span></div>' : '')+
-      (n.aftertaste ? '<div class="nc-line"><strong>\u4f59\u97f5</strong><span>'+esc(n.aftertaste)+'</span></div>' : '')+
-    '</div>'+
-    actions+'</div>';
+  var dist=(n.distillery||'').trim()||'\u2014', dm=distilleryMeta(dist), pal=dm.palette;
+  var logo=distilleryLogo(dist,dm), logoHtml=logo?'<div class="awc-logo"><img src="'+escQ(encodeURI(logo))+'" alt="'+escQ(dist)+' Logo" loading="lazy"></div>':'';
+  var age=(n.vintage_age!=null&&n.vintage_age!=='')?esc(String(n.vintage_age)):'NAS';
+  var year=(n.distillation_year!=null&&n.distillation_year!=='')?esc(String(n.distillation_year)):'\u2014';
+  var region=regionEnglish(dm.paletteKey);
+  if(dm.paletteKey==='other'&&dm.entry.country) region+=' \u00b7 '+String(dm.entry.country).toUpperCase();
+  var style='--region-light:'+pal.color+';--region-dark:'+(pal.dark||pal.color)+';--region-on:'+(pal.textOnColor||'#fff');
+  return '<div class="note-card awc'+(logo?'':' no-logo')+'" style="'+style+'" data-id="'+n.id+'">'+
+    '<div class="awc-top">'+logoHtml+
+      '<div class="awc-identity"><div class="awc-distillery">'+esc(dist)+'</div><div class="awc-name">'+name+'</div></div>'+
+      '<div class="awc-vintage"><div class="awc-age">'+age+(age==='NAS'?'':'<small>\u5e74</small>')+'</div><div class="awc-year">'+year+'</div></div>'+
+    '</div><div class="awc-rule"></div>'+
+    '<div class="awc-scores"><div><b>'+sc1(n.palate_score)+'</b><span>\u5165\u53e3</span></div><div><b>'+sc1(n.body_score)+'</b><span>\u6c14\u97f5</span></div><div><b>'+sc1(n.finish_score)+'</b><span>\u5589\u611f</span></div></div>'+
+    '<div class="awc-facts"><div><span>ABV</span><b>'+abvTxt+'</b></div><div><span>BOTTLER</span><b>'+esc(botShow||'OB')+'</b></div></div>'+
+    '<div class="awc-notes">'+
+      (n.nose ? '<div><b>\u95fb\u9999</b><span>'+esc(n.nose)+'</span></div>' : '')+
+      (n.aftertaste ? '<div><b>\u4f59\u97f5</b><span>'+esc(n.aftertaste)+'</span></div>' : '')+
+    '</div><div class="awc-foot"><span class="awc-region">'+esc(region)+'</span><span class="awc-date">'+esc(dstr||'\u2014')+'</span></div>'+actions+'</div>';
   }
 
 /* ============================================================
@@ -2998,8 +2996,8 @@ function distilleryLogo(name, meta){
 function regionEnglish(key){
   return ({highland:'HIGHLAND',speyside:'SPEYSIDE',islay:'ISLAY',islands:'ISLANDS',campbeltown:'CAMPBELTOWN',lowland:'LOWLAND',usa:'USA',other:'OTHER'})[key]||'OTHER';
 }
-/* 同名函数置于旧模板之后，函数声明提升时以此实现为准。 */
-function labelCardHTML(n){
+/* 保留上一版视觉原型以供设计追溯；普通卡片已使用新的 awc 结构，酒标视图不调用它。 */
+function archiveCardHTMLPrototype(n){
   var dist=(n.distillery||'').trim()||'—', meta=distilleryMeta(dist), pal=meta.palette;
   var logo=distilleryLogo(dist,meta), logoHtml=logo?'<div class="lmc-logo"><img src="'+escQ(encodeURI(logo))+'" alt="'+escQ(dist)+' Logo" loading="lazy"></div>':'';
   var noLogo=logo?'':' no-logo';
