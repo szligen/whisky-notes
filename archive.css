@@ -158,7 +158,6 @@ header {
   background: #fff; border: 1px solid var(--border); box-shadow: 0 2px 7px rgba(49,38,25,.06);
 }
 .awc-logo img { display: block; width: 84%; height: 84%; object-fit: contain; }
-.awc-logo img[src$="Lindores.svg"] { filter: brightness(.2); }
 .awc-identity { min-width: 0; padding-top: 1px; }
 .awc-distillery {
   color: var(--text); font-family: Georgia, "Times New Roman", serif; font-size: 21px;
