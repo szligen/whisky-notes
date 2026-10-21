@@ -1305,6 +1305,16 @@
       ]
     },
     {
+      "name": "罗斯班克",
+      "canonicalName": "Rosebank",
+      "paletteKey": "lowland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "25"
+      ]
+    },
+    {
       "name": "Royal Brackla",
       "paletteKey": "highland",
       "country": "Scotland",
