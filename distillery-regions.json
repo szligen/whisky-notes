@@ -1413,6 +1413,13 @@
       "entityType": "distillery"
     },
     {
+      "name": "诗贝",
+      "canonicalName": "Speyside",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery"
+    },
+    {
       "name": "Springbank",
       "paletteKey": "campbeltown",
       "country": "Scotland",
