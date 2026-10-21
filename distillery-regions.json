@@ -456,6 +456,16 @@
       ]
     },
     {
+      "name": "康法摩尔",
+      "canonicalName": "Convalmore",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "83"
+      ]
+    },
+    {
       "name": "Cooley",
       "paletteKey": "other",
       "country": "Ireland",
