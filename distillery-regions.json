@@ -167,6 +167,16 @@
       ]
     },
     {
+      "name": "艾德麦康",
+      "canonicalName": "Ardnamurchan",
+      "paletteKey": "highland",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "149"
+      ]
+    },
+    {
       "name": "Arran",
       "paletteKey": "islands",
       "country": "Scotland",
