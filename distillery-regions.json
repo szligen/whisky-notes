@@ -804,6 +804,16 @@
       ]
     },
     {
+      "name": "格兰陶切丝",
+      "canonicalName": "Glentauchers",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "63"
+      ]
+    },
+    {
       "name": "Glenturret",
       "paletteKey": "highland",
       "country": "Scotland",
