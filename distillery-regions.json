@@ -108,6 +108,16 @@
       ]
     },
     {
+      "name": "欧特班",
+      "canonicalName": "Allt-a-Bhainne",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "108"
+      ]
+    },
+    {
       "name": "anCnoc",
       "paletteKey": "speyside",
       "country": "Scotland",
