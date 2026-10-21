@@ -919,6 +919,16 @@
       ]
     },
     {
+      "name": "帝国",
+      "canonicalName": "Imperial",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "65"
+      ]
+    },
+    {
       "name": "Inchgower",
       "paletteKey": "speyside",
       "country": "Scotland",
