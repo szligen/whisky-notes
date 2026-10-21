@@ -538,6 +538,16 @@
       ]
     },
     {
+      "name": "达拉斯杜",
+      "canonicalName": "Dallas Dhu",
+      "paletteKey": "speyside",
+      "country": "Scotland",
+      "entityType": "distillery",
+      "smwsCodes": [
+        "45"
+      ]
+    },
+    {
       "name": "Dalmore",
       "paletteKey": "highland",
       "country": "Scotland",
