@@ -14,7 +14,9 @@
 
 | 认领时间 | Agent | ZONE | 具体目标 | 状态 | TTL |
 |---|---|---|---|---|---|
-| 2026-10-29 14:17 | `[DSH]` | Z8 + Z7 + Z1 | P0 修复：①图片序号覆盖（Z1）②三 Agent 协作协议迁入仓库（Z8）③视觉令牌单一来源（Z7） | claimed | 2026-10-30 02:17 |
+| 2026-10-29 14:17 | `[DSH]` | Z8 + Z7 + Z1 | P0 修复：①图片序号覆盖（Z1）②三 Agent 协作协议迁入仓库（Z8）③视觉令牌单一来源（Z7） | done | 2026-10-30 02:17 |
+
+（当前无进行中的认领。下一个 Agent 开工前在此加一行。）
 
 ---
 
@@ -24,9 +26,10 @@
 
 ### 2026-10-29
 
-- `[DSH]` `Z8` — 协作协议迁入仓库：新增 `repo/AGENTS.md`（v3，含 Agent 注册表 / ZONE 分区 / 认领 TTL / 共享区）与 `repo/CHANGELOG.md`（本文件）；根目录旧版改为指针，避免"协议只在本地、第三台机器读不到"。
-- `[DSH]` `Z7` — 视觉令牌单一来源：全部颜色/圆角/阴影令牌移入 `archive.css`，`index.html` 内联样式不再定义令牌，硬编码色（页头底、统计强调色、Logo 底）改为令牌；删除死代码 `archiveCardHTMLPrototype`。
-- `[DSH]` `Z1` — 图片文件名序号改为「已有文件最大序号 +1」（新增 `nextImageSeq()`），修复"给已有图片的记录再加图会覆盖原图"的丢数据缺陷。
+- `[DSH]` `148c203` `Z8` — 协作协议迁入仓库：新增 `repo/AGENTS.md`（v3，含 Agent 注册表 / ZONE 分区 / 认领 TTL / 共享区 / 文档禁写死动态事实）与 `repo/CHANGELOG.md`（本文件）；根目录旧版改为指针，解决"协议只在本地、第三台机器读不到"。新增 Agent 代号 `[DSH]` = DeepSeek Harness。
+- `[DSH]` `148c203` `Z7` — 视觉令牌单一来源：全部颜色/圆角/阴影令牌移入 `archive.css`，`index.html` 内联样式不再定义令牌（删除两处重复 `:root`/dark 块）；硬编码色（页头底、页头边框、统计强调色、Logo 底）改为语义令牌 `--header-bg` / `--header-border` / `--stat-accent` / `--logo-bg`；删除死代码 `archiveCardHTMLPrototype`（30 行）。**渲染结果不变**，由 Playwright 计算样式逐项断言（28 项）。
+- `[DSH]` `148c203` `Z1` — 图片文件名序号改为「已有文件最大序号 +1」（新增 `nextImageSeq()`），修复"给已有图片的记录再加图会覆盖原图"的丢数据缺陷；`images` 合并去重。版本 `v2026.10.29-14:21`。
+- `[DSH]` `Z8` — 根目录 `AGENTS.md` / `CHANGELOG.md` / `handoff-index.md` 改为指针或加归档横幅；`README.md` 补 `archive.css` / `AGENTS.md` / `CHANGELOG.md` 说明。
 
 ### 2026-10-13 ~ 2026-10-21（迁移自根目录旧 CHANGELOG）
 
