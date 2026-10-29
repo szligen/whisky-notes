@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-10-29-14:21 -->
+<!-- VERSION: 2026-10-29-14:27 -->
 <html lang="zh-CN" data-page-node-id="5V8n3FPUyt2IVBjzFhiMOg">
 <head data-page-node-id="vs6T1NiFVt4ZSlPDLilNse">
 <meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
@@ -1026,7 +1026,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.29-14:21</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.29-14:27</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -3812,11 +3812,11 @@ function getImageUrl(filename) {
   return 'https://raw.githubusercontent.com/' + r.owner + '/' + r.repo + '/' + r.branch + '/album/' + encodeURIComponent(filename);
 }
 
-/* 图片序号分配器（2026-10-29 修复丢数据缺陷，见 AGENTS.md §5.2）
+/* 图片序号分配器（2026-10-29 修复"新图覆盖旧图"缺陷）
    文件名 = <noteId>_<两位序号>.<ext>，GitHub 上同名文件写入 = 静默覆盖。
    旧实现拿「本次待传文件的下标」当序号：一条记录已有 _01 时再传一张 → 仍写 _01 → 原图被覆盖。
    现在改为扫描本机已知文件名，取「同前缀最大序号 + 1」，保证只增不撞。
-   边界：看不到另一台设备刚上传的文件（并发上传仍可能撞名），已在 AGENTS.md 记录。 */
+   边界：只能看到本机已知的文件名，另一台设备并发上传仍可能撞名。 */
 function nextImageSeq(noteId, existing){
   var safe = String(noteId || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   var re = new RegExp('^' + safe + '_(\\d+)\\.[A-Za-z0-9]+$');
