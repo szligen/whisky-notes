@@ -1,5 +1,15 @@
-/* Warm Paper Archive — visual-only skin. Business logic remains in index.html. */
+/* Warm Paper Archive — 视觉皮肤 + 唯一令牌源（visual-only skin. 业务逻辑在 index.html） */
+
+/* ============================================================
+   ★ 这里是全站唯一的视觉令牌定义处（2026-10-29 收敛，P0-3）
+   加载顺序：index.html 的 <style>（结构层）→ 本文件（皮肤层，最后加载）
+   所以本文件的值生效。规则：
+     1. 新增令牌 → 本文件 :root 与 [data-theme="dark"] 两处都给值，缺一个暗色就失效
+     2. index.html 不得再定义颜色/圆角令牌，也不得硬编码颜色
+     3. 组件里不许写死 #hex / px 圆角，一律引用下面的变量
+   ============================================================ */
 :root {
+  /* —— 表面与文字 —— */
   --bg: #eee9df;
   --surface: #fdfaf4;
   --surface2: #f4ecdd;
@@ -8,15 +18,52 @@
   --text: #182426;
   --text-muted: #596664;
   --text-light: #6f7976;
+
+  /* —— 主强调色 —— */
   --accent: #6c5135;
   --accent-light: #8a6846;
   --on-accent: #ffffff;
   --accent-bg: #f3e8dc;
+
+  /* —— 结构框与圆角 —— */
   --frame: #bcb3a5;
   --radius: 7px;
   --radius-sm: 5px;
   --shadow: 0 7px 18px rgba(76,58,34,.075);
   --shadow-md: 0 12px 28px rgba(68,53,35,.14);
+
+  /* —— 次级色 / 语义色（亮色） —— */
+  --gold: #c9952a;
+  --gold-light: #fef7e6;
+  --green: #2d7a4f;
+  --red: #c0392b;
+  --olive: #667534;            /* 橄榄/苔绿 secondary：第二色相锚点 (hue 74°) */
+  --olive-bg: #f4f7ea;
+  --olive-border: #c8d4a3;
+  --success: #1f5c3a;
+  --success-bg: #f0f4ea;
+  --success-border: #c3d9c8;
+  --warn: #7a5a10;
+  --warn-bg: #fdf8e8;
+  --warn-border: #eddfae;
+  --info: #1a4f8f;
+  --info-bg: #eef4fb;
+  --info-border: #c2d8f0;
+  --danger-bg: #fdf0ee;
+  --danger-border: #f0c8c0;
+  --toast-bg: #1a1614;
+  --toast-text: #ffffff;
+
+  /* —— 排版与纹理 —— */
+  --mono: Consolas, "Cascadia Mono", "SFMono-Regular", ui-monospace, monospace;
+  --zebra: #f6f4ea;                                   /* 列表斑马纹 */
+  --hardshadow: 6px 6px 0 rgba(36,30,24,0.14);        /* 硬投影：浮层专用 */
+
+  /* —— 组件级语义令牌（原先散落为硬编码色） —— */
+  --header-bg: #faf7f0;
+  --header-border: #cec6b9;
+  --stat-accent: #9a5c2b;      /* 统计带第 5 格（总数）的强调色 */
+  --logo-bg: #ffffff;          /* Logo 底板：多数 Logo 是深色图案，必须浅底 */
 }
 
 [data-theme="dark"] {
@@ -35,6 +82,34 @@
   --frame: #515a57;
   --shadow: 0 8px 20px rgba(0,0,0,.24);
   --shadow-md: 0 14px 30px rgba(0,0,0,.4);
+
+  --gold: #e6b84a;
+  --gold-light: #3a3224;
+  --green: #3dbf8a;
+  --red: #ef5555;
+  --olive: #a3ba62;
+  --olive-bg: #2a3120;
+  --olive-border: #4d5a33;
+  --success: #7fd6a8;
+  --success-bg: #1e2a22;
+  --success-border: #2f4a38;
+  --warn: #e0c86a;
+  --warn-bg: #2e2a1c;
+  --warn-border: #4d4526;
+  --info: #7fb0e8;
+  --info-bg: #1c2431;
+  --info-border: #2c4055;
+  --danger-bg: #2e1e1c;
+  --danger-border: #552d28;
+  --toast-bg: #222420;
+  --toast-text: #ede8e4;
+  --zebra: #1e2018;
+  --hardshadow: 6px 6px 0 rgba(0,0,0,0.55);
+
+  --header-bg: #202625;
+  --header-border: #3d4643;
+  --stat-accent: #d4ad7f;
+  --logo-bg: #f7f5ef;
 }
 
 body {
@@ -54,11 +129,11 @@ body {
 header {
   min-height: 62px;
   padding: 12px 38px;
-  background: #faf7f0;
-  border-bottom: 1px solid #cec6b9;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
   box-shadow: 0 3px 12px rgba(69,54,35,.07);
 }
-[data-theme="dark"] header { background: #202625; border-bottom-color: #3d4643; }
+[data-theme="dark"] header { background: var(--header-bg); border-bottom-color: var(--header-border); }
 .logo { gap: 12px; }
 .logo-icon { width: 31px; height: 31px; color: var(--accent); filter: drop-shadow(0 2px 3px rgba(44,34,24,.14)); }
 .logo h1 { font-family: Georgia, "Times New Roman", serif; font-size: 22px; letter-spacing: .055em; }
@@ -88,8 +163,7 @@ header {
   border-left: 1px solid var(--border);
   background: var(--surface2);
 }
-.stat-card:nth-child(5) .stat-num { color: #9a5c2b; }
-[data-theme="dark"] .stat-card:nth-child(5) .stat-num { color: #d4ad7f; }
+.stat-card:nth-child(5) .stat-num { color: var(--stat-accent); }
 .stat-num { font-family: Georgia, "Times New Roman", serif; }
 
 .toolbar {
@@ -155,7 +229,7 @@ header {
 .awc.no-logo .awc-top { grid-template-columns: minmax(0,1fr) auto; }
 .awc-logo {
   width: 70px; height: 70px; display: grid; place-items: center; overflow: hidden;
-  background: #fff; border: 1px solid var(--border); box-shadow: 0 2px 7px rgba(49,38,25,.06);
+  background: var(--logo-bg); border: 1px solid var(--border); box-shadow: 0 2px 7px rgba(49,38,25,.06);
 }
 .awc-logo img { display: block; width: 84%; height: 84%; object-fit: contain; }
 .awc-identity { min-width: 0; padding-top: 1px; }
@@ -193,7 +267,7 @@ header {
 .awc-date { color:var(--text-light); font:10px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace; }
 .awc .card-actions { margin:8px -16px -10px; padding:7px 12px 0; background:transparent; }
 .awc .btn-edit, .awc .btn-delete { height:26px; border-radius:4px; }
-[data-theme="dark"] .awc-logo { background:#f7f5ef; border-color:#4b5350; }
+[data-theme="dark"] .awc-logo { border-color: #4b5350; }
 [data-theme="dark"] #cards-grid:not(.list-view):not(.label-view) .awc:hover { box-shadow:0 13px 27px rgba(0,0,0,.34); }
 .modal-content, .detail-content, .confirm-content, .date-pop {
   border-radius: 9px;

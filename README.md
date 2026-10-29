@@ -7,7 +7,14 @@ Personal whisky tasting notes manager — **纯静态 HTML，通过 GitHub API �
 | 文件 | 用途 |
 |---|---|
 | `index.html` | 单文件应用（所有 HTML/CSS/JS 集成在一个文件中） |
+| `archive.css` | 视觉皮肤层，**全站唯一的设计令牌来源**（最后加载，覆盖内联样式） |
+| `label.css` | 酒标视图样式，按需懒加载 |
 | `whisky_notes.json` | 数据文件（通过 GitHub Contents API 读写） |
+| `AGENTS.md` | **多 Agent 协作协议**（改代码前必读：ZONE 认领、提交规范、铁律） |
+| `CHANGELOG.md` | 协作台账：认领表 / 已完成 / 接管记录 |
+
+> 开发者请先读 [`AGENTS.md`](AGENTS.md)。本文只面向使用者。
+
 
 ## 使用方式
 

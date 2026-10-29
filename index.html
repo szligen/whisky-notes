@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- VERSION: 2026-10-14-15:19 -->
+<!-- VERSION: 2026-10-29-14:21 -->
 <html lang="zh-CN" data-page-node-id="5V8n3FPUyt2IVBjzFhiMOg">
 <head data-page-node-id="vs6T1NiFVt4ZSlPDLilNse">
 <meta charset="UTF-8" data-page-node-id="dqFSVrCGO5YzUDi4lcR9Vj">
@@ -12,96 +12,17 @@
 <style>
   /* ===== Reset & Base ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #f9faf6;
-    --surface: #ffffff;
-    --surface2: #f3f5ec;
-    --border: #e6e9dc;
-    --border-light: #eff1e7;
-    --text: #1a1614;
-    --text-muted: #6b6057;
-    --text-light: #6f6459;        /* 4.45 → 5.2（surface2 底），小字必须过 AA */
-    --accent: #8b4513;
-    --accent-light: #c06030;
-    --on-accent: #ffffff;         /* 强调色填充块上的字色（暗色主题必须反过来用深色） */
-    --accent-bg: #fdf0e8;
-    --gold: #c9952a;
-    --gold-light: #fef7e6;
-    --green: #2d7a4f;
-    --red: #c0392b;
-    /* 橄榄/苔绿 secondary — 第二色相锚点 (hue 74°) */
-    --olive: #667534;
-    --olive-bg: #f4f7ea;
-    --olive-border: #c8d4a3;
-    /* 状态色（语义化，亮/暗各一套） */
-    --success: #1f5c3a;
-    --success-bg: #f0f4ea;
-    --success-border: #c3d9c8;
-    --warn: #7a5a10;
-    --warn-bg: #fdf8e8;
-    --warn-border: #eddfae;
-    --info: #1a4f8f;
-    --info-bg: #eef4fb;
-    --info-border: #c2d8f0;
-    --danger-bg: #fdf0ee;
-    --danger-border: #f0c8c0;
-    --toast-bg: #1a1614;
-    --toast-text: #ffffff;
-    --shadow: 0 0 0 0 rgba(0,0,0,0);
-    --shadow-md: 0 0 0 0 rgba(0,0,0,0);
-    /* ===== 仪表台账层 Instrument / Ledger =====
-       排版制度 = D2「仪表 · 等宽数字」：0 圆角 + 硬框 + 等宽读数 + 单强调色
-       分工： 2px 硬框 → 只给「数据容器」（统计带 / 卡片 / 列表 / 面板 / 弹窗）
-              1px 细线 → 给「内部细分隔」（表头、单元格、表单外框）
-       层次不靠阴影，靠框线 + 色块分区。                        */
-    --mono: Consolas, "Cascadia Mono", "SFMono-Regular", ui-monospace, monospace;
-    --frame: #241e18;                                  /* 2px 结构框：墨色 */
-    --zebra: #f6f4ea;                                  /* 列表斑马纹 */
-    --hardshadow: 6px 6px 0 rgba(36,30,24,0.14);        /* 硬投影：浮层专用 */
-    --radius: 0px;
-    --radius-sm: 0px;
-  }
+
+  /* ===== 视觉令牌：唯一来源是 archive.css =====
+     2026-10-29 收敛（P0-3）：此前的内联令牌块与 archive.css 的 :root 互相覆盖，
+     实际生效的是后加载的 archive.css，内联这份成了「改了不生效」的死代码。
+     现在本文件只写结构与布局；颜色 / 圆角 / 阴影 / 字体栈全部来自 archive.css。
+     · 新增令牌 → 写进 archive.css 的 :root 与 [data-theme="dark"] 两处
+     · 禁止在本文件硬编码颜色或圆角像素值                         */
 
   /* ===== Dark Theme ===== */
-  [data-theme="dark"] {
-    --bg: #191a17;
-    --surface: #222420;
-    --surface2: #2b2e28;
-    --border: #3a3d34;
-    --border-light: #33362e;
-    --text: #ede8e4;
-    --text-muted: #a29a93;        /* 5.0（surface2 底） */
-    --text-light: #9c928a;        /* 4.53（surface2 底） */
-    --accent: #d4943a;
-    --accent-light: #e6a854;
-    --on-accent: #1a1614;         /* 亮琥珀底上用墨色：6.9，白字只有 2.6 */
-    --accent-bg: #3a2e24;
-    --gold: #e6b84a;
-    --gold-light: #3a3224;
-    --green: #3dbf8a;
-    --red: #ef5555;
-    --olive: #a3ba62;
-    --olive-bg: #2a3120;
-    --olive-border: #4d5a33;
-    --success: #7fd6a8;
-    --success-bg: #1e2a22;
-    --success-border: #2f4a38;
-    --warn: #e0c86a;
-    --warn-bg: #2e2a1c;
-    --warn-border: #4d4526;
-    --info: #7fb0e8;
-    --info-bg: #1c2431;
-    --info-border: #2c4055;
-    --danger-bg: #2e1e1c;
-    --danger-border: #552d28;
-    --toast-bg: #222420;
-    --toast-text: #ede8e4;
-    --shadow: 0 0 0 0 rgba(0,0,0,0);
-    --shadow-md: 0 0 0 0 rgba(0,0,0,0);
-    --frame: #77807f;
-    --zebra: #1e2018;
-    --hardshadow: 6px 6px 0 rgba(0,0,0,0.55);
-  }
+  /* 暗色令牌同样由 archive.css 提供（亮/暗两套值必须成对出现，缺一个就在暗色下失效）。
+     这里只保留暗色下需要覆盖的结构性规则。 */
   [data-theme="dark"] header { background: var(--surface); border-bottom-color: var(--border); }
   [data-theme="dark"] .modal-content, [data-theme="dark"] .detail-content,
   [data-theme="dark"] .confirm-content { background: var(--surface); }
@@ -1105,7 +1026,7 @@
     <svg class="logo-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32"/><path d="M6.6 8.5 11.2 24 16 13.6 20.8 24 25.4 8.5" fill="none" stroke-width="3.4" stroke-linejoin="round"/></svg>
     <h1>Whisky Notes</h1>
     <span id="header-count">loading...</span>
-    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.21-14:57</span>
+    <span class="version-badge" title="页面版本号 — 用于确认本地文件是否为最新版">v2026.10.29-14:21</span>
   </div>
   <div class="header-right">
     <span class="sync-badge clean" id="sync-badge" title="点击立即同步">✓ 已同步</span>
@@ -3000,35 +2921,8 @@ function distilleryLogo(name, meta){
 function regionEnglish(key){
   return ({highland:'HIGHLAND',speyside:'SPEYSIDE',islay:'ISLAY',islands:'ISLANDS',campbeltown:'CAMPBELTOWN',lowland:'LOWLAND',usa:'USA',other:'OTHER'})[key]||'OTHER';
 }
-/* 保留上一版视觉原型以供设计追溯；普通卡片已使用新的 awc 结构，酒标视图不调用它。 */
-function archiveCardHTMLPrototype(n){
-  var dist=(n.distillery||'').trim()||'—', meta=distilleryMeta(dist), pal=meta.palette;
-  var logo=distilleryLogo(dist,meta), logoHtml=logo?'<div class="lmc-logo"><img src="'+escQ(encodeURI(logo))+'" alt="'+escQ(dist)+' Logo" loading="lazy"></div>':'';
-  var noLogo=logo?'':' no-logo';
-  var age=(n.vintage_age!=null&&n.vintage_age!=='')?esc(String(n.vintage_age)):'NAS';
-  var ageUnit=age==='NAS'?'':'<small>年</small>';
-  var year=(n.distillation_year!=null&&n.distillation_year!=='')?esc(String(n.distillation_year)):'—';
-  var dstr=(fmtDate(n.date)||'').slice(0,10).replace(/-/g,'.');
-  var bot=(n.bottler||'').trim()||'—';
-  var region=regionEnglish(meta.paletteKey);
-  if(meta.paletteKey==='other'&&meta.entry.country) region+=' · '+String(meta.entry.country).toUpperCase();
-  var style='--region-light:'+pal.color+';--region-dark:'+(pal.dark||pal.color)+';--region-on:'+(pal.textOnColor||'#fff');
-  return '<div class="note-card lmc'+noLogo+'" style="'+style+'" data-id="'+n.id+'">'
-    +'<div class="lmc-top">'+logoHtml
-    +'<div class="lmc-identity"><div class="lmc-distillery">'+esc(dist)+'</div><div class="lmc-name">'+esc(n.whisky_name||'未命名')+'</div></div>'
-    +'<div class="lmc-vintage"><div class="lmc-age">'+age+ageUnit+'</div><div class="lmc-year">'+year+'</div></div></div>'
-    +'<div class="lmc-rule"></div>'
-    +'<div class="lmc-scores">'
-    +'<div class="lmc-score"><b>'+sc1(n.palate_score)+'</b><span>入口</span></div>'
-    +'<div class="lmc-score"><b>'+sc1(n.body_score)+'</b><span>气韵</span></div>'
-    +'<div class="lmc-score"><b>'+sc1(n.finish_score)+'</b><span>喉感</span></div></div>'
-    +'<div class="lmc-facts"><div class="lmc-fact"><span class="lmc-key">ABV</span><span class="lmc-value">'+((n.abv!=null&&n.abv!=='')?esc(String(+n.abv))+'%':'—')+'</span></div>'
-    +'<div class="lmc-fact"><span class="lmc-key">BOTTLER</span><span class="lmc-value">'+esc(bot)+'</span></div></div>'
-    +'<div class="lmc-notes">'
-    +(n.nose?'<div class="lmc-note"><b>闻香</b><span>'+esc(n.nose)+'</span></div>':'')
-    +(n.aftertaste?'<div class="lmc-note"><b>余韵</b><span>'+esc(n.aftertaste)+'</span></div>':'')+'</div>'
-    +'<span class="lmc-region">'+esc(region)+'</span><span class="lmc-date">'+esc(dstr||'—')+'</span></div>';
-}
+/* 2026-10-29 删除死代码 archiveCardHTMLPrototype()：lmc 视觉原型，全项目无调用点。
+   普通卡片已改用 awc 结构；要追溯旧外观请 git show 历史版本。 */
 /* 酒标标题按父级内容宽度自适应缩小，防长酒厂名从词中断行（留 0.5px 余量防子像素回折） */
 function fitLabelTitles(){
   var titles = document.querySelectorAll('#cards-grid.label-view .h1-title');
@@ -3264,13 +3158,16 @@ async function saveNote(){
     setStatus('syncing', '\u2b07 \u6b63\u5728\u4e0a\u4f20\u56fe\u7247... (' + pendingImageFiles.length + ' \u5f20)');
     var uploadedNames = [];
     try {
+      /* ★ 序号接在已有图片之后（nextImageSeq），不能用 pi+1：否则会覆盖已有同名文件 */
+      var seqBase = nextImageSeq(note.id, existingImages);
       for (var pi = 0; pi < pendingImageFiles.length; pi++) {
-        var fname = await uploadImageToGitHub(pendingImageFiles[pi], note.id, pi + 1);
-        uploadedNames.push(fname);
+        var fname = await uploadImageToGitHub(pendingImageFiles[pi], note.id, seqBase + pi);
+        if (uploadedNames.indexOf(fname) < 0) uploadedNames.push(fname);
       }
       var ni = db.notes.findIndex(function(x){ return x.id === note.id; });
       if (ni >= 0) {
-        db.notes[ni].images = existingImages.concat(uploadedNames);
+        var allImgs = existingImages.concat(uploadedNames);
+        db.notes[ni].images = allImgs.filter(function(f, i){ return allImgs.indexOf(f) === i; });   // 去重
         db.notes[ni].updated_at = new Date().toISOString();   // 图片也是内容变更，要盖时间戳
       }
       await persistLocal();
@@ -3913,6 +3810,22 @@ function compressImage(file, maxSize, quality) {
 function getImageUrl(filename) {
   var r = repoRef();
   return 'https://raw.githubusercontent.com/' + r.owner + '/' + r.repo + '/' + r.branch + '/album/' + encodeURIComponent(filename);
+}
+
+/* 图片序号分配器（2026-10-29 修复丢数据缺陷，见 AGENTS.md §5.2）
+   文件名 = <noteId>_<两位序号>.<ext>，GitHub 上同名文件写入 = 静默覆盖。
+   旧实现拿「本次待传文件的下标」当序号：一条记录已有 _01 时再传一张 → 仍写 _01 → 原图被覆盖。
+   现在改为扫描本机已知文件名，取「同前缀最大序号 + 1」，保证只增不撞。
+   边界：看不到另一台设备刚上传的文件（并发上传仍可能撞名），已在 AGENTS.md 记录。 */
+function nextImageSeq(noteId, existing){
+  var safe = String(noteId || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var re = new RegExp('^' + safe + '_(\\d+)\\.[A-Za-z0-9]+$');
+  var max = 0;
+  (existing || []).forEach(function(f){
+    var m = String(f).match(re);
+    if (m) { var n = parseInt(m[1], 10); if (n > max) max = n; }
+  });
+  return max + 1;
 }
 
 /** Upload one image file to GitHub album/ directory */
